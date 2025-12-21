@@ -1,0 +1,2466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALEE | Film Portfolio</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Kept Anton just in case, but using Inter for titles now -->
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <img src="images/signature.png" alt="Alee Signature" class="top-signature">
+
+    <div id="hero" class="hero">
+        <video
+            id="hero-video" src="videos/hero-signature.mp4" autoplay muted playsinline preload="auto"></video>
+            
+        <div id="hero-loader" class="hero-loader" aria-label="Loading"></div>
+        <div class="skip-hint">Scroll or tap to continue</div>
+    </div>
+
+    <header>
+        <div class="logo">ALEE</div>
+        
+        <div class="nav-right">
+            <button id="about-btn" class="nav-link">About</button>
+
+            <nav class="filter-nav" aria-label="Categories">
+                <span
+                    class="current-filter"
+                    id="filter-toggle"
+                    role="button"
+                    aria-expanded="false"
+                    tabindex="0"
+                >
+                    Categories ▾
+                </span>
+                <ul class="filter-menu" aria-label="Filter categories">
+                    <li data-filter="all" class="active">All</li>
+                    <li data-filter="commercial">Commercial</li>
+                    <li data-filter="social">Social Media</li>
+                    <li data-filter="motion">Motion Graphics</li>
+                    <li data-filter="short">Short Film</li>
+                    <li data-filter="photography">Photography</li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="gallery">
+        <section id="featured">
+    <div class="gallery-item"
+     data-category="home"
+     data-youtube="https://www.youtube.com/embed/NIeAOVKxTNs"
+     data-description="">
+    <img class="cover" src="images/covers/The Perfect Brand Cover.jpg" alt="Project cover">
+    <video class="preview" src="videos/previews/perfectbrand_preview.mp4" muted loop playsinline preload="metadata"></video>
+    <div class="overlay">
+        <h3>The Perfect Brand</h3>
+        <p>Commercial</p>
+    </div>
+
+</div>
+<div class="gallery-item"
+     data-category="commercial"
+     data-hide-on-home="true"
+     data-youtube="https://www.youtube.com/embed/VB9bE0H21hg"
+     data-description="">
+    <img class="cover" src="images/covers/Halloween Party Cover.jpg" alt="Project cover">
+    <video class="preview" src="videos/previews/Halloween Party_preview.mp4" muted loop playsinline preload="metadata"></video>
+    <div class="overlay">
+        <h3>Halloween Party</h3>
+        <p>Commercial</p>
+    </div>
+</div>
+</section>
+
+<section id="motion-featured">
+    <div class="gallery-item motion-featured" data-category="motion"
+        data-youtube="https://www.youtube.com/embed/XYyo8Cjifn4">
+        <img class="cover" src="images/covers/Collabrium Commercial Motion Graphics Cover.jpg" alt="Project cover">
+        <video class="preview" src="videos/previews/Collabrium_preview.mp4" muted loop playsinline preload="metadata"></video>
+        <div class="overlay">
+            <h3>Collabrium</h3>
+            <p>Motion Graphics</p>
+        </div>
+    </div>
+</section>
+
+<section class="gallery-grid">
+
+            <div class="gallery-item" data-category="commercial"
+                data-youtube="https://www.youtube.com/embed/hcRydHWE9Po">
+                <img class="cover" src="images/covers/Let Me Fix It For You.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/project1_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Let Me Fix It For You</h3>
+                    <p>Commercial</p>
+                </div>
+            </div>
+
+            <!-- MODIFIED PROJECT 2: Vertical YouTube Video -->
+            <div class="gallery-item vertical" data-category="social"
+                 data-youtube="https://www.youtube.com/embed/qSs_RGbhC3Y">
+                 <img class="cover" src="images/covers/D'emel Beauty Ad 1 Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/project2_preview.mp4" muted loop playsinline preload="metadata"></video> 
+                <div class="overlay">
+                    <h3>D'emel Beauty Ad 1</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/QPopHAH_npM">
+                <img class="cover" src="images/covers/Logo Fashion Show Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/LogoFashionShow_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Logo Fashion Show</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="short"
+                data-youtube="https://www.youtube.com/embed/R09izTduCz0">
+                <img class="cover" src="images/covers/Halloween- Commercial Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/HalloweenCommercial_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Halloween Short Film</h3>
+                    <p>Short Film</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/JAyPwhDDYdc">
+                <img class="cover" src="images/covers/Phone App Launch Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Phone App Launch_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Phone App Launch</h3>
+                    <p>Social Media</p> 
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/O6AdH9jJctQ">
+                <img class="cover" src="images/covers/The Spotlight is on You Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/The Spotlight is on You_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>The Spotlight is on You</h3>
+                    <p>Social Media</p> 
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/h5G6lqw5VbI">
+                <img class="cover" src="images/covers/Black Friday Offer.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Black Friday Offer_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Black Friday Offer</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/XNzxlnDFOgk">
+                <img class="cover" src="images/covers/D'emel Beauty Ad 2 Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/D'emel Beauty 2_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>D'emel Beauty Ad 2</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/lwKhhCXGzIY">
+                <img class="cover" src="images/covers/500K Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/50K_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>50K</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/MMxWJg9c7Tk">
+                <img class="cover" src="images/covers/Kitchen Pakistan Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Logo Tut Kitchen Pakistan_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Logo Tutorial: KitchensPakistan</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="commercial"
+                data-youtube="https://www.youtube.com/embed/mb71cggg5fM">
+                <img class="cover" src="images/covers/We are a family cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/We Are A Family_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>We Are A Family: AI Ad</h3>
+                    <p>Commercial</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="commercial"
+                data-youtube="https://www.youtube.com/embed/8l1-aVOCl1I">
+                <img class="cover" src="images/covers/We Will Be There For You AI Ad Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/We Will Be There For You AI Ad_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>We Will Be There For You: AI Ad</h3>
+                    <p>Commercial</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/g-AkaxO7VN4">
+                <img class="cover" src="images/covers/Document Translator Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Document Translator_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Document Translator</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="short"
+                data-youtube="https://www.youtube.com/embed/J5guRvwM7WA">
+                <img class="cover" src="images/covers/Pastry Chef Your Brand, Your Story Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Pastry Chef_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Pastry Chef: Your Brand, Your Story</h3>
+                    <p>Short Film</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/_0qBAozI0x8">
+                <img class="cover" src="images/covers/This Is The Wow Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/This is the WOW_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>This Is the WOW!</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="short"
+                data-youtube="https://www.youtube.com/embed/1p6uReLaDxs">
+                <img class="cover" src="images/covers/I see, I hear that life is passing by Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/I see I hear_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>I see, I hear that life is passing by</h3>
+                    <p>Short Film</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="Commercial"
+                data-youtube="https://www.youtube.com/embed/4OTKIAydjcA">
+                <img class="cover" src="images/covers/Zoviz Short Commercial 1 Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Zoviz Commercial 2_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Zoviz Short Commercial</h3>
+                    <p>Commercial</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="commercial"
+                data-youtube="https://www.youtube.com/embed/zW_EgKELs0Q">
+                <img class="cover" src="images/covers/Parsis Gold Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/ParsisGold_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Parsis Gold Commercial</h3>
+                    <p>Commercial</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="commercial"
+                data-youtube="https://www.youtube.com/embed/TXkWJ6taMWM">
+                <img class="cover" src="images/covers/Meera Centrum Commercial Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Meera Centrum_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Meera Centrum Commercial</h3>
+                    <p>Commercial</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="social"
+                data-youtube="https://www.youtube.com/embed/xKm9tDlqG_I">
+                <img class="cover" src="images/covers/SurpriseMemorise Trailer Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/SurpriseMemorise Trailer_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>SurpriseMemorise Trailer</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/wMdYFJG4WVo">
+                <img class="cover" src="images/covers/Tivali Intro Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Tivali Home Intro_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Tivali Home Intro</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="commercial"
+                data-youtube="https://www.youtube.com/embed/NAezhm1wIA0">
+                <img class="cover" src="images/covers/Tivali Home Landing Page Video Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Tivali Home Landing Page Video_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Tivali Home Landing Page Video</h3>
+                    <p>Commercial</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/hFCoMwgeOTA">
+                <img class="cover" src="images/covers/Black Friday Ad Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Black Friday Ad_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Black Friday Ad</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/kMEYTwMGWC4">
+                <img class="cover" src="images/covers/Be the Color, Be the Brand Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Be the Color, Be the Brand_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Be the Color, Be the Brand</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="short"
+                data-youtube="https://www.youtube.com/embed/C5T4_WSSuv4">
+                <img class="cover" src="images/covers/Train Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Train_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Train short</h3>
+                    <p>Short Film</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/cGa3eQu2VRc">
+                <img class="cover" src="images/covers/Tivali Housekeeping Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Tivali Home Housekeeping_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Tivali Home's Housekeeping Service</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/QwewdDkzi9s">
+                <img class="cover" src="images/covers/Image Upscaler Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Image Upscaler_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Image Upscaler</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="commercial"
+                data-youtube="https://www.youtube.com/embed/V_dWwkz5GUk">
+                <img class="cover" src="images/covers/Nandel Fair Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Nandel_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Nandel Fair</h3>
+                    <p>Commercial</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/o3tirPQdUIQ">
+                <img class="cover" src="images/covers/Stop Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/STOP!_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>STOP!</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/oAPduPeKSMI">
+                <img class="cover" src="images/covers/Logo Tutorial ADchemist Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Adchemist Logo Tut_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Logo Tutorial: ADchemist</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/adVpGGmALFU">
+                <img class="cover" src="images/covers/Happy Halloween 2025 AI Ad Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Happy Halloween 2025 AI Ad_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Happy Halloween 2025 AI Ad</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/aafr5sPX3Cw">
+                <img class="cover" src="images/covers/Do it in a blink of an eye Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Do it in a blink of an eye_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Do it in a blink of an eye</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="short"
+                data-youtube="https://www.youtube.com/embed/WDZjNc6psfU">
+                <img class="cover" src="images/covers/I'm Lost Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/I'mLost_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>I'm Lost: An Experimental Short Film</h3>
+                    <p>Short Film</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="commercial"
+                data-youtube="https://www.youtube.com/embed/Z498elRylGo">
+                <img class="cover" src="images/covers/Zoviz Promo English Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Zoviz Promo English_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Zoviz Promo English</h3>
+                    <p>Commercial</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/7-E0_JgkzCg">
+                <img class="cover" src="images/covers/Escalator Ease Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Escalator Ease_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Escalator Ease</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/j-lvvLVIthg">
+                <img class="cover" src="images/covers/Logo Duel.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Logo Duel_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Logo Duel</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/KdlETRTb-9M">
+                <img class="cover" src="images/covers/Logo Tutorial Zipa Zipo Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Logo Tut Zipa Zipo_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Logo Tutorial: Zipa Zipo</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/Q6d_QpPiIK0">
+                <img class="cover" src="images/covers/Steer Clear Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Steer Clear_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Steer Clear</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/CT7ICmBTpgQ">
+                <img class="cover" src="images/covers/Drop your Logo Cover.jpg.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Drop your logo_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Drop your Logo</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/7A021TX_QUQ">
+                <img class="cover" src="images/covers/100K Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/100K_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>100K</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/JEUXb7mZCks">
+                <img class="cover" src="images/covers/Logo Tutorial Afghan Rug.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Logo Tut Afghan Rug_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Logo Tutorial: Afghan Rug</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/UOSoo4bvxSw">
+                <img class="cover" src="images/covers/Which One Rocks Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Which One Rocks.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Which One Rocks?</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+    </div>
+
+    <div class="gallery-item" data-category="commercial"
+                data-youtube="https://www.youtube.com/embed/D9-av-6SJdw">
+                <img class="cover" src="images/covers/Zoviz Promo Japanese Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Zoviz Promo  Japanese_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Zoviz Promo Japanese</h3>
+                    <p>Commercial</p>
+                </div>
+
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/9rbN6ZqSziI">
+                <img class="cover" src="images/covers/Your Logo Your Style Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Your logo, your style_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Your Logo: Your Style</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="commercial"
+                data-youtube="https://www.youtube.com/embed/pUhAykX8Br0">
+                <img class="cover" src="images/covers/Zoviz Promo Arabic.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Zoviz Promo Arabic_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Zoviz Promo Arabic</h3>
+                    <p>Commercial</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/V9SVa9oEGa0">
+                <img class="cover" src="images/covers/Arabic Logo Tutorial Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Arabic Logo Tut_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Arabic Logo Tutorial</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/ux7JDU8ak3A">
+                <img class="cover" src="images/covers/Anywhere, Anytime Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Anywhere anytime_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Anywhere, Anytime</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="commercial"
+                data-youtube="https://www.youtube.com/embed/BFjwjMqiTjw">
+                <img class="cover" src="images/covers/Zoviz Promo Spanish Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Zoviz Promo Spanish_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Zoviz Promo Spanish</h3>
+                    <p>Commercial</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/GAPAs85SYqo">
+                <img class="cover" src="images/covers/Logo Tutorial CookMack Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Logo Tut Cookmack_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Logo Tutorial: CookMack</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/_TqLdtsZn4M">
+                <img class="cover" src="images/covers/How to Design a Logo Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/How to design a logo_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>How to Design a logo</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/TbU7xCDWCbo">
+                <img class="cover" src="images/covers/Ginger Shop Story Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Ginger shop Story_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Ginger Shop Story</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/qTACGq_rdVM">
+                <img class="cover" src="images/covers/Logo Quiz Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Interview_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Logo Quiz</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/SbqGZ9FaYaU">
+                <img class="cover" src="images/covers/Zero Design Skill Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Zero Design Skill_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Zero Design Skill</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/EWtZNBXrEqI">
+                <img class="cover" src="images/covers/Don't Buy from Zoviz Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Don't buy from Zoviz_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Don't Buy from Zoviz</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="commercial"
+                data-youtube="https://www.youtube.com/embed/Hzg1aFCBC10">
+                <img class="cover" src="images/covers/Earn-2K-in-Minutes-Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Earn 2K in minutes_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Earn 2K in Minutes!</h3>
+                    <p>Commercial</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/2ReBR-_w53M">
+                <img class="cover" src="images/covers/90% of Businesses Fail Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/90% of businesses fail_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>90% of Businesses Fail</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/YBEkW5kKaQY">
+                <img class="cover" src="images/covers/Brand Assistant Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Zoviz Brand Assistant_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Zoviz Brand Assistant</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/haSKYco5d6c">
+                <img class="cover" src="images/covers/Come with me Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Come with me_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Come with me</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/o-_aD5DKax8">
+                <img class="cover" src="images/covers/What Sets it Apart Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/What sets it apart_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>What Sets It Apart</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/KUmIrxH5gv4">
+                <img class="cover" src="images/covers/Hostage Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Hostage_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Hostage</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/dDSE5cN5qz8">
+                <img class="cover" src="images/covers/A Simple Choice Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/A simple Choice_preivew.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>A Simple Choice</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/j6T8set6B7I">
+                <img class="cover" src="images/covers/Exciting News Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Exciting News_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Exciting News</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/_rUG4fbZYUU">
+                <img class="cover" src="images/covers/Logo Tutorial Tedcre Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Logo Tut Tedcre_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Logo Tutorial: Tedcre</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="commercial"
+                data-youtube="https://www.youtube.com/embed/5yP5t0rPYNU">
+                <img class="cover" src="images/covers/Zoviz Promo French Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Zoviz Promo French_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Zoviz Promo French</h3>
+                    <p>Commercial</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="commercial"
+                data-youtube="https://www.youtube.com/embed/-M-eEzxHSr4">
+                <img class="cover" src="images/covers/Zoviz AI Commercial Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Zoviz AI Commercial_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Zoviz AI Commercial</h3>
+                    <p>Commercial</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/wBszULX7xvY">
+                <img class="cover" src="images/covers/Logo Tutorial Magnolia Beauty Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Magnolia Beauty_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Logo Tutorial: Magnolia Beauty</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/wO5e_2bqyf4">
+                <img class="cover" src="images/covers/Petshop Logo Design Ad.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Pet Shop Logo Design_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Pet Shop Logo Design Ad</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="commercial"
+                data-youtube="https://www.youtube.com/embed/aysliekcmZ8">
+                <img class="cover" src="images/covers/IELTS CD Exam Commercial Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/IELTS CD Exam_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>IELTS CD Exam Commercial</h3>
+                    <p>Commercial</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="short"
+                data-youtube="https://www.youtube.com/embed/pIaMOwGbcBc">
+                <img class="cover" src="images/covers/The Smile Gift Short Documentary Film Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/The Smile Gift_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>The Smile Gift Short Documentary Film</h3>
+                    <p>Short Film</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/DRAMgiHl7TQ">
+                <img class="cover" src="images/covers/Prompt Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/prompt_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Prompt</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="commercial"
+                data-youtube="https://www.youtube.com/embed/I23Yz1R0nNI">
+                <img class="cover" src="images/covers/SurpriseMemorise Short Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/SurpriseMemorise Story_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>SurpriseMemorise Story</h3>
+                    <p>Commercial</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="commercial"
+                data-youtube="https://www.youtube.com/embed/NIeAOVKxTNs">
+                <img class="cover" src="images/covers/The Perfect Brand Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/perfectbrand_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>The Perfect Brand</h3>
+                    <p>Commercial</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/yiJBnPQYtbU">
+                <img class="cover" src="images/covers/Guess What Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/guess what_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Guess What</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/QV2Zy8uUVew">
+                <img class="cover" src="images/covers/color Palette Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Color Palette.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Color Palette</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/75hhme8NNlw">
+                <img class="cover" src="images/covers/Two Case Scenario Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Two Case Scanario_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Two Case Scanario</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="motion"
+                data-youtube="https://www.youtube.com/embed/XYyo8Cjifn4">
+                <img class="cover" src="images/covers/Collabrium Commercial Motion Graphics Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Collabrium_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Collabrium Commercial</h3>
+                    <p>Motion Graphics</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="motion"
+                data-youtube="https://www.youtube.com/embed/W0wkJwbRdUM">
+                <img class="cover" src="images/covers/ZOVIZ AD Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Zoviz Ad August_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Zoviz AD</h3>
+                    <p>Motion Graphics</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="motion"
+                data-youtube="https://www.youtube.com/embed/Hk1eg8HiSt8">
+                <img class="cover" src="images/covers/From Image to Poster.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/From Image to Poster_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>From Image to Poster</h3>
+                    <p>Motion Graphics</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="motion"
+                data-youtube="https://www.youtube.com/embed/DJv4oy_4HKc">
+                <img class="cover" src="images/covers/Tivali Home Ad cat Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Tivali Home Ad Cat_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Tivali Home Ad</h3>
+                    <p>Motion Graphics</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="motion"
+                data-youtube="https://www.youtube.com/embed/6_5h_a6F4vk">
+                <img class="cover" src="images/covers/Phone App motion cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Phone App Motion_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Phone App</h3>
+                    <p>Motion Graphics</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="motion"
+                data-youtube="https://www.youtube.com/embed/xoETnqiDPRw">
+                <img class="cover" src="images/covers/Zoviz Ads Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Zoviz ad Feudeur_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Zoviz Ads</h3>
+                    <p>Motion Graphics</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="motion"
+                data-youtube="https://www.youtube.com/embed/4_LLEkXqrpk">
+                <img class="cover" src="images/covers/AI Brand Generator Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/AI Brand Generator_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>AI Brand Generator</h3>
+                    <p>Motion Graphics</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="motion"
+                data-youtube="https://www.youtube.com/embed/Ke3adMSN0cQ">
+                <img class="cover" src="images/covers/My Design Cloud Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/My Design_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>My Design Cloud</h3>
+                    <p>Motion Graphics</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="motion"
+                data-youtube="https://www.youtube.com/embed/VjvDk6MhK5Q">
+                <img class="cover" src="images/covers/Online IELTS Ad Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Online IELTS Ad_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Online IELTS Ad</h3>
+                    <p>Motion Graphics</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="motion"
+                data-youtube="https://www.youtube.com/embed/t410M5mZqYo">
+                <img class="cover" src="images/covers/Spring's Home Music Video Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Spring's Home Music Video_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Spring's Home Music Video</h3>
+                    <p>Motion Graphics</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="motion"
+                data-youtube="https://www.youtube.com/embed/gqipWj97Kn0">
+                <img class="cover" src="images/covers/Black Friday Gif Cover.jpg.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Black Friday Gif_preview.mp4_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Black Friday Gif</h3>
+                    <p>Motion Graphics</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="motion"
+                data-youtube="https://www.youtube.com/embed/cPeXFN7POLI">
+                <img class="cover" src="images/covers/NZC Bio-Banding Motion Graphics Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/NZC Bio Banding_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>NZC Bio-Banding Educational</h3>
+                    <p>Motion Graphics</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="motion"
+                data-youtube="https://www.youtube.com/embed/O4EeScD6xoU">
+                <img class="cover" src="images/covers/Customization motion cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Customization MG_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Customization Motion Graphics</h3>
+                    <p>Motion Graphics</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="motion"
+                data-youtube="https://www.youtube.com/embed/D-551BcPRXM">
+                <img class="cover" src="images/covers/Cafe Bazaar Stopmotion Ad Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Cafe Bazaar_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Cafe Bazaar Stopmotion Ad</h3>
+                    <p>Motion Graphics</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="motion"
+                data-youtube="https://www.youtube.com/embed/mBguSwb4dUo">
+                <img class="cover" src="images/covers/Editor intro Motion Graphics Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Editor intro Motion Graphic_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Editor intro Motion Graphics</h3>
+                    <p>Motion Graphics</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="motion"
+                data-youtube="https://www.youtube.com/embed/xR27_nqoc64">
+                <img class="cover" src="images/covers/Farhad Exchange Stopmotion Ad Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/farhad_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Farhad Exchange Stopmotion Ad</h3>
+                    <p>Motion Graphics</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="motion"
+                data-youtube="https://www.youtube.com/embed/o_F581fllQQ">
+                <img class="cover" src="images/covers/You are invited cover.jpg.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/You Are Invited Typo Motion_preview.mp4_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>You Are Invited Typo Motion</h3>
+                    <p>Motion Graphics</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="motion"
+                data-youtube="https://www.youtube.com/embed/Qjv6DFSRTtY">
+                <img class="cover" src="images/covers/Shuttle Motion Graphic Ad Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Shuttle Motion_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Shuttle Ad</h3>
+                    <p>Motion Graphics</p>
+                 </div>
+            </div>
+
+            <div class="gallery-item" data-category="motion"
+                data-youtube="https://www.youtube.com/embed/3thL81WsDLg">
+                <img class="cover" src="images/covers/Design Like a Pro Motion Graphic Ad Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Design Like a Pro_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Design Like a Pro Motion Graphic Ad</h3>
+                    <p>Motion Graphics</p>
+                 </div>
+            </div>
+
+<div class="gallery-item" data-category="motion"
+    data-youtube="https://www.youtube.com/embed/GFB80npRF-Q">
+    <img class="cover" src="images/covers/Toranj Educational Motion Graphic Cover.jpg" alt="Project cover">
+    <video class="preview" src="videos/previews/Toranj_preview.mp4" muted loop playsinline preload="metadata"></video>
+    <div class="overlay">
+        <h3>Toranj Women's Awareness</h3>
+        <p>Motion Graphics</p>
+    </div>
+</div>
+
+<div class="gallery-item" data-category="motion"
+    data-youtube="https://www.youtube.com/embed/nacVnH-VWww">
+    <img class="cover" src="images/covers/The Legend of the BunnyMan Cover.jpg" alt="Project cover">
+    <video class="preview" src="videos/previews/Bunnyman_preview.mp4" muted loop playsinline preload="metadata"></video>
+    <div class="overlay">
+        <h3>The Legend of the BunnyMan</h3>
+        <p>Motion Graphics</p>
+    </div>
+</div>
+
+<div class="gallery-item" data-category="motion"
+    data-youtube="https://www.youtube.com/embed/7StLMt0wucQ">
+    <img class="cover" src="images/covers/Shuttle ISP School Time Ad Cover.jpg" alt="Project cover">
+    <video class="preview" src="videos/previews/Shuttle StopMotion_preview.mp4" muted loop playsinline preload="metadata"></video>
+    <div class="overlay">
+        <h3>Shuttle ISP School Time Ad</h3>
+        <p>Motion Graphics</p>
+    </div>
+</div>
+
+<div class="gallery-item" data-category="motion"
+    data-youtube="https://www.youtube.com/embed/pE5PDl1MH7k">
+    <img class="cover" src="images/covers/The Legend of the Banshee Cover.jpg" alt="Project cover">
+    <video class="preview" src="videos/previews/Banshee_preview.mp4" muted loop playsinline preload="metadata"></video>
+    <div class="overlay">
+        <h3>The Legend of the Banshee</h3>
+        <p>Motion Graphics</p>
+    </div>
+</div>
+
+<div class="gallery-item" data-category="motion"
+    data-youtube="https://www.youtube.com/embed/aDslyZnDiRI">
+    <img class="cover" src="images/covers/The Legend of La Chupacabra COver.jpg" alt="Project cover">
+    <video class="preview" src="videos/previews/Chupacabra_preview.mp4" muted loop playsinline preload="metadata"></video>
+    <div class="overlay">
+        <h3>The Legend of La Chupacabra</h3>
+        <p>Motion Graphics</p>
+    </div>
+</div>
+
+<div class="gallery-item vertical" data-category="motion"
+    data-youtube="https://www.youtube.com/embed/RqzSk7vcWVY">
+    <img class="cover" src="images/covers/Tivali Home Ad Cover.jpg" alt="Project cover">
+    <video class="preview" src="videos/previews/Tivali Home City Motion_preview.mp4" muted loop playsinline preload="metadata"></video>
+    <div class="overlay">
+        <h3>Tivali Home Ad</h3>
+        <p>Motion Graphics</p>
+    </div>
+</div>
+
+<div class="gallery-item" data-category="motion"
+    data-youtube="https://www.youtube.com/embed/9Oji_4mlUGM">
+    <img class="cover" src="images/covers/Merchain 2 Motion Graphic Ad Cover.jpg" alt="Project cover">
+    <video class="preview" src="videos/previews/Merchain 2_preview.mp4" muted loop playsinline preload="metadata"></video>
+    <div class="overlay">
+        <h3>Merchain 2</h3>
+        <p>Motion Graphics</p>
+    </div>
+</div>
+
+<div class="gallery-item" data-category="motion"
+    data-youtube="https://www.youtube.com/embed/PLkyEZT0Lus">
+    <img class="cover" src="images/covers/The Legend of Old Stinker Cover.jpg" alt="Project cover">
+    <video class="preview" src="videos/previews/Old Stinker_preview.mp4" muted loop playsinline preload="metadata"></video>
+    <div class="overlay">
+        <h3>The Legend of Old Stinker</h3>
+        <p>Motion Graphics</p>
+    </div>
+</div>
+
+<div class="gallery-item" data-category="motion"
+    data-youtube="https://www.youtube.com/embed/2vO73lJiJec">
+    <img class="cover" src="images/covers/Merchain 1 Motion Graphics Ad Cover.jpg" alt="Project cover">
+    <video class="preview" src="videos/previews/Merchain 1_preview.mp4" muted loop playsinline preload="metadata"></video>
+    <div class="overlay">
+        <h3>Merchain 1</h3>
+        <p>Motion Graphics</p>
+    </div>
+</div>
+
+<div class="gallery-item" data-category="motion"
+                data-youtube="https://www.youtube.com/embed/qK2S7L8Izv0">
+                <img class="cover" src="images/covers/The Legend of the Lady in White Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Lady In White_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>The Legend of the Lady in White</h3>
+                    <p>Motion Graphics</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" data-category="social"
+                data-youtube="https://www.youtube.com/embed/U1N1dAjGlaM">
+                <img class="cover" src="images/covers/Branding Tip.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Branding Tips_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Branding Tip</h3>
+                    <p>Social Media</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="commercial"
+                data-youtube="https://www.youtube.com/embed/VLGKpOgGjwk">
+                <img class="cover" src="images/covers/Zoviz Short Commercial 1 Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Zoviz Short Commercial 1_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Zoviz Short Commercial</h3>
+                    <p>Commercial</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="short"
+                data-youtube="https://www.youtube.com/embed/t6S47mWYWsw">
+                <img class="cover" src="images/covers/Roodbar Kerman Documentary Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Roodbar Kerman Documentary_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Roodbar Kerman Documentary</h3>
+                    <p>Short Film</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="short"
+                data-youtube="https://www.youtube.com/embed/v5J7iK34Kug">
+                <img class="cover" src="images/covers/Roya Short Documentary Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Roya Documentary_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Roya Short Documentary</h3>
+                    <p>Short Film</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="short"
+                data-youtube="https://www.youtube.com/embed/_QGWEnRtDuw">
+                <img class="cover" src="images/covers/Beautiful Hormozgan Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/BeautifulHormozgan_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Beautiful Hormozgan</h3>
+                    <p>Short Film</p>
+                </div>
+            </div>
+
+            <div class="gallery-item" data-category="short"
+                data-youtube="https://www.youtube.com/embed/p5vnC0UerzI">
+                <img class="cover" src="images/covers/Life Story Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/LifeStory_Preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Life Story</h3>
+                    <p>Short Film</p>
+                </div>
+            </div>
+
+            <!-- PHOTOGRAPHY PLACEHOLDERS -->
+
+            <!-- P01 -->
+            <div class="gallery-item"
+     data-category="photography"
+     data-description="Shot in Dubai.">
+    <img src="images/photo01.jpg" alt="Photography 1">
+    <div class="overlay">
+        <h3>Photography 01</h3>
+        <p>Photography</p>
+    </div>
+</div>
+
+            <!-- P02 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/photo02.jpg" alt="Photography 2">
+                <div class="overlay">
+                    <h3>Photography 2</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P03 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/photo03.jpg" alt="Photography 3">
+                <div class="overlay">
+                    <h3>Photography 3</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P04 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/photo04.jpg" alt="Photography 4">
+                <div class="overlay">
+                    <h3>Photography 4</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P05 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/photo05.jpg" alt="Photography 5">
+                <div class="overlay">
+                    <h3>Photography 5</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P06 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/photo06.jpg" alt="Photography 6">
+                <div class="overlay">
+                    <h3>Photography 6</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P07 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/photo07.jpg" alt="Photography 7">
+                <div class="overlay">
+                    <h3>Photography 7</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P08 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/photo08.jpg" alt="Photography 8">
+                <div class="overlay">
+                    <h3>Photography 8</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P09 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/photo09.jpg" alt="Photography 9">
+                <div class="overlay">
+                    <h3>Photography 9</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P10 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/photo10.jpg" alt="Photography 10">
+                <div class="overlay">
+                    <h3>Photography 10</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P11 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/photo11.jpg" alt="Photography 11">
+                <div class="overlay">
+                    <h3>Photography 11</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P12 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/photo12.jpg" alt="Photography 12">
+                <div class="overlay">
+                    <h3>Photography 12</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P13 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/photo13.jpg" alt="Photography 13">
+                <div class="overlay">
+                    <h3>Photography 13</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P14 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/photo14.jpg" alt="Photography 14">
+                <div class="overlay">
+                    <h3>Photography 14</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P15 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/photo15.jpg" alt="Photography 15">
+                <div class="overlay">
+                    <h3>Photography 15</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P16 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/photo16.jpg" alt="Photography 16">
+                <div class="overlay">
+                    <h3>Photography 16</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P17 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/photo17.jpg" alt="Photography 17">
+                <div class="overlay">
+                    <h3>Photography 17</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P18 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/photo18.jpg" alt="Photography 18">
+                <div class="overlay">
+                    <h3>Photography 18</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P19 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/photo19.jpg" alt="Photography 19">
+                <div class="overlay">
+                    <h3>Photography 19</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P20 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/photo20.jpg" alt="Photography 20">
+                <div class="overlay">
+                    <h3>Photography 20</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P21 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/photo21.jpg" alt="Photography 21">
+                <div class="overlay">
+                    <h3>Photography 21</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P23 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/photo23.jpg" alt="Photography 23">
+                <div class="overlay">
+                    <h3>Photography 23</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P26 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/photo26.jpg" alt="Photography 26">
+                <div class="overlay">
+                    <h3>Photography 26</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P27 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/photo27.jpg" alt="Photography 27">
+                <div class="overlay">
+                    <h3>Photography 27</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P28 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/photo28.jpg" alt="Photography 28">
+                <div class="overlay">
+                    <h3>Photography 28</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P29 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/photo29.jpg" alt="Photography 29">
+                <div class="overlay">
+                    <h3>Photography 29</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P30 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/photo30.jpg" alt="Photography 30">
+                <div class="overlay">
+                    <h3>Photography 30</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P31 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/photo31.jpg" alt="Photography 31">
+                <div class="overlay">
+                    <h3>Photography 31</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P32 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/photo32.jpg" alt="Photography 32">
+                <div class="overlay">
+                    <h3>Photography 32</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P33 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/photo33.jpg" alt="Photography 33">
+                <div class="overlay">
+                    <h3>Photography 33</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P34 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/photo34.jpg" alt="Photography 34">
+                <div class="overlay">
+                    <h3>Photography 34</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P36 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/photo36.jpg" alt="Photography 36">
+                <div class="overlay">
+                    <h3>Photography 36</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P37 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/photo37.jpg" alt="Photography 37">
+                <div class="overlay">
+                    <h3>Photography 37</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P38 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/photo38.jpg" alt="Photography 38">
+                <div class="overlay">
+                    <h3>Photography 38</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P39 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/photo39.jpg" alt="Photography 39">
+                <div class="overlay">
+                    <h3>Photography 39</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P40 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/photo40.jpg" alt="Photography 40">
+                <div class="overlay">
+                    <h3>Photography 40</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P41 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/photo41.jpg" alt="Photography 41">
+                <div class="overlay">
+                    <h3>Photography 41</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P42 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/photo42.jpg" alt="Photography 42">
+                <div class="overlay">
+                    <h3>Photography 42</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P44 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/photo44.jpg" alt="Photography 44">
+                <div class="overlay">
+                    <h3>Photography 44</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P45 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/photo45.jpg" alt="Photography 45">
+                <div class="overlay">
+                    <h3>Photography 45</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P46 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/photo46.jpg" alt="Photography 46">
+                <div class="overlay">
+                    <h3>Photography 46</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P47 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/photo47.jpg" alt="Photography 47">
+                <div class="overlay">
+                    <h3>Photography 47</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P48 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/photo48.jpg" alt="Photography 48">
+                <div class="overlay">
+                    <h3>Photography 48</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+            
+            <!-- P51 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/Photo51.jpg" alt="Photography 51">
+                <div class="overlay">
+                    <h3>Photography 51</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P53 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/Photo53.JPG" alt="Photography 53">
+                <div class="overlay">
+                    <h3>Photography 53</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P54 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/Photo54.jpg" alt="Photography 54">
+                <div class="overlay">
+                    <h3>Photography 54</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P55 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/Photo55.jpg" alt="Photography 55">
+                <div class="overlay">
+                    <h3>Photography 55</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+
+            <!-- P56 -->
+            <div class="gallery-item" data-category="photography">
+                <img src="images/Photo56.jpg" alt="Photography 56">
+                <div class="overlay">
+                    <h3>Photography 56</h3>
+                    <p>Photography</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Show more (opens a local category dropdown here) -->
+<div id="show-more-wrap" class="show-more-wrap">
+  <button id="show-more" type="button" class="show-more-btn">Continue Watching ></button>
+
+  <!-- local dropdown (we will clone the header category list into here) -->
+  <div id="show-more-menu" class="show-more-menu" aria-hidden="true"></div>
+</div>
+
+    </main>
+    <!-- ABOUT OVERLAY -->
+    <div id="about-overlay" class="overlay-container">
+        <button id="close-btn" class="close-btn">&times;</button>
+        
+        <!-- NEW FLEX CONTAINER FOR IMAGE + TEXT -->
+        <div class="about-content-layout">
+            
+            <!-- NEW PHOTO COLUMN (LEFT) -->
+            <div class="about-photo-col">
+                <img src="images/your-photo.jpg" alt="Alee Portrait" class="about-portrait">
+            </div>
+
+            <!-- EXISTING TEXT COLUMN (RIGHT) -->
+            <div class="about-text-col">
+                <div class="about-content">
+                    <!-- Script-style bio -->
+                    <div class="script-block">
+                        <div class="script-slug">EXT. PORTFOLIO – ABOUT</div>
+
+                        <div class="script-character">ALEE</div>
+
+                        <p class="script-dialogue">
+                            I’m ALEE, a filmmaker and motion designer with a background in literature.
+                            I explore the intersection of narrative film and digital media.
+                        </p>
+
+                        <p class="script-dialogue">
+                            I work with brands, agencies and artists to create cinematic visuals for campaigns,
+                            social media and identity work, producing end-to-end video content, including scripting, filming, editing, and post-production. I’m fluent in English and enjoy collaborating with
+                            teams across different cultures and markets.
+                        </p>
+
+                        <p class="script-dialogue">
+                            Thank you for your visit :)
+                        </p>
+                    </div>
+
+                    <!-- ORIGINAL contact block (unchanged format) -->
+                    <div class="contact-info">
+                        <h3>Contact</h3>
+                        <a href="mailto:alirezamohaqeq0@gmail.com">alirezamohaqeq0@gmail.com</a>
+                        <div class="socials">
+                            <a href="https://www.instagram.com/alireza_mohaqeq/" target="_blank" rel="noopener noreferrer">
+                                Instagram
+                            </a>
+                            <a href="https://www.youtube.com/@alirezamohaqeq2461" target="_blank" rel="noopener noreferrer">
+                                YouTube
+                            </a>
+                            <a href="https://www.linkedin.com/in/alirezamohaqeq/" target="_blank" rel="noopener noreferrer">
+                                LinkedIn
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div> <!-- Closes .about-content-layout -->
+        
+    </div> <!-- Closes #about-overlay -->
+</div>
+    </div> 
+    
+    <!-- PROJECT DETAIL OVERLAY -->
+<div id="project-overlay" class="project-overlay">
+  <button id="project-close" class="project-close">&times;</button>
+
+  <div class="project-layout">
+    <div class="project-video-col">
+    <!-- video for motion/commercial/etc -->
+    <video id="project-video" playsinline></video>
+
+    <!-- image for photography projects -->
+    <img id="project-image" alt="">
+
+    <!-- NEW: YouTube embed container -->
+    <iframe
+    id="project-youtube"
+    src=""
+    frameborder="0"
+    allow="autoplay; encrypted-media; picture-in-picture"
+    allowfullscreen
+    referrerpolicy="strict-origin-when-cross-origin"
+    style="display:none; width:100%; height:100%;">
+</iframe>
+
+</div>
+
+    <div class="project-info-col project-meta-panel">
+      <h2 id="project-title">Project Title</h2>
+      <p id="project-meta">Type · Role</p>
+      <p id="project-description"></p>
+    </div>
+  </div>
+</div>
+    
+    <script>
+        window.scrollTo(0, 0);
+
+        // 0. HERO VIDEO LOGIC
+        const hero = document.getElementById('hero');
+        const heroVideo = document.getElementById('hero-video');
+        const header = document.querySelector('header');
+        const mainGallery = document.getElementById('gallery');
+
+        // HERO fade+blur on scroll (smooth)
+let heroFinished = false;
+
+function setHeroProgress(p) {
+  // p = 0 (start) ... 1 (fully dismissed)
+  const opacity = 1 - p;
+  const blurPx = 18 * p;
+
+  hero.style.opacity = String(opacity);
+  hero.style.filter = `blur(${blurPx}px)`;
+
+  if (heroVideo) {
+    heroVideo.style.opacity = String(opacity);
+    heroVideo.style.filter = `blur(${blurPx}px)`;
+  }
+    // ✅ Pull gallery up progressively while hero fades (no waiting for hero-done)
+  if (mainGallery && !document.body.classList.contains('hero-done')) {
+    mainGallery.style.transition = 'none';
+    mainGallery.style.transform = `translateY(${(1 - p) * 100}vh)`;
+  }
+
+}
+
+function completeHeroDismiss(shouldScrollToGallery = true) {
+  if (heroFinished) return;
+  heroFinished = true;
+
+  // This is the key missing piece for signature + gallery reveal
+  document.body.classList.add('hero-done');
+
+  // Calculate a correct gallery top position (header-aware)
+  const headerEl = document.querySelector('header');
+  const headerHeight = headerEl ? headerEl.offsetHeight : 0;
+  const galleryTop = (mainGallery ? mainGallery.offsetTop : 0) - headerHeight - 10;
+
+  // Fade hero out nicely
+  hero.classList.add('hero-hidden');
+
+  // Stop/unload hero video so it can’t appear behind grid gaps
+  if (heroVideo) {
+    heroVideo.pause();
+    heroVideo.currentTime = 0;
+    heroVideo.removeAttribute('src');
+    heroVideo.load();
+  }
+
+  // Scroll to gallery start on click OR on finishing scroll fade
+  if (shouldScrollToGallery) {
+    window.scrollTo({ top: Math.max(0, galleryTop), behavior: 'smooth' });
+  }
+
+  // Lock scrolling above the gallery start (prevents going back to black hero zone)
+  const lockY = Math.max(0, galleryTop);
+  function lockScrollUp() {
+    if (window.scrollY < lockY) window.scrollTo(0, lockY);
+  }
+  window.addEventListener('scroll', lockScrollUp, { passive: true });
+
+  // Finally remove hero element
+  setTimeout(() => {
+    hero.style.display = 'none';
+  }, 900);
+}
+
+        // Force refresh to start from the hero (prevents hero showing behind gallery on reload)
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+window.scrollTo(0, 0);
+
+const skipHint = document.querySelector('#hero .skip-hint');
+
+// Show loader first, then show hint ONLY after video actually starts playing
+function setHeroReady() {
+  document.body.classList.add('hero-ready');          // hides loader (via CSS)
+  setTimeout(() => document.body.classList.add('hero-hint-on'), 2500); // show hint later
+}
+
+if (heroVideo) {
+  heroVideo.addEventListener('playing', setHeroReady, { once: true });
+  heroVideo.addEventListener('canplay', () => {
+    if (!document.body.classList.contains('hero-ready')) setHeroReady();
+  }, { once: true });
+}
+
+// When browser can play: hide loader, then show hint later
+if (heroVideo) {
+  heroVideo.addEventListener('playing', setHeroReady, { once: true });
+  heroVideo.addEventListener('canplay', () => {
+    // fallback: if playing event is delayed on some devices
+    if (!document.body.classList.contains('hero-ready')) setHeroReady();
+  }, { once: true });
+}
+
+        let heroDismissed = false;
+
+function finishHero(shouldScroll = true) {
+  if (heroDismissed || !hero) return;
+  heroDismissed = true;
+
+  // Mark hero as finished (reveals signature + header)
+  document.body.classList.add('hero-done');
+
+  // Fade & disable hero
+  hero.classList.add('hero-hidden');
+
+  // Stop hero video cleanly
+  if (heroVideo) {
+    heroVideo.pause();
+    heroVideo.currentTime = 0;
+  }
+
+  // Scroll to gallery so the large video enters from bottom
+  if (shouldScroll && mainGallery) {
+    const y = mainGallery.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo({ top: y, behavior: 'smooth' });
+  }
+
+  // Fully remove hero from layout after fade completes
+  setTimeout(() => {
+    hero.style.display = 'none';
+  }, 900);
+}
+
+        if (hero && heroVideo) {
+            heroVideo.addEventListener('timeupdate', () => {
+                if (!heroDismissed && heroVideo.duration && heroVideo.currentTime >= heroVideo.duration - 1) {
+                    finishHero(true);
+                }
+            });
+
+            heroVideo.addEventListener('ended', () => {
+                finishHero(true);
+            });
+
+            let heroScroll = 0;
+const HERO_SCROLL_DISTANCE = 900; // increase for slower fade (e.g. 700)
+
+function onHeroScroll(delta) {
+  if (heroFinished) return;
+
+  heroScroll = Math.max(0, heroScroll + delta);
+  const p = Math.min(1, heroScroll / HERO_SCROLL_DISTANCE);
+
+  setHeroProgress(p);
+
+  // when fully faded, dismiss for real
+  if (p >= 1) completeHeroDismiss();
+}
+
+window.addEventListener('wheel', (e) => {
+  if (!hero || hero.style.display === 'none') return;
+  onHeroScroll(Math.abs(e.deltaY));
+}, { passive: true });
+
+// mobile: a swipe/touch nudges it
+let touchStartY = null;
+window.addEventListener('touchstart', (e) => {
+  if (!hero || hero.style.display === 'none') return;
+  touchStartY = e.touches[0].clientY;
+}, { passive: true });
+
+window.addEventListener('touchmove', (e) => {
+  if (!hero || hero.style.display === 'none') return;
+  if (touchStartY == null) return;
+  const dy = touchStartY - e.touches[0].clientY;
+  onHeroScroll(Math.max(0, dy));
+  touchStartY = e.touches[0].clientY;
+}, { passive: true });
+
+
+        hero.addEventListener('click', () => completeHeroDismiss(true));
+
+        }
+// --- Home / scroll-to-top: logo + signature ---
+const logo = document.querySelector('.logo');
+const signatureImg = document.querySelector('.top-signature');
+
+function goHome(event) {
+    if (event) event.preventDefault();
+
+    // 1) Close ABOUT overlay if open
+    const aboutOverlay = document.getElementById('about-overlay');
+    if (aboutOverlay && aboutOverlay.classList.contains('active')) {
+        aboutOverlay.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+
+    // 2) Close PROJECT overlay if open
+    // If you have a reusable closeProjectOverlay() function, use it:
+    if (typeof closeProjectOverlay === 'function') {
+        closeProjectOverlay();
+    } else {
+        // Fallback in case function name is different
+        const projectOverlay = document.getElementById('project-overlay');
+        if (projectOverlay && projectOverlay.classList.contains('active')) {
+            projectOverlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            const projectVideo = document.getElementById('project-video');
+            if (projectVideo) {
+                projectVideo.pause();
+                projectVideo.currentTime = 0;
+            }
+        }
+    }
+
+    // 3) Reset filter to "All" (so we're back on main gallery, not Motion only)
+    const defaultFilterItem = document.querySelector('.filter-menu li[data-filter="all"]');
+    if (defaultFilterItem) {
+        defaultFilterItem.click();
+    }
+
+    // 4) Dismiss hero if it hasn't been dismissed yet
+    if (!heroDismissed) {
+        finishHero(true);
+    }
+
+    // 5) Smooth scroll to top
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+
+if (logo) {
+    logo.style.cursor = 'pointer';
+    logo.addEventListener('click', goHome);
+}
+
+if (signatureImg) {
+    signatureImg.addEventListener('click', goHome);
+}
+
+        // 1. Video Hover Logic (start preview from middle, not from black)
+const videos = document.querySelectorAll('main video');
+
+videos.forEach(video => {
+    let previewTime = 0;
+
+    // When metadata is loaded, we know the duration
+    video.addEventListener('loadedmetadata', () => {
+        if (video.duration && !isNaN(video.duration)) {
+            // Start around 35% into the video, but not at the very end
+            previewTime = Math.min(video.duration * 0.30, video.duration - 1);
+        }
+    });
+
+    const wrapper = video.parentElement;
+
+    wrapper.addEventListener('mouseenter', () => {
+        try {
+            if (video.duration && !isNaN(video.duration)) {
+                const startTime = previewTime || Math.min(video.duration * 0.35, video.duration - 1);
+                video.currentTime = startTime;
+            }
+        } catch (e) {
+            // if seeking fails for any reason, just ignore and play from start
+        }
+        video.play();
+    });
+
+    wrapper.addEventListener('mouseleave', () => {
+        video.pause();
+        video.currentTime = 0; // reset so when user clicks to watch full, it starts normal
+    });
+});
+
+
+        // 2. Scroll-in animation
+        const galleryItems = document.querySelectorAll('.gallery-item');
+
+        const observerOptions = { threshold: 0.15 };
+
+        const itemObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        galleryItems.forEach(item => itemObserver.observe(item));
+
+
+        // 3. Filter Logic (with special handling for Motion)
+        const filterItems = document.querySelectorAll('.filter-menu li');
+        const currentLabel = document.querySelector('.current-filter');
+        const filterNav = document.querySelector('.filter-nav');
+        const filterToggle = document.getElementById('filter-toggle');
+        const featuredSection        = document.getElementById('featured');
+        const motionFeaturedSection  = document.getElementById('motion-featured');
+
+
+
+        filterToggle.addEventListener('click', () => {
+            const isOpen = filterNav.classList.toggle('open');
+            filterToggle.setAttribute('aria-expanded', isOpen);
+        });
+
+        filterToggle.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                const isOpen = filterNav.classList.toggle('open');
+                filterToggle.setAttribute('aria-expanded', isOpen);
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!filterNav.contains(e.target) && e.target !== filterToggle) {
+                filterNav.classList.remove('open');
+                filterToggle.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+            function scrollGalleryToTop() {
+    const gallerySection = document.getElementById('gallery');
+    if (!gallerySection) return;
+
+    const headerEl = document.querySelector('header');
+    const headerHeight = headerEl ? headerEl.offsetHeight : 0;
+
+    const targetTop = gallerySection.offsetTop - headerHeight - 10; // a bit of breathing room
+
+    window.scrollTo({
+        top: targetTop < 0 ? 0 : targetTop,
+        behavior: 'smooth'
+    });
+}
+
+// ===== Landing page sample limit (only for "All") =====
+const SAMPLE_LIMIT = 24; // change to 20~30
+let landingExpanded = false;
+
+const showMoreWrap = document.getElementById('show-more-wrap');
+const showMoreBtn  = document.getElementById('show-more');
+
+function applyCategory(category){
+  // count how many items would be visible in "all"
+  let totalEligibleAll = 0;
+  if (category === 'all') {
+    galleryItems.forEach(card => {
+      const cardCategory = card.getAttribute('data-category');
+      if (cardCategory !== 'motion' && cardCategory !== 'photography') totalEligibleAll++;
+    });
+  }
+
+  let shown = 0;
+
+  galleryItems.forEach(card => {
+    const cardCategory = card.getAttribute('data-category');
+    let shouldShow = false;
+
+    if (category === 'all') {
+      // Default view: show everything EXCEPT motion graphics and photography
+      shouldShow = cardCategory !== 'motion' && cardCategory !== 'photography';
+      // hide certain items on the landing "All" view only
+      if (card.hasAttribute('data-hide-on-home')) shouldShow = false;
+
+      // Apply sample limit only when NOT expanded
+      if (shouldShow && !landingExpanded) {
+        if (shown < SAMPLE_LIMIT) {
+          shown++;
+        } else {
+          shouldShow = false;
+        }
+      }
+      // show "home" only on All (landing)
+if (category === 'all' && cardCategory === 'home') shouldShow = true;
+// hide "home" on any other category
+if (category !== 'all' && cardCategory === 'home') shouldShow = false;
+
+
+    } else if (category === 'motion') {
+      shouldShow = cardCategory === 'motion';
+    } else {
+      shouldShow = cardCategory === category;
+    }
+
+    if (shouldShow) {
+      card.style.display = 'inline-block';
+      card.style.opacity = '1';
+      card.style.transform = 'translateY(0)';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+
+  // Show the button on ALL pages (All + every category)
+if (showMoreWrap) {
+  showMoreWrap.style.display = 'flex';
+}
+}
+
+applyCategory('all');
+
+const showMoreMenu = document.getElementById('show-more-menu');
+const headerFilterMenu = document.querySelector('.filter-menu'); // the UL in header
+
+// Build the local menu ONCE by cloning the header <ul> content
+function buildLocalShowMoreMenu() {
+  if (!showMoreMenu || !headerFilterMenu) return;
+
+  // clone all <li> items
+  showMoreMenu.innerHTML = '';
+  headerFilterMenu.querySelectorAll('li[data-filter]').forEach(li => {
+    const clone = li.cloneNode(true);
+    // remove header-only active state at start (we'll manage it)
+    clone.classList.remove('active');
+    showMoreMenu.appendChild(clone);
+    // Remove "All" from the Show More dropdown only
+showMoreMenu.querySelectorAll('[data-filter="all"]').forEach(el => el.remove());
+
+  });
+
+  // clicking a local item applies category + closes local menu
+  showMoreMenu.querySelectorAll('li[data-filter]').forEach(li => {
+    li.addEventListener('click', () => {
+      const cat = li.getAttribute('data-filter');
+
+      // keep header label + active states consistent by "clicking" the real header item
+      const headerItem = document.querySelector(`.filter-menu li[data-filter="${cat}"]`);
+      if (headerItem) headerItem.click();
+      else if (typeof applyCategory === 'function') applyCategory(cat);
+
+      // close local menu
+      if (showMoreWrap) showMoreWrap.classList.remove('open');
+      if (showMoreMenu) showMoreMenu.setAttribute('aria-hidden', 'true');
+    });
+  });
+}
+
+buildLocalShowMoreMenu();
+
+if (showMoreBtn && showMoreWrap && showMoreMenu) {
+  showMoreBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    // toggle local dropdown right here
+    showMoreWrap.classList.toggle('open');
+    showMoreMenu.setAttribute('aria-hidden', showMoreWrap.classList.contains('open') ? 'false' : 'true');
+  });
+}
+
+// click outside closes local dropdown
+document.addEventListener('click', (e) => {
+  if (!showMoreWrap || !showMoreMenu) return;
+  if (!showMoreWrap.contains(e.target)) {
+    showMoreWrap.classList.remove('open');
+    showMoreMenu.setAttribute('aria-hidden', 'true');
+  }
+});
+
+
+filterItems.forEach(item => {
+    item.addEventListener('click', () => {
+        // 1) If we’re on the hero, hide it and stop the video
+        if (hero && !heroDismissed) {
+            finishHero(true);          // fades hero + adds .hero-done
+            if (heroVideo) heroVideo.pause();
+        }
+
+        // 2) Active state in the dropdown
+        const currentActive = document.querySelector('.filter-menu li.active');
+        if (currentActive) currentActive.classList.remove('active');
+        item.classList.add('active');
+
+        currentLabel.textContent = item.textContent;
+
+        const category = item.getAttribute('data-filter');
+        // Show big motion-featured only when Motion is selected
+if (motionFeaturedSection) {
+    if (category === 'motion') {
+        motionFeaturedSection.style.display = 'block';
+    } else {
+        motionFeaturedSection.style.display = 'none';
+    }
+}
+
+        // 3) Show/hide items based on category
+if (category === 'all') landingExpanded = false;  // reset when returning to All
+applyCategory(category);
+
+
+        // 4) Scroll to the top of the gallery
+        scrollGalleryToTop();
+
+        // 5) Close the dropdown
+        filterNav.classList.remove('open');
+        filterToggle.setAttribute('aria-expanded', 'false');
+    });
+});
+
+        // 4. About Overlay Logic
+        const aboutBtn = document.getElementById('about-btn');
+        const closeBtn = document.getElementById('close-btn');
+        const aboutOverlay = document.getElementById('about-overlay');
+
+        aboutBtn.addEventListener('click', () => {
+            aboutOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+
+        closeBtn.addEventListener('click', () => {
+            aboutOverlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+
+        aboutOverlay.addEventListener('click', (e) => {
+            if (e.target === aboutOverlay) {
+                aboutOverlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // 5. Project Detail Overlay Logic
+const projectOverlay = document.getElementById('project-overlay');
+const projectVideo   = document.getElementById('project-video');
+const projectImage   = document.getElementById('project-image');
+const projectYoutube = document.getElementById('project-youtube');
+const projectClose   = document.getElementById('project-close');
+const projectTitle   = document.getElementById('project-title');
+const projectMeta    = document.getElementById('project-meta');
+const projectDesc    = document.getElementById('project-description');
+
+// open overlay from a given gallery card (local video, photo, or YouTube)
+function openProjectOverlay(card) {
+    if (!projectOverlay) return;
+   
+    projectOverlay.classList.toggle('is-vertical', card.classList.contains('vertical'));
+    const videoEl      = card.querySelector('video');
+    const imageEl      = card.querySelector('img');
+    const youtubeSrc   = card.getAttribute('data-youtube'); // YouTube embed URL if any
+
+    const titleEl = card.querySelector('.overlay h3');
+    const metaEl  = card.querySelector('.overlay p');
+
+    projectTitle.textContent = titleEl ? titleEl.textContent : 'Untitled Project';
+    projectMeta.textContent  = metaEl ? metaEl.textContent  : '';
+
+    // Optional story via data-description on the gallery-item
+    const descriptionAttr = card.getAttribute('data-description');
+    projectDesc.textContent = descriptionAttr ? descriptionAttr : '';
+
+    // Reset all media
+    if (projectVideo) {
+        projectVideo.pause();
+        projectVideo.removeAttribute('src');
+        projectVideo.load();
+        projectVideo.style.display = 'none';
+    }
+    if (projectImage) {
+        projectImage.removeAttribute('src');
+        projectImage.style.display = 'none';
+    }
+    if (projectYoutube) {
+        projectYoutube.removeAttribute('src');
+        projectYoutube.style.display = 'none';
+    }
+
+    // 1) If this card has a YouTube embed, use that
+            if (youtubeSrc && projectYoutube) {
+        // Start from the base embed URL
+        let base = youtubeSrc.split('?')[0];
+
+        // Use the privacy-enhanced domain (helps with Error 153)
+        base = base.replace('https://www.youtube.com', 'https://www.youtube-nocookie.com');
+
+        const ytUrl =
+            base +
+            '?autoplay=1&mute=0&controls=1&rel=0&modestbranding=1';
+
+        projectYoutube.src = ytUrl;
+        projectYoutube.style.display = 'block';
+
+        projectOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        return;
+    }
+
+
+    // 2) Local video fallback (for all non-YouTube projects)
+    if (videoEl && projectVideo) {
+        const src = videoEl.currentSrc || videoEl.getAttribute('src');
+        if (!src) return;
+
+        projectVideo.src = src;
+        projectVideo.currentTime = 0;
+        projectVideo.muted = false;
+        projectVideo.style.display = 'block';
+
+        projectOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+
+        projectVideo.play().catch(() => {});
+        return;
+    }
+
+    // 3) Photo fallback (for photography)
+    if (imageEl && projectImage) {
+        const src = imageEl.currentSrc || imageEl.getAttribute('src');
+        if (!src) return;
+
+        projectImage.src = src;
+        projectImage.alt = imageEl.alt || projectTitle.textContent || 'Project image';
+        projectImage.style.display = 'block';
+
+        projectOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        return;
+    }
+}
+
+// close overlay
+function closeProjectOverlay() {
+    if (!projectOverlay) return;
+
+    projectOverlay.classList.remove('active');
+    document.body.style.overflow = 'auto';
+
+    if (projectVideo) {
+        projectVideo.pause();
+        projectVideo.removeAttribute('src');
+        projectVideo.load();
+        projectVideo.style.display = 'none';
+    }
+
+    if (projectImage) {
+        projectImage.removeAttribute('src');
+        projectImage.style.display = 'none';
+    }
+
+    if (projectYoutube) {
+        projectYoutube.removeAttribute('src');
+        projectYoutube.style.display = 'none';
+    }
+}
+
+if (projectOverlay && projectClose) {
+    // clicking any gallery item opens overlay
+    document.querySelectorAll('.gallery-item').forEach(card => {
+        card.addEventListener('click', (e) => {
+            if (e.target.tagName.toLowerCase() === 'button') return;
+            e.preventDefault();
+            openProjectOverlay(card);
+        });
+    });
+
+    // close button
+    projectClose.addEventListener('click', closeProjectOverlay);
+
+    // click on dark background closes
+    projectOverlay.addEventListener('click', (e) => {
+        if (e.target === projectOverlay) {
+            closeProjectOverlay();
+        }
+    });
+
+    // ESC key closes
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && projectOverlay.classList.contains('active')) {
+            closeProjectOverlay();
+        }
+    });
+}
+
+document.querySelectorAll('.gallery-item video.preview').forEach(v => {
+  const card = v.closest('.gallery-item');
+
+  card.addEventListener('mouseenter', () => {
+    v.currentTime = 0;
+    v.play().catch(() => {});
+  });
+
+  card.addEventListener('mouseleave', () => {
+    v.pause();
+  });
+});
+
+// Footer year + Back to top (wait until footer exists)
+document.addEventListener('DOMContentLoaded', () => {
+  const yearEl = document.getElementById('footer-year');
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+  const backToTop = document.getElementById('back-to-top');
+  if (backToTop) {
+    backToTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+});
+
+    </script>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <div class="footer-brand">ALEE</div>
+      <div class="footer-note">Filmmaker • Motion Designer</div>
+      <div class="footer-copy">© <span id="footer-year"></span> Alireza Mohaqeq. All rights reserved.</div>
+    </div>
+
+    <div class="footer-links">
+      <a href="mailto:alirezamohaqeq0@gmail.com" class="footer-link">Email</a>
+      <a href="https://instagram.com/alireza_mohaqeq" target="_blank" rel="noopener" class="footer-link">Instagram</a>
+      <a href="https://youtube.com/@alirezamohaqeq2461" target="_blank" rel="noopener" class="footer-link">YouTube</a>
+      <a href="https://www.linkedin.com/in/alirezamohaqeq/" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
+    </div>
+
+    <div class="footer-right">
+      <button id="back-to-top" class="back-to-top" type="button">Back to top ↑</button>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
