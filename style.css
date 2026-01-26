@@ -2020,3 +2020,14 @@ body.no-scroll {
     }
 }
 
+/* --- MOBILE ROUNDNESS FIX --- */
+@media screen and (max-width: 768px) {
+    .gallery-item {
+        border-radius: 15px !important; /* Change 15px to whatever number you prefer */
+    }
+    
+    /* Optional: If you want the Featured Strip items to match */
+    .featured-strip-item {
+        border-radius: 15px !important;
+    }
+}

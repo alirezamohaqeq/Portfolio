@@ -2326,7 +2326,7 @@ filterItems.forEach(item => {
         applyCategory('all');
 
 
-        // --- FEATURED STRIP LOGIC (With Mobile Swipe) ---
+        // --- FEATURED STRIP LOGIC (FIXED ANIMATION) ---
         (function initFeaturedStrip(){
             const stack = document.getElementById('featured-strip-stack');
             const viewport = document.getElementById('featured-strip-viewport'); 
@@ -2359,91 +2359,104 @@ filterItems.forEach(item => {
                 v.play().catch(()=>{});
             });
 
+            // Initial setup: Move last item to front for the infinite loop buffer
             stack.prepend(stack.lastElementChild);
             
-            function updateLayout() {
+            function getBasePosition() {
                 const item = stack.querySelector('.featured-strip-item');
                 if(!item || item.getBoundingClientRect().width === 0) return 0;
-
-                const gap = 16; // Use numeric gap for calculation
-                const itemW = item.getBoundingClientRect().width; // Use bounding rect for precision
+                
+                const gap = 16; 
+                const itemW = item.getBoundingClientRect().width; 
                 const screenW = window.innerWidth;
                 
-                // On mobile, align left with padding. On desktop, center.
-                let targetX;
-                if (screenW <= 780) {
-                     // Mobile: Aligned to start, relying on CSS padding/margin logic
-                     // We just need a reference point. 
-                     // Actually, for the infinite loop to work seamlessly, we center the "active" one or stick to a grid.
-                     // Reusing desktop math usually works if container is centered.
-                     // Let's stick to the proven centering math:
-                     const centerOffset = (screenW - itemW) / 2;
-                     targetX = centerOffset - itemW - gap;
-                } else {
-                     const centerOffset = (screenW - itemW) / 2;
-                     targetX = centerOffset - itemW - gap;
-                }
-                
-                stack.style.transition = 'none';
-                stack.style.transform = `translateX(${targetX}px)`;
-                return targetX;
+                // Calculate Center: (Screen/2) - (Item/2) - (One Item Offset for buffer) - Gap
+                const centerOffset = (screenW - itemW) / 2;
+                return centerOffset - itemW - gap;
             }
 
-            setTimeout(() => { currentBaseX = updateLayout(); }, 100);
-            window.addEventListener('resize', () => { currentBaseX = updateLayout(); });
+            function resetPosition() {
+                if (isAnimating) return; // Don't interrupt animation
+                currentBaseX = getBasePosition();
+                stack.style.transition = 'none';
+                stack.style.transform = `translateX(${currentBaseX}px)`;
+            }
 
+            // Set initial position
+            setTimeout(resetPosition, 50);
+
+            // Safety: Don't let resize/scroll kill the animation while it's running
+            window.addEventListener('resize', () => { if(!isAnimating) resetPosition(); });
+            
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
-                    if (entry.isIntersecting) currentBaseX = updateLayout();
+                    if (entry.isIntersecting && !isAnimating) resetPosition();
                 });
             }, { threshold: 0.1 });
             observer.observe(viewport);
 
             function slideNext(){
                 if (isAnimating) return;
-                const res = updateLayout();
-                if(res !== false) currentBaseX = res;
-                else if (currentBaseX === 0) return; 
-
                 isAnimating = true;
-                void stack.offsetWidth; 
+
+                // 1. Ensure we are at the perfect starting spot
+                const startX = getBasePosition();
+                stack.style.transition = 'none';
+                stack.style.transform = `translateX(${startX}px)`;
 
                 const item = stack.querySelector('.featured-strip-item');
-                const itemW = item.offsetWidth; 
+                const itemW = item.offsetWidth;
                 const gap = 16;
                 const moveDist = itemW + gap;
 
-                stack.style.transition = 'transform 0.8s ease-in-out';
-                stack.style.transform = `translateX(${currentBaseX - moveDist}px)`;
+                // 2. DOUBLE RAF: Guarantees the browser renders the starting spot before moving
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        stack.style.transition = 'transform 0.8s cubic-bezier(0.25, 1, 0.5, 1)';
+                        stack.style.transform = `translateX(${startX - moveDist}px)`;
+                    });
+                });
 
+                // 3. Cleanup after animation
                 stack.addEventListener('transitionend', function onEnd() {
                     stack.removeEventListener('transitionend', onEnd);
-                    stack.appendChild(stack.firstElementChild);
+                    stack.appendChild(stack.firstElementChild); // Move first item to end
+                    
                     stack.style.transition = 'none';
-                    stack.style.transform = `translateX(${currentBaseX}px)`;
+                    stack.style.transform = `translateX(${startX}px)`; // Snap back to center
                     isAnimating = false;
-                });
+                }, { once: true });
             }
 
             function slidePrev(){
                 if (isAnimating) return;
-                currentBaseX = updateLayout();
-                if (currentBaseX === 0 && stack.getBoundingClientRect().width === 0) return;
-
                 isAnimating = true;
+                
+                const startX = getBasePosition();
                 const item = stack.querySelector('.featured-strip-item');
                 const itemW = item.getBoundingClientRect().width;
                 const gap = 16;
                 const moveDist = itemW + gap;
-                const last = stack.lastElementChild;
 
-                stack.prepend(last);
+                // 1. Physically move the last item to the front FIRST
+                stack.prepend(stack.lastElementChild);
+
+                // 2. Instantly shift transform so it looks like it hasn't moved yet
                 stack.style.transition = 'none';
-                stack.style.transform = `translateX(${currentBaseX - moveDist}px)`;
-                void stack.offsetWidth;
-                stack.style.transition = 'transform 0.8s ease-in-out';
-                stack.style.transform = `translateX(${currentBaseX}px)`;
-                setTimeout(() => { isAnimating = false; }, 800);
+                stack.style.transform = `translateX(${startX - moveDist}px)`;
+
+                // 3. DOUBLE RAF: Animate to the center
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        stack.style.transition = 'transform 0.8s cubic-bezier(0.25, 1, 0.5, 1)';
+                        stack.style.transform = `translateX(${startX}px)`;
+                    });
+                });
+
+                stack.addEventListener('transitionend', function onEnd() {
+                    stack.removeEventListener('transitionend', onEnd);
+                    isAnimating = false;
+                }, { once: true });
             }
 
             document.getElementById('featured-strip-next').addEventListener('click', () => { clearInterval(timer); slideNext(); startAuto(); });
@@ -2452,28 +2465,23 @@ filterItems.forEach(item => {
             // --- MOBILE SWIPE LOGIC ---
             let touchStartX = 0;
             let touchEndX = 0;
-            const swipeThreshold = 50; // Minimum distance to count as swipe
+            const swipeThreshold = 50;
 
             stack.addEventListener('touchstart', e => {
                 touchStartX = e.changedTouches[0].screenX;
-                clearInterval(timer); // Pause auto-scroll while touching
+                clearInterval(timer);
             }, {passive: true});
 
             stack.addEventListener('touchend', e => {
                 touchEndX = e.changedTouches[0].screenX;
                 handleSwipe();
-                startAuto(); // Restart auto-scroll
+                startAuto();
             }, {passive: true});
 
             function handleSwipe() {
-                if (touchEndX < touchStartX - swipeThreshold) {
-                    slideNext(); // Swipe Left -> Next
-                }
-                if (touchEndX > touchStartX + swipeThreshold) {
-                    slidePrev(); // Swipe Right -> Prev
-                }
+                if (touchEndX < touchStartX - swipeThreshold) slideNext();
+                if (touchEndX > touchStartX + swipeThreshold) slidePrev();
             }
-            // --------------------------
 
             function startAuto() {
                 clearInterval(timer);
@@ -2482,15 +2490,16 @@ filterItems.forEach(item => {
             startAuto();
         })();
 
-        // --- MOTION STRIP LOGIC (Clone of Featured Strip) ---
+        // --- MOTION STRIP LOGIC (FIXED ANIMATION) ---
         (function initMotionStrip(){
             const stack = document.getElementById('motion-strip-stack');
+            // We need a viewport reference for Motion too, usually it's the parent
+            const viewport = document.getElementById('motion-strip-viewport'); 
             if (!stack) return;
 
             const items = Array.from(stack.querySelectorAll('.featured-strip-item'));
             const videos = items.map(it => it.querySelector('video'));
             
-            // Selected Motion Graphics Previews
             const sources = [
                 'videos/previews/Collabrium_preview.mp4',
                 'videos/previews/Zoviz ad Feudeur_preview.mp4',
@@ -2499,143 +2508,140 @@ filterItems.forEach(item => {
                 'videos/previews/Toranj_preview.mp4',
                 'videos/previews/Online IELTS Ad_preview.mp4'
             ];
+            
+            const motionTitles = ["Collabrium Ad", "Zoviz Ad", "The Legend of Chupacabra", "Cafe Bazaar StopMotion Ad", "Toranj Women's Awareness", "Online IELTS Ad"];
 
             let timer = null;
             let isAnimating = false;
 
-            /// --- Updated loop for Motion Carousel ---
-const motionTitles = ["Collabrium Ad", "Zoviz Ad", "The Legend of Chupacabra", "Cafe Bazaar StopMotion Ad", "Toranj Women's Awareness", "Online IELTS Ad"];
+            videos.forEach((v, i) => {
+                v.src = sources[i % sources.length];
+                const label = v.parentElement.querySelector('.strip-label');
+                if (label) label.textContent = motionTitles[i % motionTitles.length];
+                v.muted = true; v.loop = true; v.playsInline = true;
+                v.play().catch(()=>{});
+            });
 
-videos.forEach((v, i) => {
-    const src = sources[i % sources.length];
-    v.src = src;
-    
-    // Find the label div inside the item and set the title
-    const label = v.parentElement.querySelector('.strip-label');
-    if (label) {
-        label.textContent = motionTitles[i % motionTitles.length];
-    }
-    
-    v.muted = true; v.loop = true; v.playsInline = true;
-    v.play().catch(()=>{});
-});
-
-            // Initialize position
+            // Initial setup
             stack.prepend(stack.lastElementChild);
             
-            function updateLayout() {
+            function getBasePosition() {
                 const item = stack.querySelector('.featured-strip-item');
                 if(!item) return 0;
                 const gap = 16;
                 const itemW = item.getBoundingClientRect().width;
                 const screenW = window.innerWidth;
                 const centerOffset = (screenW - itemW) / 2;
-                const targetX = centerOffset - itemW - gap;
-                
-                stack.style.transition = 'none';
-                stack.style.transform = `translateX(${targetX}px)`;
-                return targetX;
+                return centerOffset - itemW - gap;
             }
 
-            let currentBaseX = 0;
-            // Delay slightly to ensure CSS widths are calculated
-            setTimeout(() => { currentBaseX = updateLayout(); }, 100);
-            window.addEventListener('resize', () => { currentBaseX = updateLayout(); });
+            function resetPosition() {
+                if (isAnimating) return;
+                const x = getBasePosition();
+                stack.style.transition = 'none';
+                stack.style.transform = `translateX(${x}px)`;
+            }
+
+            setTimeout(resetPosition, 50);
+            window.addEventListener('resize', () => { if(!isAnimating) resetPosition(); });
+
+            // Observer for Motion strip to keep alignment correct
+            if(viewport) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting && !isAnimating) resetPosition();
+                    });
+                }, { threshold: 0.1 });
+                observer.observe(viewport);
+            }
 
             function slideNext(){
                 if (isAnimating) return;
-                
-                const res = updateLayout();
-                if(res !== false) currentBaseX = res;
-                else if (currentBaseX === 0) return; 
-
                 isAnimating = true;
 
-                // FORCE REFRESH
-                void stack.offsetWidth; 
+                const startX = getBasePosition();
+                stack.style.transition = 'none';
+                stack.style.transform = `translateX(${startX}px)`;
 
                 const item = stack.querySelector('.featured-strip-item');
-                // Use offsetWidth for stability
                 const itemW = item.offsetWidth; 
-                const styleGap = window.getComputedStyle(stack).gap;
-                const gap = parseFloat(styleGap) || 16;
+                const gap = 16;
                 const moveDist = itemW + gap;
 
-                stack.style.transition = 'transform 0.8s ease-in-out';
-                stack.style.transform = `translateX(${currentBaseX - moveDist}px)`;
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        stack.style.transition = 'transform 0.8s cubic-bezier(0.25, 1, 0.5, 1)';
+                        stack.style.transform = `translateX(${startX - moveDist}px)`;
+                    });
+                });
 
                 stack.addEventListener('transitionend', function onEnd() {
                     stack.removeEventListener('transitionend', onEnd);
                     stack.appendChild(stack.firstElementChild);
                     stack.style.transition = 'none';
-                    stack.style.transform = `translateX(${currentBaseX}px)`;
+                    stack.style.transform = `translateX(${startX}px)`;
                     isAnimating = false;
-                });
+                }, { once: true });
             }
 
             function slidePrev(){
                 if (isAnimating) return;
                 isAnimating = true;
                 
-                currentBaseX = updateLayout();
-
+                const startX = getBasePosition();
                 const item = stack.querySelector('.featured-strip-item');
                 const itemW = item.getBoundingClientRect().width;
                 const gap = 16;
                 const moveDist = itemW + gap;
-                const last = stack.lastElementChild;
                 
-                stack.prepend(last);
+                stack.prepend(stack.lastElementChild);
                 stack.style.transition = 'none';
-                stack.style.transform = `translateX(${currentBaseX - moveDist}px)`;
+                stack.style.transform = `translateX(${startX - moveDist}px)`;
                 
-                // Force Reflow
-                void stack.offsetWidth;
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        stack.style.transition = 'transform 0.8s cubic-bezier(0.25, 1, 0.5, 1)';
+                        stack.style.transform = `translateX(${startX}px)`;
+                    });
+                });
                 
-                stack.style.transition = 'transform 0.8s ease-in-out';
-                stack.style.transform = `translateX(${currentBaseX}px)`;
-                
-                setTimeout(() => { isAnimating = false; }, 800);
+                stack.addEventListener('transitionend', function onEnd() {
+                    stack.removeEventListener('transitionend', onEnd);
+                    isAnimating = false;
+                }, { once: true });
             }
 
-            // Hook up the buttons using the new IDs
             const nextBtn = document.getElementById('motion-strip-next');
             const prevBtn = document.getElementById('motion-strip-prev');
 
             if(nextBtn) nextBtn.addEventListener('click', () => { clearInterval(timer); slideNext(); startAuto(); });
             if(prevBtn) prevBtn.addEventListener('click', () => { clearInterval(timer); slidePrev(); startAuto(); });
 
-            // --- MOBILE SWIPE LOGIC (Added for Motion) ---
+            // --- SWIPE ---
             let touchStartX = 0;
             let touchEndX = 0;
             const swipeThreshold = 50;
 
             stack.addEventListener('touchstart', e => {
                 touchStartX = e.changedTouches[0].screenX;
-                clearInterval(timer); // Pause auto-scroll while touching
+                clearInterval(timer);
             }, {passive: true});
 
             stack.addEventListener('touchend', e => {
                 touchEndX = e.changedTouches[0].screenX;
                 handleSwipe();
-                startAuto(); // Restart auto-scroll
+                startAuto(); 
             }, {passive: true});
 
             function handleSwipe() {
-                if (touchEndX < touchStartX - swipeThreshold) {
-                    slideNext(); // Swipe Left -> Next
-                }
-                if (touchEndX > touchStartX + swipeThreshold) {
-                    slidePrev(); // Swipe Right -> Prev
-                }
+                if (touchEndX < touchStartX - swipeThreshold) slideNext();
+                if (touchEndX > touchStartX + swipeThreshold) slidePrev();
             }
-            // ---------------------------------------------
 
             function startAuto() {
                 clearInterval(timer);
                 timer = setInterval(slideNext, 4500);
             }
-            
             startAuto();
         })();
 
