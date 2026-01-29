@@ -49,6 +49,22 @@
 </head>
 <body>
 
+    <script>
+        (function() {
+            var hash = window.location.hash.substring(1);
+            if (hash && hash !== 'all') {
+                var style = document.createElement('style');
+                style.innerHTML = `
+                    #hero { display: none !important; opacity: 0 !important; pointer-events: none !important; }
+                    body { overflow-y: auto !important; }
+                    .top-signature { opacity: 1 !important; }
+                `;
+                document.head.appendChild(style);
+                window.heroSkipped = true;
+            }
+        })();
+    </script>
+
     <img src="images/Signature.png" alt="Alee Signature" class="top-signature">
 
     <div id="hero" class="hero">
@@ -71,6 +87,7 @@
                     <li data-filter="all" class="active">Home</li>
                     <li data-filter="commercial">Commercial</li>
                     <li data-filter="social">Social Media</li>
+                    <li data-filter="ai-ads">AI Ads</li>
                     <li data-filter="motion">Motion Graphics</li>
                     <li data-filter="short">Short Film</li>
                     <li data-filter="photography">Photography</li>
@@ -172,6 +189,11 @@
         <p>— Muriel Rukeyser</p>
     </section>
 
+    <section class="quote-break" id="ai-quote" style="display: none;">
+        <h1>AI is the first technology in history <br> that can create new <span>stories.</span></h1>
+        <p>— Yuval Noah Harari</p>
+    </section>
+
 </div>
         
         <section class="gallery-grid">
@@ -214,7 +236,7 @@
             </div>
             
             <div class="gallery-item vertical" 
-                 data-category="social"
+                 data-category="ai-ads"
                 data-youtube="https://www.youtube.com/embed/QPopHAH_npM"
                 data-roles="AI Director, Prompt Engineering, Editor, Sound Design">
                 <img class="cover" src="images/covers/Logo Fashion Show Cover.jpg" alt="Project cover">
@@ -286,7 +308,7 @@
             </div>
 
             <div class="gallery-item"
-                 data-category="commercial"
+                 data-category="ai-ads"
                 data-youtube="https://www.youtube.com/embed/mb71cggg5fM"
                 data-roles="AI Director, Editor, Editor, Sound Design">
                 <img class="cover" src="images/covers/We are a family cover.jpg" alt="Project cover">
@@ -394,7 +416,7 @@
             </div>
 
             <div class="gallery-item"
-                 data-category="commercial"
+                 data-category="ai-ads"
                 data-youtube="https://www.youtube.com/embed/8l1-aVOCl1I"
                 data-roles="AI Director, Prompt Engineering, Editor, Sound Design">
                 <img class="cover" src="images/covers/We Will Be There For You AI Ad Cover.jpg" alt="Project cover">
@@ -430,7 +452,7 @@
             </div>
 
             <div class="gallery-item"
-                 data-category="commercial"
+                 data-category="ai-ads"
                 data-youtube="https://www.youtube.com/embed/-M-eEzxHSr4"
                 data-roles="AI Director, Prompt Engineering, Editor, Sound Design">
                 <img class="cover" src="images/covers/Zoviz AI Commercial Cover.jpg" alt="Project cover">
@@ -550,7 +572,7 @@
             </div>
 
             <div class="gallery-item vertical"
-                 data-category="social"
+                 data-category="ai-ads"
                 data-youtube="https://www.youtube.com/embed/adVpGGmALFU"
                 data-roles="Prompt Engineering, Editor, Sound Design">
                 <img class="cover" src="images/covers/Happy Halloween 2025 AI Ad Cover.jpg" alt="Project cover">
@@ -730,7 +752,7 @@
             </div>
 
             <div class="gallery-item vertical" 
-                 data-category="social"
+                 data-category="ai-ads"
                 data-youtube="https://www.youtube.com/embed/9rbN6ZqSziI"
                 data-roles="AI Director, Prompt Engineering, Editor">
                 <img class="cover" src="images/covers/YourLogoYourStyle_cover.jpg" alt="Project cover">
@@ -1117,7 +1139,7 @@
                  data-category="social"
                 data-youtube="https://www.youtube.com/embed/QV2Zy8uUVew"
                 data-roles="Scriptwriter, Director, DOP, Editor, Motion Designer">
-                <img class="cover" src="images/covers/color Palette Cover.jpg" alt="Project cover">
+                <img class="cover" src="images/covers/colorPalette_cover.jpg" alt="Project cover">
                 <video class="preview" src="videos/previews/Color Palette.mp4" muted loop playsinline preload="metadata"></video>
                 <div class="overlay">
                     <h3>Color Palette</h3>
@@ -1570,13 +1592,13 @@
             </div>
 
             <div class="gallery-item vertical" 
-                 data-category="social"
+                 data-category="ai-ads"
                 data-youtube="https://www.youtube.com/embed/QcBkK5QW2KE"
                 data-roles="Prompt Engineering, Editor, Sound Design">
                 <img class="cover" src="images/covers/Tivali Home Zero Commission AI Ads_cover.jpg" alt="Project cover">
                 <video class="preview" src="videos/previews/Tivali Home Zero Commission AI Ads_preview.mp4" muted loop playsinline preload="metadata"></video>
                 <div class="overlay">
-                    <h3>Tivali Home Zero Commission AI Ads</h3>
+                    <h3>Tivali Home Zero Commission</h3>
                     <p>Social Media, 2026</p>
                 </div>
             </div>
@@ -2011,15 +2033,6 @@
             </div>
             
             <div class="gallery-item" data-category="photography">
-                <img src="images/Photo60.avif" alt="Photography 60">
-                <div class="overlay">
-                    <h3>Photography 60</h3>
-                    <p class="category">Darreh Morad Beyg, Hamedan, Iran. 11/10/2017 10:10.</p>
-                    <p class="story"></p>
-                </div>
-            </div>
-            
-            <div class="gallery-item" data-category="photography">
                 <img src="images/Photo61.avif" alt="Photography 61">
                 <div class="overlay">
                     <h3>Photography 61</h3>
@@ -2227,24 +2240,25 @@ if (photoWrapper) {
 }
 
 // --- UPDATED QUOTE VISIBILITY ---
-    // 1. Select all quote elements
-    // The "Main Quote" is the one without a specific ID
-    const mainQuote = document.querySelector('.quote-break:not(#photo-quote):not(#commercial-quote):not(#social-quote):not(#motion-quote):not(#short-quote)');
-    
-    const photoQuote = document.getElementById('photo-quote');
-    const commercialQuote = document.getElementById('commercial-quote');
-    const socialQuote = document.getElementById('social-quote');
-    const motionQuote = document.getElementById('motion-quote');
-    const shortQuote = document.getElementById('short-quote');
+// 1. Select all quote elements
+const mainQuote = document.querySelector('.quote-break:not(#photo-quote):not(#commercial-quote):not(#social-quote):not(#motion-quote):not(#short-quote):not(#ai-quote)'); // Note: Added :not(#ai-quote)
 
-    // 2. Toggle Visibility based on category
-    if (mainQuote) mainQuote.style.display = (category === 'all') ? 'block' : 'none';
-    
-    if (photoQuote) photoQuote.style.display = (category === 'photography') ? 'block' : 'none';
-    if (commercialQuote) commercialQuote.style.display = (category === 'commercial') ? 'block' : 'none';
-    if (socialQuote) socialQuote.style.display = (category === 'social') ? 'block' : 'none';
-    if (motionQuote) motionQuote.style.display = (category === 'motion') ? 'block' : 'none';
-    if (shortQuote) shortQuote.style.display = (category === 'short') ? 'block' : 'none';
+const photoQuote = document.getElementById('photo-quote');
+const commercialQuote = document.getElementById('commercial-quote');
+const socialQuote = document.getElementById('social-quote');
+const motionQuote = document.getElementById('motion-quote');
+const shortQuote = document.getElementById('short-quote');
+const aiQuote = document.getElementById('ai-quote'); // NEW
+
+// 2. Toggle Visibility based on category
+if (mainQuote) mainQuote.style.display = (category === 'all') ? 'block' : 'none';
+
+if (photoQuote) photoQuote.style.display = (category === 'photography') ? 'block' : 'none';
+if (commercialQuote) commercialQuote.style.display = (category === 'commercial') ? 'block' : 'none';
+if (socialQuote) socialQuote.style.display = (category === 'social') ? 'block' : 'none';
+if (motionQuote) motionQuote.style.display = (category === 'motion') ? 'block' : 'none';
+if (shortQuote) shortQuote.style.display = (category === 'short') ? 'block' : 'none';
+if (aiQuote) aiQuote.style.display = (category === 'ai-ads') ? 'block' : 'none'; // NEW
 
 // --- FIX FOR CAROUSEL BLACK GAPS ---
             // Trigger a resize event if we are switching to 'motion' OR back to 'all' (Featured)
@@ -3006,24 +3020,31 @@ if (projectLayout) {
         });
     }
 
-    // --- DEEP LINKING: Check URL on Load ---
+    // --- DEEP LINKING & SMART HERO SKIP ---
 window.addEventListener('DOMContentLoaded', () => {
-    // 1. Get the hash (e.g., "#photography") without the "#"
     const hash = window.location.hash.substring(1);
 
-    if (hash) {
-        // 2. Find the menu item that matches this hash
-        const targetBtn = document.querySelector(`.filter-menu li[data-filter="${hash}"]`);
+    // If we skipped the hero using the top script...
+    if (window.heroSkipped) {
         
-        // 3. If it exists, click it automatically
+        // 1. Mark hero as finished for the logic
+        if (typeof heroFinished !== 'undefined') heroFinished = true;
+        
+        // 2. Add the class for CSS transitions
+        document.body.classList.add('hero-done');
+
+        // 3. Stop the video (it might have started loading in background)
+        const heroVideo = document.getElementById('hero-video');
+        if (heroVideo) heroVideo.pause();
+
+        // 4. Click the category button to switch views
+        const targetBtn = document.querySelector(`.filter-menu li[data-filter="${hash}"]`);
         if (targetBtn) {
-            // We use a small timeout to ensure the Hero Dismiss logic doesn't conflict
-            setTimeout(() => {
-                targetBtn.click();
-            }, 100);
+            setTimeout(() => targetBtn.click(), 50);
         }
+
     } else {
-        // Default to 'all' if no hash exists
+        // If no hash, play the intro normally
         applyCategory('all');
     }
 });
