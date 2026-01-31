@@ -2369,3 +2369,21 @@ body.no-scroll #floating-top {
         opacity: 1 !important;
     }
 }
+
+/* --- TABLET FIX: Prevent Infinite Scroll & Carousel Overflow (Up to 1200px) --- */
+@media screen and (max-width: 1200px) {
+    
+    /* 1. Lock the page width to prevent black void swipe */
+    html, body {
+        overflow-x: hidden !important;
+        width: 100%;
+        position: relative;
+    }
+
+    /* 2. Cut off the carousel edges cleanly */
+    .featured-strip-viewport {
+        width: 100vw !important;
+        max-width: 100% !important;
+        overflow: hidden !important;
+    }
+}

@@ -3250,7 +3250,7 @@ window.addEventListener('popstate', () => {
 
 
     /* --- MOBILE OVERRIDE (GLOBAL DISABLE) --- */
-    @media (max-width: 768px) {
+    @media (max-width: 1200px) {
         #magic-cursor { display: none !important; }
         .quote-break, .quote-trigger-wrap { cursor: auto !important; }
 
@@ -3502,15 +3502,17 @@ window.addEventListener('popstate', () => {
         updateToActive();
 
         menuItems.forEach(item => {
-            // Click: We delay slightly to let the 'active' class update, 
-            // but the 'switchText' check above will block the animation if text matches.
+            // Click: Always triggers the update
             item.addEventListener('click', () => setTimeout(updateToActive, 50));
             
-            // Hover: Standard switch
-            item.addEventListener('mouseenter', () => {
-                const category = item.innerText;
-                if (category) switchText(getDisplayName(category));
-            });
+            // Hover: ONLY run if the device has a mouse (Desktop)
+            // This prevents touch devices from triggering the hover state on tap
+            if (window.matchMedia("(hover: hover)").matches) {
+                item.addEventListener('mouseenter', () => {
+                    const category = item.innerText;
+                    if (category) switchText(getDisplayName(category));
+                });
+            }
         });
 
         if (navContainer) navContainer.addEventListener('mouseleave', updateToActive);
@@ -3520,8 +3522,33 @@ window.addEventListener('popstate', () => {
 </script>
 
 <script>
-    // --- FINAL PHYSICS: LINKS WORKING + NO STICKINESS ---
+    // --- FINAL PHYSICS: SELF-CONTAINED FIX (NO CSS EDIT NEEDED) ---
     (function() {
+        // 1. INJECT STYLES PROGRAMMATICALLY (Fixes Text Selection without touching style.css)
+        const styleFix = document.createElement('style');
+        styleFix.innerHTML = `
+            /* Stop text selection while dragging */
+            .about-content-layout, .about-content, .script-block, 
+            .script-dialogue, .about-content p, .about-content h2, 
+            .about-photo-col {
+                user-select: none !important;
+                -webkit-user-select: none !important;
+            }
+            /* Stop image ghost dragging */
+            .about-portrait, .about-photo-col img {
+                -webkit-user-drag: none !important;
+                user-select: none !important;
+                pointer-events: none !important;
+            }
+            /* Allow clicking links, but not selecting them */
+            .contact-info a {
+                user-select: none !important; 
+                -webkit-user-select: none !important;
+                cursor: pointer !important;
+            }
+        `;
+        document.head.appendChild(styleFix);
+
         const aboutBtn = document.getElementById('about-btn');
         const closeBtn = document.getElementById('close-btn');
         const physicsContainer = document.getElementById('physics-container');
@@ -3534,8 +3561,7 @@ window.addEventListener('popstate', () => {
               Composite = Matter.Composite,
               Mouse = Matter.Mouse,
               MouseConstraint = Matter.MouseConstraint,
-              Events = Matter.Events,
-              Query = Matter.Query;
+              Events = Matter.Events;
 
         let engine, render, runner, mouseConstraint;
         let isPhysicsRunning = false;
@@ -3572,7 +3598,6 @@ window.addEventListener('popstate', () => {
             ctx.closePath();
         }
 
-        // --- FIX: FORCE DROP (Prevents Sticky Mouse) ---
         function forceDrop() {
             if (mouseConstraint) {
                 mouseConstraint.mouse.button = -1; 
@@ -3582,7 +3607,9 @@ window.addEventListener('popstate', () => {
         }
 
         function initPhysics() {
-            if (window.innerWidth <= 768) return; // Mobile check
+            // TABLET/MOBILE CHECK: Stop if screen is small (iPad/Phone)
+            if (window.innerWidth <= 1024) return; 
+            
             if (isPhysicsRunning) return;
             isPhysicsRunning = true;
 
@@ -3601,10 +3628,10 @@ window.addEventListener('popstate', () => {
                 }
             });
 
-            // FIX: Canvas allows clicks to pass through to links
+            // Make canvas transparent to clicks (so links work)
             render.canvas.style.pointerEvents = 'none';
 
-            // Walls
+            // WALLS: Floor is exactly at window height
             const wallOpts = { isStatic: true, render: { visible: false }, friction: 0.5, restitution: 0.2 };
             const thickness = 100;
             const floor = Bodies.rectangle(window.innerWidth/2, window.innerHeight + (thickness/2), window.innerWidth, thickness, wallOpts);
@@ -3615,7 +3642,7 @@ window.addEventListener('popstate', () => {
             Composite.add(engine.world, [floor, leftWall, rightWall]);
             setTimeout(() => Composite.add(engine.world, ceiling), 2500);
 
-            // Photo Collider
+            // PHOTO COLLIDER
             const photoElem = document.querySelector('.about-photo-col'); 
             if (photoElem) {
                 const rect = photoElem.getBoundingClientRect();
@@ -3628,7 +3655,7 @@ window.addEventListener('popstate', () => {
                 Composite.add(engine.world, photoBody);
             }
 
-            // Spawn Roles
+            // SPAWN ROLES
             roles.forEach((role, index) => {
                 const width = role.length * 18 + 50; 
                 const height = 64; 
@@ -3646,7 +3673,7 @@ window.addEventListener('popstate', () => {
                 Composite.add(engine.world, box);
             });
 
-            // --- SMART INTERACTION ---
+            // MOUSE CONTROL
             const mouse = Mouse.create(document.body);
             mouse.pixelRatio = window.devicePixelRatio;
 
@@ -3657,14 +3684,12 @@ window.addEventListener('popstate', () => {
             Composite.add(engine.world, mouseConstraint);
 
             Events.on(engine, 'beforeUpdate', function() {
-                mouse.position.x = mouse.absolute.x - window.scrollX;
-                mouse.position.y = mouse.absolute.y - window.scrollY;
+                // No offset needed
             });
             
-            // --- FIX: LINK PROTECTION ---
+            // LINK PROTECTION: Stop physics if clicking a link/button/close
             function handleMouseDown(e) {
-                // If clicking a link, KILL the physics grab immediately
-                if (e.target.closest('a') || e.target.closest('button')) {
+                if (e.target.closest('a') || e.target.closest('button') || e.target.closest('.close-btn')) {
                     mouseConstraint.mouse.button = -1;
                     mouseConstraint.body = null;
                     return; 
@@ -3672,11 +3697,11 @@ window.addEventListener('popstate', () => {
             }
             window.addEventListener('mousedown', handleMouseDown);
 
-            // --- FIX: GLOBAL RELEASE (Stops Stickiness) ---
+            // GLOBAL RELEASE: Stop dragging if mouse leaves or lifts
             window.addEventListener('mouseup', forceDrop);
             document.documentElement.addEventListener('mouseleave', forceDrop);
 
-            // Render Loop
+            // RENDER LOOP
             Events.on(render, 'afterRender', function() {
                 const ctx = render.context;
                 const bodies = Composite.allBodies(engine.world);
@@ -3711,12 +3736,14 @@ window.addEventListener('popstate', () => {
             runner = Runner.create();
             Runner.run(runner, engine);
             
-            customCursor.style.display = 'block';
-            window.addEventListener('mousemove', updateCursor);
+            if (window.matchMedia("(hover: hover)").matches) {
+                customCursor.style.display = 'block';
+                window.addEventListener('mousemove', updateCursor);
+            }
         }
 
         function stopPhysics() {
-            // Remove Listeners
+            // Remove listeners
             document.documentElement.removeEventListener('mouseleave', forceDrop);
             window.removeEventListener('mouseup', forceDrop);
             
@@ -3736,20 +3763,15 @@ window.addEventListener('popstate', () => {
             customCursor.style.top = e.clientY + 'px';
         }
 
-        // --- UPDATED: CONNECT BOTH BUTTONS TO PHYSICS ---
+        // CONNECT BUTTONS
         const footerBrand = document.querySelector('.footer-brand');
-
-        // 1. Top "About" Button
         aboutBtn.addEventListener('click', () => setTimeout(initPhysics, 300));
 
-        // 2. Footer "ALEE" Button
         if (footerBrand) {
             footerBrand.addEventListener('click', (e) => {
                 e.preventDefault();
-                // A. Open Overlay
                 document.getElementById('about-overlay').classList.add('active');
                 document.body.style.overflow = 'hidden';
-                // B. Trigger Physics
                 setTimeout(initPhysics, 300); 
             });
         }
@@ -3759,27 +3781,13 @@ window.addEventListener('popstate', () => {
 
     })();
 
-    // --- NUCLEAR FIX: STOP ALL GHOST DRAGGING ---
-    // This listens to the whole window and kills any native drag 
-    // attempts that happen inside the About Overlay.
+    // --- NUCLEAR EVENT BLOCKER (Prevent Dragging/Selecting) ---
     window.addEventListener('dragstart', function(e) {
-        // If the user tries to drag ANYTHING inside the about overlay...
         if (e.target.closest('#about-overlay')) {
-            e.preventDefault(); // Stop it immediately.
+            e.preventDefault(); 
             return false;
         }
     }, { passive: false });
-
-    // Extra safety: Force the overlay to ignore text selection
-    const overlayRef = document.getElementById('about-overlay');
-    if (overlayRef) {
-        overlayRef.addEventListener('mousedown', (e) => {
-            // Allow clicks on links/buttons, but stop selection on everything else
-            if (!e.target.closest('a') && !e.target.closest('button')) {
-                e.preventDefault(); 
-            }
-        });
-    }
 
 </script>
 
