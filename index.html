@@ -2724,7 +2724,7 @@ filterItems.forEach(item => {
         const closeBtn = document.getElementById('close-btn');
 
         aboutBtn.addEventListener('click', () => { aboutOverlay.classList.add('active'); document.body.style.overflow='hidden'; });
-        closeBtn.addEventListener('click', () => { aboutOverlay.classList.remove('active'); document.body.style.overflow='auto'; });
+        closeBtn.addEventListener('click', () => { aboutOverlay.classList.remove('active'); document.body.style.overflow=''; });
 
         const projectOverlay = document.getElementById('project-overlay');
         const projectClose = document.getElementById('project-close');
@@ -3295,7 +3295,6 @@ window.addEventListener('popstate', () => {
                 wrapper.appendChild(p);
             }
 
-            // Copy text for the Clip-Path effect
             if(h1) {
                 const span = h1.querySelector('span');
                 if(span) span.setAttribute('data-text', span.innerText);
@@ -3310,7 +3309,9 @@ window.addEventListener('popstate', () => {
         const quoteSections = document.querySelectorAll('.quote-break'); 
         const wrappers = document.querySelectorAll('.quote-trigger-wrap'); 
         const activeTextElements = document.querySelectorAll('.quote-trigger-wrap h1, .quote-trigger-wrap h1 span, .quote-trigger-wrap p');
-        
+        const photoWrapper = document.getElementById('photo-header-wrapper'); 
+        const aboutOverlay = document.getElementById('about-overlay'); // Ref to About Page
+
         let mouseX = -100, mouseY = -100;
         let cursorX = -100, cursorY = -100;
 
@@ -3319,11 +3320,23 @@ window.addEventListener('popstate', () => {
             mouseY = e.clientY;
         });
 
-        // C. ANIMATION LOOP
+        // C. ANIMATION LOOP (FIXED)
         function animate() {
-            // Disable logic on mobile
-            if (window.innerWidth <= 768) return; 
+            // 1. CHECK BLOCKERS
+            const isMobile = window.innerWidth <= 768;
+            const isPhotography = photoWrapper && photoWrapper.classList.contains('active-photography');
+            // FIX: Check if About Page is active
+            const isAboutOpen = aboutOverlay && aboutOverlay.classList.contains('active'); 
 
+            if (isMobile || isPhotography || isAboutOpen) {
+                // If any of these are true, hide cursor and STOP interacting
+                cursor.classList.remove('visible', 'active');
+                wrappers.forEach(w => w.classList.remove('active'));
+                requestAnimationFrame(animate);
+                return;
+            }
+
+            // 2. NORMAL LOGIC
             const distX = mouseX - cursorX;
             const distY = mouseY - cursorY;
             cursorX += distX * 0.15;
@@ -3332,8 +3345,48 @@ window.addEventListener('popstate', () => {
             cursor.style.left = cursorX + 'px';
             cursor.style.top = cursorY + 'px';
 
+            let isHoveringWrap = false;
+            let isHoveringSection = false;
+
+            // Check Visibility (Section)
+            quoteSections.forEach(sec => {
+                const rect = sec.getBoundingClientRect();
+                if (rect.width === 0 || rect.height === 0) return; 
+
+                if (mouseX >= rect.left && mouseX <= rect.right && 
+                    mouseY >= rect.top && mouseY <= rect.bottom) {
+                    isHoveringSection = true;
+                }
+            });
+
+            // Check Active State (Big Yellow Wrapper)
+            wrappers.forEach(wrap => {
+                const rect = wrap.getBoundingClientRect();
+                if (rect.width === 0 || rect.height === 0) {
+                    wrap.classList.remove('active');
+                    return;
+                }
+
+                if (mouseX >= rect.left && mouseX <= rect.right && 
+                    mouseY >= rect.top && mouseY <= rect.bottom) {
+                    wrap.classList.add('active');
+                    isHoveringWrap = true;
+                } else {
+                    wrap.classList.remove('active');
+                }
+            });
+
+            if (isHoveringSection) cursor.classList.add('visible');
+            else cursor.classList.remove('visible');
+
+            if (isHoveringWrap) cursor.classList.add('active');
+            else cursor.classList.remove('active');
+
+            // Text Reveal Math
             activeTextElements.forEach(el => {
                 const rect = el.getBoundingClientRect();
+                if (rect.width === 0 || rect.height === 0) return;
+
                 if (cursorX > rect.left - 300 && cursorX < rect.right + 300 &&
                     cursorY > rect.top - 300 && cursorY < rect.bottom + 300) {
                     
@@ -3347,23 +3400,6 @@ window.addEventListener('popstate', () => {
             requestAnimationFrame(animate);
         }
         animate();
-
-        // D. EVENTS
-        quoteSections.forEach(section => {
-            section.addEventListener('mouseenter', () => cursor.classList.add('visible'));
-            section.addEventListener('mouseleave', () => cursor.classList.remove('visible'));
-        });
-
-        wrappers.forEach(wrap => {
-            wrap.addEventListener('mouseenter', () => {
-                cursor.classList.add('active');
-                wrap.classList.add('active');
-            });
-            wrap.addEventListener('mouseleave', () => {
-                cursor.classList.remove('active');
-                wrap.classList.remove('active');
-            });
-        });
     })();
 </script>
 
@@ -3371,7 +3407,7 @@ window.addEventListener('popstate', () => {
     // --- WOSKER HEADLINE: FINAL FIX (Prevents Double Animation) ---
     (function() {
         const container = document.getElementById('category-headline');
-        const menuItems = document.querySelectorAll('.filter-menu li, .show-more-menu li');
+        const menuItems = document.querySelectorAll('.show-more-menu li');
         const navContainer = document.querySelector('.nav-right');
         const pillContainer = document.querySelector('.show-more-menu');
 
@@ -3620,7 +3656,10 @@ window.addEventListener('popstate', () => {
             });
             Composite.add(engine.world, mouseConstraint);
 
-            Events.on(engine, 'beforeUpdate', function() {});
+            Events.on(engine, 'beforeUpdate', function() {
+                mouse.position.x = mouse.absolute.x - window.scrollX;
+                mouse.position.y = mouse.absolute.y - window.scrollY;
+            });
             
             // --- FIX: LINK PROTECTION ---
             function handleMouseDown(e) {
@@ -3697,11 +3736,51 @@ window.addEventListener('popstate', () => {
             customCursor.style.top = e.clientY + 'px';
         }
 
+        // --- UPDATED: CONNECT BOTH BUTTONS TO PHYSICS ---
+        const footerBrand = document.querySelector('.footer-brand');
+
+        // 1. Top "About" Button
         aboutBtn.addEventListener('click', () => setTimeout(initPhysics, 300));
+
+        // 2. Footer "ALEE" Button
+        if (footerBrand) {
+            footerBrand.addEventListener('click', (e) => {
+                e.preventDefault();
+                // A. Open Overlay
+                document.getElementById('about-overlay').classList.add('active');
+                document.body.style.overflow = 'hidden';
+                // B. Trigger Physics
+                setTimeout(initPhysics, 300); 
+            });
+        }
+
         closeBtn.addEventListener('click', stopPhysics);
         document.addEventListener('keydown', (e) => { if (e.key === 'Escape') stopPhysics(); });
 
     })();
+
+    // --- NUCLEAR FIX: STOP ALL GHOST DRAGGING ---
+    // This listens to the whole window and kills any native drag 
+    // attempts that happen inside the About Overlay.
+    window.addEventListener('dragstart', function(e) {
+        // If the user tries to drag ANYTHING inside the about overlay...
+        if (e.target.closest('#about-overlay')) {
+            e.preventDefault(); // Stop it immediately.
+            return false;
+        }
+    }, { passive: false });
+
+    // Extra safety: Force the overlay to ignore text selection
+    const overlayRef = document.getElementById('about-overlay');
+    if (overlayRef) {
+        overlayRef.addEventListener('mousedown', (e) => {
+            // Allow clicks on links/buttons, but stop selection on everything else
+            if (!e.target.closest('a') && !e.target.closest('button')) {
+                e.preventDefault(); 
+            }
+        });
+    }
+
 </script>
 
 </body>
