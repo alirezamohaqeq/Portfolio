@@ -1,3 +1,76 @@
+/* =========================================
+   1. CUSTOM FONT & BIG HEADLINE ANIMATION
+   ========================================= */
+@font-face {
+    font-family: 'Wosker';
+    /* FIX 3: Simplified path. RENAME YOUR FILE TO 'Wosker.otf' */
+    src: url('fonts/Wosker.otf'); 
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* Container for the big text */
+#category-headline {
+    position: relative;
+    width: 100%;
+    height: 180px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; 
+    
+    /* FIX 4: Push it down 60px from the header so it starts clean */
+    margin-top: 10px;  
+    margin-bottom: 20px;
+    
+    /* FIX 5: Lower Z-Index so it slides BEHIND the header */
+    z-index: 1 !important;        
+    pointer-events: none; 
+}
+
+/* The actual text styling */
+.headline-word {
+    font-family: 'Wosker', sans-serif;
+    font-size: 12rem; 
+    font-weight: 400;
+    text-transform: uppercase;
+    color: #f0f0f0;
+    line-height: 1;
+    white-space: nowrap;
+    position: absolute; 
+    display: flex;
+    gap: 0.0em; 
+}
+
+/* Animation Classes */
+.headline-char {
+    display: inline-block;
+    will-change: transform;
+    transform: translateY(0%);
+}
+
+.headline-char.enter-start { transform: translateY(120%); }
+.headline-char.enter-end { 
+    transform: translateY(0%); 
+    transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1); 
+}
+.headline-char.exit { 
+    transform: translateY(120%); 
+    opacity: 0;             /* Fade out */
+    filter: blur(20px);     /* Motion blur effect */
+    transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1), 
+                opacity 0.5s ease, 
+                filter 0.5s ease; 
+}
+
+/* --- MOBILE REMOVAL --- */
+@media (max-width: 768px) {
+    #category-headline {
+        display: none !important; /* Completely hidden on mobile */
+    }
+}
+
 /* --- Base & Reset --- */
 * {
     box-sizing: border-box;
@@ -88,7 +161,6 @@ body.hero-done .top-signature {
     pointer-events: none;
 }
 
-/* --- Header --- */
 header {
     display: flex;
     justify-content: space-between;
@@ -97,8 +169,13 @@ header {
     margin-bottom: 16px;
     position: sticky;
     top: 0;
-    z-index: 2;
-    background: transparent;
+    
+    /* FIX 1: Add Background so text hides behind it when scrolling */
+    background-color: #050505; 
+    
+    /* FIX 2: Ensure it is the top-most layer */
+    z-index: 999 !important; 
+    transition: background-color 0.3s ease;
 }
 
 .logo {
@@ -657,34 +734,83 @@ video {
         padding-top: 0;
     }
 }
-.overlay-container {
+/* --- PHYSICS OVERLAY (Replaces .overlay-container) --- */
+#about-overlay {
     position: fixed;
-    inset: 0;
-    z-index: 2000;
-    display: none;
+    top: 0; left: 0;
+    width: 100%; height: 100vh;
+    
+    /* 1. Solid Black Background (No Image) */
+    background-color: #000000; 
+    z-index: 9990; 
+    
+    /* 2. Layout & Hiding */
+    display: none; 
     align-items: center; 
     justify-content: center;
-    padding: 40px 20px;
     opacity: 0;
-    transition: opacity 0.3s ease;
-    overflow-y: auto;
-
-    /* 1. THE BLUR: This blurs the actual Gallery page underneath */
-    backdrop-filter: blur(40px) saturate(150%);
-    -webkit-backdrop-filter: blur(40px) saturate(150%);
-
-    /* 2. THE OVERLAY PHOTO: Using a semi-transparent tint 
-       so the blurred gallery colors can peek through */
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
-                url('images/about-background.png'); 
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+    
+    /* 3. Physics Settings */
+    overflow: hidden; 
+    cursor: none; 
 }
 
-.overlay-container.active {
-    display: flex; /* Only show when clicked */
+/* Interaction State */
+#about-overlay.active {
+    display: flex;
     opacity: 1;
+    visibility: visible;
+}
+
+/* --- PHYSICS LAYERS (Links Fix) --- */
+
+/* 1. Container: INVISIBLE to clicks. Lets them pass through to links. */
+#physics-container {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 10; 
+    pointer-events: none !important; /* <--- THIS IS THE KEY FIX */
+}
+
+/* 2. Content: Visible but un-selectable (prevents blue highlighting) */
+.about-content-layout {
+    position: relative;
+    z-index: 5; 
+    pointer-events: none; 
+    
+    /* FIX: Disables text highlighting while dragging boxes */
+    user-select: none;
+    -webkit-user-select: none; /* Safari */
+}
+
+/* 3. Links/Buttons: Highest priority & Interactive */
+.about-content a, 
+.about-content button,
+.contact-info,
+.socials,
+.close-btn {
+    pointer-events: auto !important; /* Force clickable */
+    position: relative;
+    z-index: 9999; /* Physically above the physics boxes */
+    cursor: pointer;
+}
+
+/* Layer 4: Custom Yellow Cursor */
+#physics-cursor {
+    position: fixed;
+    top: 0; left: 0;
+    width: 12px;
+    height: 12px;
+    background: #ffba00;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 10000;
+    display: none; 
+    mix-blend-mode: difference;
 }
 
 .about-content {
@@ -1317,7 +1443,7 @@ body.hero-hint-on #hero .skip-hint { opacity: 1; }
     /* Keep display logic managed by JS, but add sticky properties */
     display: flex; 
     justify-content: center;
-    padding: 20px 0 20px; /* Reduced bottom padding since it floats now */
+    padding: 20px 0 5px; /* Reduced bottom padding since it floats now */
     
     /* STICKY MAGIC */
     position: sticky;
@@ -1532,7 +1658,7 @@ body.hero-hint-on #hero .skip-hint { opacity: 1; }
 /* --- CINEMATIC QUOTE SECTION --- */
 .quote-break {
     text-align: center;
-    padding: 120px 120px 100px; /* Adjust top/bottom space here */
+    padding: 120px 120px 20px; /* Adjust top/bottom space here */
     max-width: 1300px;
     margin: 0 auto;
     opacity: 0;
@@ -1714,15 +1840,25 @@ body.hero-hint-on #hero .skip-hint { opacity: 1; }
 
 /* --- POSITIONING GROUPS --- */
 
-/* Group 1: Quotes that sit BELOW the menu (Social, Short, Commercial, Photo) */
+/* GROUP: All Category Quotes (Uniform Spacing) */
+#photo-quote,
 #commercial-quote, 
-#photo-quote, 
 #social-quote, 
-#short-quote {
+#short-quote, 
+#ai-quote,
+#motion-quote,
+.quote-break {  /* Ensure the class itself is targeted too */
     text-align: center;
-    padding: 40px 40px 80px; 
+    
+    /* FIX: Bring it to the top layer so the Video Strip doesn't block clicks */
+    position: relative !important;
+    z-index: 50 !important;
+    pointer-events: auto !important; /* Force mouse interaction */
+    
+    padding: 30px 20px 0px !important; 
+    margin: 0 auto !important;
+    width: 100% !important;
     max-width: 1300px;
-    margin: 0 auto;
     animation: fadeIn 1.5s ease-out forwards;
 }
 
@@ -2034,7 +2170,7 @@ body.no-scroll {
 
 .photography-bg-container {
     border-radius: 35px;
-    margin-bottom: 20px;
+    margin-bottom: 0px;
     
     /* CHANGE 1: Pull the box up much higher (closer to the logo) */
     margin-top: -200px; 
@@ -2094,5 +2230,140 @@ body.no-scroll {
         padding-top: 30px !important;
         padding-bottom: 30px !important;
         width: 100% !important;
+    }
+}
+
+/* --- FINAL MOBILE LAYOUT OVERRIDES --- */
+@media (max-width: 768px) {
+
+    /* 1. PHOTOGRAPHY PAGE: REMOVE The Header Image */
+    /* We force the container to collapse and hide the background image */
+    .photography-bg-container.active-photography {
+        background-image: none !important; /* <--- Kills the photo */
+        background: none !important;       /* Safety net */
+        margin-top: 0 !important;          /* Reset negative margin */
+        padding-top: 0 !important;         /* Remove container padding */
+        padding-bottom: 0 !important;
+        min-height: 0 !important;          /* Allow it to shrink to 0 */
+        margin-bottom: 0 !important;
+        border-radius: 0 !important;
+    }
+
+    /* 2. OTHER PAGES: Collapse the Container (Keep this safety) */
+    .photography-bg-container:not(.active-photography) {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        min-height: 0 !important;
+        margin-bottom: 0 !important;
+    }
+
+    /* 3. ALL QUOTES: Uniform Spacing */
+    /* Now that the photo is gone, the Photo Quote acts like all others */
+    #photo-quote,
+    #commercial-quote, 
+    #social-quote, 
+    #short-quote, 
+    #ai-quote,
+    #motion-quote {
+        padding: 30px 20px 0px !important; /* Standard clean spacing */
+        margin: 0 auto !important;
+        width: 100% !important;
+    }
+
+    /* 4. Fix Sticky Menu Position */
+    .show-more-wrap {
+        position: sticky;
+        top: 65px; 
+        z-index: 80;
+        margin-bottom: 5px !important;
+        padding-bottom: 5px !important;
+    }
+}
+
+/* --- FIX: HIDE BACK-TO-TOP BUTTON ON OVERLAYS --- */
+/* When the body is locked (overlay is open), hide the floating button */
+body.no-scroll #floating-top {
+    display: none !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    visibility: hidden !important;
+}
+
+/* --- PHYSICS ABOUT PAGE --- */
+
+/* 1. Canvas Container (Behind text, or In Front? We place it behind for readability, or mix) */
+/* We'll place it at z-index 1, and text at z-index 2. But we need events to pass through text */
+#physics-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10; /* Physics on TOP so you can grab boxes */
+    pointer-events: auto;
+    overflow: hidden;
+}
+
+/* 2. Make Content visible UNDER the physics layer */
+.about-content-layout {
+    position: relative;
+    z-index: 1; /* Text behind boxes */
+    pointer-events: none; /* Let clicks pass through to the physics engine */
+}
+
+/* 3. Re-enable clicks for Links/Buttons underneath */
+.about-content a, 
+.about-content button,
+.contact-info,
+.socials {
+    pointer-events: auto;
+    position: relative;
+    z-index: 20; /* Higher than physics so you can still click links */
+}
+
+/* 4. Tiny Yellow Cursor */
+#physics-cursor {
+    position: fixed;
+    top: 0; left: 0;
+    width: 12px;
+    height: 12px;
+    background: #ffba00;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 10000;
+    display: none; /* Hidden by default */
+    mix-blend-mode: difference;
+}
+
+/* Hide default cursor when inside the overlay */
+#about-overlay {
+    cursor: none;
+}
+
+/* --- MOBILE: DISABLE PHYSICS & RESTORE LAYOUT --- */
+@media (max-width: 768px) {
+    /* 1. Hide Physics Engine & Cursor */
+    #physics-container,
+    #physics-cursor {
+        display: none !important;
+    }
+
+    /* 2. Restore Default Cursor */
+    #about-overlay {
+        cursor: auto !important;
+    }
+
+    /* 3. Make Text & Links Clickable Again */
+    .about-content-layout {
+        pointer-events: auto !important;
+        z-index: 20 !important;
+    }
+
+    /* 4. Ensure Content Scrolls Normally */
+    .about-content {
+        transform: none !important;
+        opacity: 1 !important;
     }
 }

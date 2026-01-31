@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;700&family=Outfit:wght@300;400;600;700&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
     <link rel="stylesheet" href="style.css">
 
     <style>
@@ -97,7 +97,7 @@
     </header>
 
     <main id="gallery">
-        
+
         <section id="featured">
             <div class="featured-strip-viewport" id="featured-strip-viewport">
                 <div class="featured-strip-mask">
@@ -195,6 +195,9 @@
     </section>
 
 </div>
+
+<div id="category-headline" aria-hidden="true">
+    </div>
         
         <section class="gallery-grid">
 
@@ -2045,7 +2048,12 @@
     </main>
 
     <div id="about-overlay" class="overlay-container">
+        <div id="physics-container"></div>
+        
+        <div id="physics-cursor"></div>
+
         <button id="close-btn" class="close-btn">&times;</button>
+        
         <div class="about-content-layout">
             <div class="about-photo-col">
                 <img src="images/your-photo.jpg" alt="Alee Portrait" class="about-portrait">
@@ -2069,7 +2077,6 @@
                         <a href="mailto:alirezamohaqeq0@gmail.com">alirezamohaqeq0@gmail.com</a>
                         <div class="socials">
                             <a href="https://www.instagram.com/alireza_mohaqeq/" target="_blank">Instagram</a>
-                            <a href="https://www.youtube.com/@alirezamohaqeq2461" target="_blank">YouTube</a>
                             <a href="https://www.linkedin.com/in/alirezamohaqeq/" target="_blank">LinkedIn</a>
                         </div>
                     </div>
@@ -2204,6 +2211,22 @@
                 } else {
                     shouldShow = cardCategory === category;
                 }
+
+                // NEW: Handle Big Headline Visibility
+    const bigHeadline = document.getElementById('category-headline');
+    if (bigHeadline) {
+        // Rule 1: NEVER show on Photography
+        if (category === 'photography') {
+            bigHeadline.style.display = 'none';
+        } 
+        // Rule 2: Show on all other pages (Desktop only)
+        else if (window.innerWidth > 768) {
+            bigHeadline.style.display = 'flex';
+        } 
+        else {
+            bigHeadline.style.display = 'none';
+        }
+    }
 
                 // 2. ONLY set display. DO NOT set opacity or transform here.
                 card.style.display = shouldShow ? 'inline-block' : 'none';
@@ -2703,15 +2726,6 @@ filterItems.forEach(item => {
         aboutBtn.addEventListener('click', () => { aboutOverlay.classList.add('active'); document.body.style.overflow='hidden'; });
         closeBtn.addEventListener('click', () => { aboutOverlay.classList.remove('active'); document.body.style.overflow='auto'; });
 
-        // 1. Close when clicking the dark background (outside the content)
-        aboutOverlay.addEventListener('click', (e) => {
-            const content = aboutOverlay.querySelector('.about-content-layout');
-            // If the click happened anywhere NOT inside the content box, close it
-            if (!content.contains(e.target)) {
-                closeBtn.click(); // Triggers the existing close logic above
-            }
-        });
-
         const projectOverlay = document.getElementById('project-overlay');
         const projectClose = document.getElementById('project-close');
         const projectVideo = document.getElementById('project-video');
@@ -3064,5 +3078,631 @@ window.addEventListener('popstate', () => {
 });
 
     </script>
+<div id="magic-cursor"></div>
+
+<style>
+    /* --- DESKTOP LOGIC (The Flashlight Effect) --- */
+    
+    /* 1. ANIMATION VARIABLE */
+    @property --reveal-radius {
+        syntax: '<length>';
+        inherits: true;
+        initial-value: 0px;
+    }
+
+    /* 2. RESET GLOBAL CURSOR */
+    html, body {
+        cursor: auto !important; 
+    }
+
+    /* 3. HIDE SYSTEM CURSOR ON QUOTES */
+    .quote-break {
+        cursor: none !important; 
+    }
+
+    /* 4. THE CUSTOM CURSOR */
+    #magic-cursor {
+        position: fixed;
+        top: 0; left: 0;
+        opacity: 0; 
+        
+        width: 12px; 
+        height: 12px;
+        background-color: #000; 
+        border: 2px solid #fff;
+        border-radius: 50%;
+        
+        pointer-events: none;
+        z-index: 99999;
+        transform: translate(-50%, -50%);
+        
+        transition: width 0.35s cubic-bezier(0.25, 1, 0.5, 1), 
+                    height 0.35s cubic-bezier(0.25, 1, 0.5, 1),
+                    background-color 0.35s,
+                    border-color 0.35s,
+                    opacity 0.2s ease;
+        
+        mix-blend-mode: difference; 
+    }
+
+    #magic-cursor.visible { opacity: 1; }
+
+    #magic-cursor.active {
+        width: 200px;
+        height: 200px;
+        background-color: #ffba00; 
+        border-color: transparent; 
+    }
+
+    /* 5. WRAPPER LAYOUT */
+    .quote-trigger-wrap {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        padding: 20px; 
+        box-sizing: border-box;
+        cursor: none; 
+        
+        /* Initialize off-screen to prevent load glitch */
+        --elem-x: -5000px;
+        --elem-y: -5000px;
+        
+        --reveal-radius: 0px;
+        transition: --reveal-radius 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .quote-trigger-wrap.active {
+        --reveal-radius: 100px;
+    }
+
+    /* 6. MAIN SENTENCE (Gradient Reveal) */
+    .quote-trigger-wrap h1 {
+        margin: 0;
+        display: inline-block;
+        color: transparent; 
+        -webkit-text-fill-color: transparent;
+        
+        background-image: radial-gradient(
+            circle var(--reveal-radius) at var(--elem-x, 50%) var(--elem-y, 50%), 
+            #f5d47a 99%,      
+            #f1f1f1 100% 
+        );
+        
+        background-origin: padding-box; 
+        background-attachment: scroll; 
+        background-clip: text;
+        -webkit-background-clip: text;
+        background-repeat: no-repeat;
+        will-change: background;
+    }
+
+    /* 7. HIDDEN WORDS (Clip-Path Logic) */
+    .quote-trigger-wrap h1 span, 
+    .quote-trigger-wrap p {
+        position: relative;
+        display: inline-block;
+        
+        /* Base: Solid Black (Invisible) */
+        color: #050505 !important;
+        -webkit-text-fill-color: #050505 !important;
+        background: none !important;
+        -webkit-text-stroke: 0 !important;
+    }
+
+    /* Top Layer: Solid Yellow (Clipped) */
+    .quote-trigger-wrap h1 span::before,
+    .quote-trigger-wrap p::before {
+        content: attr(data-text); 
+        position: absolute;
+        left: 0; top: 0;
+        width: 100%; height: 100%;
+        
+        color: #f5d47a;
+        -webkit-text-fill-color: #f5d47a;
+        background: none;
+        
+        /* The Flashlight Cutout */
+        clip-path: circle(var(--reveal-radius) at var(--elem-x, 50%) var(--elem-y, 50%));
+        pointer-events: none;
+        will-change: clip-path;
+    }
+    
+    .quote-trigger-wrap p {
+        margin-top: 5px; 
+        display: inline-block;
+        width: fit-content;
+    }
+
+    /* --- PHOTOGRAPHY CATEGORY OVERRIDE (DISABLES EFFECT) --- */
+    
+    /* 1. Disable Mouse Interactions */
+    .photography-bg-container.active-photography .quote-break,
+    .photography-bg-container.active-photography .quote-trigger-wrap {
+        pointer-events: none !important; /* Stop JS triggers */
+        cursor: auto !important;         /* Restore default mouse */
+    }
+
+    /* 2. Force Text Visibility (Normal Colors) */
+    .photography-bg-container.active-photography .quote-trigger-wrap h1 {
+        color: #f1f1f1 !important;
+        -webkit-text-fill-color: #f1f1f1 !important;
+        background: none !important;
+    }
+
+    .photography-bg-container.active-photography .quote-trigger-wrap h1 span {
+        color: #bbbbbb !important;
+        -webkit-text-fill-color: #bbbbbb !important;
+        background: none !important;
+    }
+
+    .photography-bg-container.active-photography .quote-trigger-wrap p {
+        color: #666 !important;
+        -webkit-text-fill-color: #666 !important;
+        background: none !important;
+    }
+
+    /* 3. Hide the Flashlight Overlay */
+    .photography-bg-container.active-photography .quote-trigger-wrap h1 span::before,
+    .photography-bg-container.active-photography .quote-trigger-wrap p::before {
+        display: none !important;
+    }
+
+
+    /* --- MOBILE OVERRIDE (GLOBAL DISABLE) --- */
+    @media (max-width: 768px) {
+        #magic-cursor { display: none !important; }
+        .quote-break, .quote-trigger-wrap { cursor: auto !important; }
+
+        .quote-trigger-wrap h1 {
+            color: #f1f1f1 !important;
+            -webkit-text-fill-color: #f1f1f1 !important;
+            background: none !important;
+        }
+
+        .quote-trigger-wrap h1 span {
+            color: #f1f1f1 !important;
+            -webkit-text-fill-color: #f1f1f1 !important;
+            background: none !important;
+        }
+
+        .quote-trigger-wrap p {
+            color: #888 !important;
+            -webkit-text-fill-color: #888 !important;
+            background: none !important;
+        }
+
+        .quote-trigger-wrap h1 span::before,
+        .quote-trigger-wrap p::before {
+            display: none !important;
+        }
+    }
+</style>
+
+<script>
+    (function() {
+        // A. SETUP WRAPPERS
+        const sections = document.querySelectorAll('.quote-break');
+        sections.forEach(sec => {
+            const h1 = sec.querySelector('h1');
+            const p = sec.querySelector('p');
+            
+            if (h1 && p && !h1.parentElement.classList.contains('quote-trigger-wrap')) {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'quote-trigger-wrap';
+                h1.parentNode.insertBefore(wrapper, h1);
+                wrapper.appendChild(h1);
+                wrapper.appendChild(p);
+            }
+
+            // Copy text for the Clip-Path effect
+            if(h1) {
+                const span = h1.querySelector('span');
+                if(span) span.setAttribute('data-text', span.innerText);
+            }
+            if(p) {
+                p.setAttribute('data-text', p.innerText);
+            }
+        });
+
+        // B. VARIABLES
+        const cursor = document.getElementById('magic-cursor');
+        const quoteSections = document.querySelectorAll('.quote-break'); 
+        const wrappers = document.querySelectorAll('.quote-trigger-wrap'); 
+        const activeTextElements = document.querySelectorAll('.quote-trigger-wrap h1, .quote-trigger-wrap h1 span, .quote-trigger-wrap p');
+        
+        let mouseX = -100, mouseY = -100;
+        let cursorX = -100, cursorY = -100;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        // C. ANIMATION LOOP
+        function animate() {
+            // Disable logic on mobile
+            if (window.innerWidth <= 768) return; 
+
+            const distX = mouseX - cursorX;
+            const distY = mouseY - cursorY;
+            cursorX += distX * 0.15;
+            cursorY += distY * 0.15;
+
+            cursor.style.left = cursorX + 'px';
+            cursor.style.top = cursorY + 'px';
+
+            activeTextElements.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                if (cursorX > rect.left - 300 && cursorX < rect.right + 300 &&
+                    cursorY > rect.top - 300 && cursorY < rect.bottom + 300) {
+                    
+                    const elemX = cursorX - rect.left;
+                    const elemY = cursorY - rect.top;
+                    el.style.setProperty('--elem-x', elemX + 'px');
+                    el.style.setProperty('--elem-y', elemY + 'px');
+                }
+            });
+
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // D. EVENTS
+        quoteSections.forEach(section => {
+            section.addEventListener('mouseenter', () => cursor.classList.add('visible'));
+            section.addEventListener('mouseleave', () => cursor.classList.remove('visible'));
+        });
+
+        wrappers.forEach(wrap => {
+            wrap.addEventListener('mouseenter', () => {
+                cursor.classList.add('active');
+                wrap.classList.add('active');
+            });
+            wrap.addEventListener('mouseleave', () => {
+                cursor.classList.remove('active');
+                wrap.classList.remove('active');
+            });
+        });
+    })();
+</script>
+
+<script>
+    // --- WOSKER HEADLINE: FINAL FIX (Prevents Double Animation) ---
+    (function() {
+        const container = document.getElementById('category-headline');
+        const menuItems = document.querySelectorAll('.filter-menu li, .show-more-menu li');
+        const navContainer = document.querySelector('.nav-right');
+        const pillContainer = document.querySelector('.show-more-menu');
+
+        let currentWordEl = null;
+
+        // 1. Helper: Create HTML
+        function createWordElement(text) {
+            const wordDiv = document.createElement('div');
+            wordDiv.classList.add('headline-word');
+            
+            // KEY FIX: Store the "raw" text for accurate comparison later
+            wordDiv.setAttribute('data-text', text);
+
+            const safeText = text ? text.trim() : "";
+            safeText.split('').forEach(char => {
+                const span = document.createElement('span');
+                span.classList.add('headline-char', 'enter-start'); 
+                span.innerHTML = char === ' ' ? '&nbsp;' : char; 
+                wordDiv.appendChild(span);
+            });
+            return wordDiv;
+        }
+
+        // 2. Animation & Logic
+        function switchText(newText) {
+            if (!container) return;
+            const textStr = newText ? newText.trim() : "";
+
+            // KEY FIX: Compare against the stored data-text (ignores &nbsp; mismatch)
+            if (currentWordEl && currentWordEl.getAttribute('data-text') === textStr) return;
+
+            // COLOR LOGIC: White for "FEATURED" or "HOME", Amber for others
+            const upper = textStr.toUpperCase();
+            const isWhite = (upper === "HOME" || upper === "FEATURED");
+            const color = isWhite ? "#ffffff" : "#ffba00"; 
+
+            const newWordEl = createWordElement(textStr);
+            newWordEl.style.color = color; 
+            container.appendChild(newWordEl);
+
+            if (currentWordEl) {
+                const oldChars = Array.from(currentWordEl.children);
+                oldChars.forEach((char, index) => {
+                    setTimeout(() => char.classList.add('exit'), index * 30); 
+                });
+                const oldEl = currentWordEl; 
+                setTimeout(() => {
+                    if (oldEl && oldEl.parentNode) oldEl.parentNode.removeChild(oldEl);
+                }, 1000);
+            }
+
+            setTimeout(() => {
+                const newChars = Array.from(newWordEl.children);
+                const centerIndex = (newChars.length - 1) / 2; 
+                newChars.forEach((char, index) => {
+                    const dist = Math.abs(index - centerIndex); 
+                    char.offsetHeight; 
+                    setTimeout(() => {
+                        char.classList.remove('enter-start');
+                        char.classList.add('enter-end');
+                    }, dist * 60); 
+                });
+            }, 50);
+
+            currentWordEl = newWordEl;
+        }
+
+        // --- SMART NAME HELPER ---
+        function getDisplayName(text) {
+            const clean = text ? text.trim().toUpperCase() : "";
+            
+            // LOGIC: Only show "Featured" if we are actually on the HOME page
+            if (clean === 'HOME') {
+                const activeItem = document.querySelector('.filter-menu li.active');
+                const isHomePage = activeItem && activeItem.getAttribute('data-filter') === 'all';
+                return isHomePage ? "Featured" : "HOME";
+            }
+            return text;
+        }
+
+        // 3. EVENTS
+        function updateToActive() {
+            const activeItem = document.querySelector('.filter-menu li.active');
+            if (activeItem) {
+                switchText(getDisplayName(activeItem.innerText));
+            } else {
+                switchText("Featured");
+            }
+        }
+        
+        // Run on load
+        updateToActive();
+
+        menuItems.forEach(item => {
+            // Click: We delay slightly to let the 'active' class update, 
+            // but the 'switchText' check above will block the animation if text matches.
+            item.addEventListener('click', () => setTimeout(updateToActive, 50));
+            
+            // Hover: Standard switch
+            item.addEventListener('mouseenter', () => {
+                const category = item.innerText;
+                if (category) switchText(getDisplayName(category));
+            });
+        });
+
+        if (navContainer) navContainer.addEventListener('mouseleave', updateToActive);
+        if (pillContainer) pillContainer.addEventListener('mouseleave', updateToActive);
+
+    })();
+</script>
+
+<script>
+    // --- FINAL PHYSICS: LINKS WORKING + NO STICKINESS ---
+    (function() {
+        const aboutBtn = document.getElementById('about-btn');
+        const closeBtn = document.getElementById('close-btn');
+        const physicsContainer = document.getElementById('physics-container');
+        const customCursor = document.getElementById('physics-cursor');
+
+        const Engine = Matter.Engine,
+              Render = Matter.Render,
+              Runner = Matter.Runner,
+              Bodies = Matter.Bodies,
+              Composite = Matter.Composite,
+              Mouse = Matter.Mouse,
+              MouseConstraint = Matter.MouseConstraint,
+              Events = Matter.Events,
+              Query = Matter.Query;
+
+        let engine, render, runner, mouseConstraint;
+        let isPhysicsRunning = false;
+
+        const roles = [
+            "Director", "Scriptwriter", "Content Creator", 
+            "Video Editor", "Sound Engineer", "Creative Producer", 
+            "Project Manager", "Filmmaker", "Colorist"
+        ];
+        
+        const styles = [
+            { box: '#c3fb50', text: '#1c1d22' }, 
+            { box: '#9feaff', text: '#080c0d' }, 
+            { box: '#ffea9f', text: '#47412c' }, 
+            { box: '#eaeaea', text: '#202020' }, 
+            { box: '#ffba00', text: '#3e341a' }, 
+            { box: '#a7ff9f', text: '#030403' }, 
+            { box: '#dbefe8', text: '#050605' }, 
+            { box: '#8330c2', text: '#e5d3f2' }, 
+            { box: '#d8c0ff', text: '#020203' } 
+        ];
+
+        function roundRect(ctx, x, y, width, height, radius) {
+            ctx.beginPath();
+            ctx.moveTo(x + radius, y);
+            ctx.lineTo(x + width - radius, y);
+            ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+            ctx.lineTo(x + width, y + height - radius);
+            ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+            ctx.lineTo(x + radius, y + height);
+            ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+            ctx.lineTo(x, y + radius);
+            ctx.quadraticCurveTo(x, y, x + radius, y);
+            ctx.closePath();
+        }
+
+        // --- FIX: FORCE DROP (Prevents Sticky Mouse) ---
+        function forceDrop() {
+            if (mouseConstraint) {
+                mouseConstraint.mouse.button = -1; 
+                mouseConstraint.body = null;       
+                mouseConstraint.constraint.bodyB = null; 
+            }
+        }
+
+        function initPhysics() {
+            if (window.innerWidth <= 768) return; // Mobile check
+            if (isPhysicsRunning) return;
+            isPhysicsRunning = true;
+
+            engine = Engine.create();
+            engine.world.gravity.y = 1.5; 
+
+            render = Render.create({
+                element: physicsContainer,
+                engine: engine,
+                options: {
+                    width: window.innerWidth,
+                    height: window.innerHeight,
+                    wireframes: false,
+                    background: 'transparent',
+                    pixelRatio: window.devicePixelRatio
+                }
+            });
+
+            // FIX: Canvas allows clicks to pass through to links
+            render.canvas.style.pointerEvents = 'none';
+
+            // Walls
+            const wallOpts = { isStatic: true, render: { visible: false }, friction: 0.5, restitution: 0.2 };
+            const thickness = 100;
+            const floor = Bodies.rectangle(window.innerWidth/2, window.innerHeight + (thickness/2), window.innerWidth, thickness, wallOpts);
+            const leftWall = Bodies.rectangle(-thickness/2, window.innerHeight/2, thickness, window.innerHeight * 2, wallOpts);
+            const rightWall = Bodies.rectangle(window.innerWidth + (thickness/2), window.innerHeight/2, thickness, window.innerHeight * 2, wallOpts);
+            const ceiling = Bodies.rectangle(window.innerWidth/2, -thickness/2, window.innerWidth, thickness, wallOpts);
+
+            Composite.add(engine.world, [floor, leftWall, rightWall]);
+            setTimeout(() => Composite.add(engine.world, ceiling), 2500);
+
+            // Photo Collider
+            const photoElem = document.querySelector('.about-photo-col'); 
+            if (photoElem) {
+                const rect = photoElem.getBoundingClientRect();
+                const photoBody = Bodies.rectangle(
+                    rect.left + (rect.width / 2), 
+                    rect.top + (rect.height / 2), 
+                    rect.width, rect.height, 
+                    { isStatic: true, render: { visible: false }, chamfer: { radius: 35 } }
+                );
+                Composite.add(engine.world, photoBody);
+            }
+
+            // Spawn Roles
+            roles.forEach((role, index) => {
+                const width = role.length * 18 + 50; 
+                const height = 64; 
+                const radius = 32; 
+                const x = Math.random() * (window.innerWidth - 300) + 150;
+                const y = -150 - (index * 140); 
+                const style = styles[index % styles.length];
+
+                const box = Bodies.rectangle(x, y, width, height, {
+                    restitution: 0.4, friction: 0.3, frictionAir: 0.02, density: 0.2,      
+                    chamfer: { radius: radius }, render: { visible: false }, label: role,
+                    customBoxColor: style.box, customTextColor: style.text,
+                    customWidth: width, customHeight: height, customRadius: radius
+                });
+                Composite.add(engine.world, box);
+            });
+
+            // --- SMART INTERACTION ---
+            const mouse = Mouse.create(document.body);
+            mouse.pixelRatio = window.devicePixelRatio;
+
+            mouseConstraint = MouseConstraint.create(engine, {
+                mouse: mouse,
+                constraint: { stiffness: 0.1, damping: 0.1, render: { visible: false } }
+            });
+            Composite.add(engine.world, mouseConstraint);
+
+            Events.on(engine, 'beforeUpdate', function() {});
+            
+            // --- FIX: LINK PROTECTION ---
+            function handleMouseDown(e) {
+                // If clicking a link, KILL the physics grab immediately
+                if (e.target.closest('a') || e.target.closest('button')) {
+                    mouseConstraint.mouse.button = -1;
+                    mouseConstraint.body = null;
+                    return; 
+                }
+            }
+            window.addEventListener('mousedown', handleMouseDown);
+
+            // --- FIX: GLOBAL RELEASE (Stops Stickiness) ---
+            window.addEventListener('mouseup', forceDrop);
+            document.documentElement.addEventListener('mouseleave', forceDrop);
+
+            // Render Loop
+            Events.on(render, 'afterRender', function() {
+                const ctx = render.context;
+                const bodies = Composite.allBodies(engine.world);
+
+                bodies.forEach(body => {
+                    if (!body.isStatic && body.label) {
+                        const { x, y } = body.position;
+                        const w = body.customWidth;
+                        const h = body.customHeight;
+                        const r = body.customRadius;
+                        
+                        ctx.save();
+                        ctx.translate(x, y);
+                        ctx.rotate(body.angle);
+                        
+                        roundRect(ctx, -w/2, -h/2, w, h, r);
+                        ctx.fillStyle = body.customBoxColor;
+                        ctx.fill();
+                        
+                        ctx.font = "600 32px 'Outfit', sans-serif"; 
+                        ctx.textAlign = "center";
+                        ctx.textBaseline = "middle";
+                        ctx.fillStyle = body.customTextColor; 
+                        
+                        ctx.fillText(body.label, 0, 2); 
+                        ctx.restore();
+                    }
+                });
+            });
+
+            Render.run(render);
+            runner = Runner.create();
+            Runner.run(runner, engine);
+            
+            customCursor.style.display = 'block';
+            window.addEventListener('mousemove', updateCursor);
+        }
+
+        function stopPhysics() {
+            // Remove Listeners
+            document.documentElement.removeEventListener('mouseleave', forceDrop);
+            window.removeEventListener('mouseup', forceDrop);
+            
+            if (isPhysicsRunning) {
+                Render.stop(render); Runner.stop(runner);
+                if (render.canvas) render.canvas.remove();
+                Composite.clear(engine.world); Engine.clear(engine);
+                isPhysicsRunning = false;
+                physicsContainer.innerHTML = '';
+                customCursor.style.display = 'none';
+                window.removeEventListener('mousemove', updateCursor);
+            }
+        }
+
+        function updateCursor(e) {
+            customCursor.style.left = e.clientX + 'px';
+            customCursor.style.top = e.clientY + 'px';
+        }
+
+        aboutBtn.addEventListener('click', () => setTimeout(initPhysics, 300));
+        closeBtn.addEventListener('click', stopPhysics);
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') stopPhysics(); });
+
+    })();
+</script>
+
 </body>
 </html>
