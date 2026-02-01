@@ -2687,7 +2687,7 @@ html, body {
 /* 1. CONTAINER: Centers everything perfectly */
 .preroll-text {
     position: absolute;
-    bottom: 130px; 
+    bottom: 130px; /* Aligned with button position */
     left: 50%;
     transform: translateX(-50%);
     
@@ -2695,22 +2695,23 @@ html, body {
     font-size: 1.5rem;
     font-weight: 700;
     letter-spacing: 0em;
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.9);
     
     z-index: 50;
     white-space: nowrap;
     display: flex; /* Keeps letters in a row */
+    pointer-events: none;
 }
 
 /* 2. INDIVIDUAL LETTERS (Controlled by JS) */
 .preroll-char {
-    opacity: 0; /* Hidden by default */
+    opacity: 0; 
     display: inline-block;
-    filter: blur(10px);
-    transform: scale(1.5);
+    filter: blur(12px);
+    transform: scale(1.6);
     
     /* The Animation: Blur -> Clear */
-    animation: cinemaReveal 0.8s cubic-bezier(0.2, 1, 0.3, 1) forwards;
+    animation: cinemaReveal 1.2s cubic-bezier(0.2, 1, 0.3, 1) forwards;
 }
 
 @keyframes cinemaReveal {
@@ -2721,31 +2722,57 @@ html, body {
     }
 }
 
-/* 3. BUTTON: HARD HIDDEN by default */
+/* 3. BUTTON: HARD HIDDEN INITIALLY */
 .enter-btn {
-    /* ... your existing glass styles ... */
+    /* Your Glassy Styles */
+    position: absolute;
+    bottom: 115px; 
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(40, 40, 40, 0.35);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+    padding: 16px 40px;
+    border-radius: 50px;
+    color: #fff;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    z-index: 60;
     
-    /* OVERRIDE: Absolutely hidden */
-    opacity: 0 !important;
-    pointer-events: none !important;
-    transform: translateX(-50%) scale(0.9);
-    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+    /* CRITICAL: Hidden Start State */
+    opacity: 0;
+    visibility: hidden; /* Ensures it can't be clicked or seen */
+    transform: translateX(-50%) scale(0.95);
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), visibility 0s linear 0.8s;
 }
 
 /* 4. THE SWAP STATES */
 
-/* State A: Text Fades Out (Blurry Exit) */
+/* State A: Text Fades Out */
 .preroll-text.fade-out {
     opacity: 0;
     filter: blur(20px);
     transform: translateX(-50%) scale(1.1);
-    transition: opacity 0.6s ease, filter 0.6s ease, transform 0.6s ease;
+    transition: opacity 0.8s ease, filter 0.8s ease, transform 0.8s ease;
 }
 
 /* State B: Button Fades In */
 body.video-playing .enter-btn {
-    opacity: 1 !important;
-    pointer-events: auto !important;
+    visibility: visible;
+    opacity: 1;
     transform: translateX(-50%) scale(1);
-    transition-delay: 0.4s; /* Wait for text to disappear first */
+    transition-delay: 0.2s; /* Wait for text to start fading */
+    transition: opacity 0.8s ease 0.2s, transform 0.8s cubic-bezier(0.25, 1, 0.5, 1) 0.2s;
+}
+
+/* Hover Effects */
+.enter-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateX(-50%) translateY(-2px);
 }

@@ -2132,7 +2132,7 @@
 <button id="floating-top" aria-label="Back to Top">↑</button>
 
     <script>
-// --- FINAL HERO LOGIC (CIRCULAR LOADER) ---
+    // --- FINAL HERO LOGIC (RESTORED & UPGRADED) ---
     const hero = document.getElementById('hero');
     const heroVideo = document.getElementById('hero-video');
     const mainGallery = document.getElementById('gallery');
@@ -2142,106 +2142,124 @@
     const progressRing = document.getElementById('loader-ring');
     const loaderWrap = document.querySelector('.circle-loader-wrap');
     
-    // Circle Math: Radius 54 -> Circumference ~339.29
-    const circumference = 339.29;
+    // Text & Button Elements
+    const textContainer = document.getElementById('preroll-text');
+    const actionBtn = document.getElementById('action-btn');
     
+    // Config
+    const circumference = 339.29;
     let heroFinished = false;
     let loadInterval;
+    
+    // 1. Setup Cinematic Text Animation (Immediately)
+    const phrase = "Sound... Lights... Camera...";
+    const animDuration = 2200; // Time allowed for text to animate fully
+    let animationStartTime = Date.now();
 
+    if (textContainer) {
+        textContainer.innerHTML = ''; 
+        phrase.split('').forEach((char, index) => {
+            const span = document.createElement('span');
+            span.textContent = char === ' ' ? '\u00A0' : char; 
+            span.className = 'preroll-char';
+            span.style.animationDelay = `${index * 80}ms`; // Staggered reveal
+            textContainer.appendChild(span);
+        });
+    }
+
+    // 2. Core Function: Dismiss Hero (Restored!)
+    function completeHeroDismiss() {
+        if (heroFinished) return;
+        heroFinished = true;
+        
+        clearInterval(loadInterval);
+        document.body.classList.add('hero-done');
+        
+        // Hide loader/text/button immediately
+        if (loaderWrap) loaderWrap.style.opacity = '0';
+        if (textContainer) textContainer.style.opacity = '0';
+        if (actionBtn) actionBtn.style.opacity = '0';
+        
+        // Fade out hero background
+        if (hero) {
+            hero.style.opacity = '0';
+            hero.style.pointerEvents = 'none';
+            setTimeout(() => { hero.style.display = 'none'; }, 1000);
+        }
+        
+        if (heroVideo) heroVideo.pause();
+        window.scrollTo(0, 0);
+
+        // Release the Sticky Menu after animation
+        setTimeout(() => {
+            if (mainGallery) {
+                mainGallery.style.transform = 'none';
+                mainGallery.style.willChange = 'auto'; 
+            }
+        }, 2100);
+
+        if (window.innerWidth <= 768) {
+            window.dispatchEvent(new Event('resize')); 
+        }
+    }
+
+    // 3. Loader Logic
     function setProgress(percent) {
         if (numberDisplay) numberDisplay.innerText = percent;
         if (progressRing) {
-            // Calculate how much dash is hidden
             const offset = circumference - (percent / 100) * circumference;
             progressRing.style.strokeDashoffset = offset;
         }
     }
 
-    function completeHeroDismiss() {
-    if (heroFinished) return;
-    heroFinished = true;
-    
-    clearInterval(loadInterval);
-    
-    document.body.classList.add('hero-done');
-    
-    // Fade out specific elements first
-    if (loaderWrap) loaderWrap.style.opacity = '0';
-    
-    if (hero) {
-        hero.style.opacity = '0';
-        hero.style.pointerEvents = 'none';
-        // This hides the hero layer visually after 1s
-        setTimeout(() => { hero.style.display = 'none'; }, 1000);
-    }
-    
-    if (heroVideo) heroVideo.pause();
-    window.scrollTo(0, 0);
-
-    // --- THE CRITICAL FIX IS HERE ---
-    // We changed 1000ms to 2100ms. 
-    // This waits for the CSS animation (1.9s) to finish completely
-    // before releasing the menu so it can stick.
-    setTimeout(() => {
-        if (mainGallery) {
-            mainGallery.style.transform = 'none';
-            // Optional: cleans up memory usage
-            mainGallery.style.willChange = 'auto'; 
-        }
-    }, 2100);
-
-    if (window.innerWidth <= 768) {
-        window.dispatchEvent(new Event('resize')); 
-        setTimeout(() => window.dispatchEvent(new Event('resize')), 500);
-    }
-}
-
-    // 1. ANIMATE LOADER (0 -> 99)
     let progress = 0;
     loadInterval = setInterval(() => {
-        let increment = (progress > 85) ? 0.5 : 1; // Slow down at the end
+        let increment = (progress > 85) ? 0.5 : 1; 
         if (progress < 99) {
             progress += increment;
             setProgress(Math.floor(progress));
         }
     }, 30); 
 
-    // 2. SAFETY TIMER (4s)
+    // 4. Video Play Listener (The Sync Logic)
+    if (heroVideo) {
+        heroVideo.addEventListener('playing', () => {
+            // A. Finish Loader
+            setProgress(100);
+            clearTimeout(safetyTimer);
+            clearInterval(loadInterval);
+            setTimeout(() => { if (loaderWrap) loaderWrap.style.opacity = '0'; }, 200);
+
+            // B. Calculate Remaining Animation Time
+            const now = Date.now();
+            const elapsed = now - animationStartTime;
+            const remaining = Math.max(0, animDuration - elapsed);
+
+            // C. Wait, then Swap
+            setTimeout(() => {
+                if (textContainer) textContainer.classList.add('fade-out');
+                document.body.classList.add('video-playing'); // Triggers button fade-in
+            }, remaining);
+        });
+
+        heroVideo.play().catch(e => console.log("Autoplay waiting..."));
+    }
+
+    // 5. Safety Timer (Failsafe)
     let safetyTimer = setTimeout(() => {
         if (!heroFinished && window.scrollY < 50) {
-            console.log("Timer skipped hero");
-            completeHeroDismiss();
+            // If video fails to play after 4s, show the button anyway
+            document.body.classList.add('video-playing');
+            if (loaderWrap) loaderWrap.style.opacity = '0';
+            if (textContainer) textContainer.classList.add('fade-out');
         }
     }, 4000);
 
-    // 3. VIDEO START LISTENER
-if (heroVideo) {
-    heroVideo.addEventListener('playing', () => {
-        // A. Handle the Circle Loader (Existing code)
-        setProgress(100);
-        clearTimeout(safetyTimer);
-        clearInterval(loadInterval);
-        
-        setTimeout(() => {
-            if (loaderWrap) loaderWrap.style.opacity = '0';
-        }, 200);
-
-        // B. NEW: Trigger the Text-to-Button Swap
-        // This adds the class that blurs the text and reveals "Action."
-        document.body.classList.add('video-playing'); 
-    });
-
-    heroVideo.play().catch(e => console.log("Autoplay waiting..."));
-}
-
-    // 4. MANUAL INTERACTION
+    // 6. Manual Interaction (Optional: Keep or Remove)
+    // Allows scrolling to dismiss if they ignore the button
     window.addEventListener('wheel', (e) => { 
         if (!heroFinished) { e.preventDefault(); completeHeroDismiss(); } 
     }, { passive: false });
-    
-    if (hero) hero.addEventListener('click', completeHeroDismiss);
-
-    // END
 
         // --- FILTER & SHOW MORE LOGIC (Restored Original Logic) ---
         const filterItems = document.querySelectorAll('.filter-menu li');
