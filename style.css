@@ -2684,10 +2684,61 @@ html, body {
     animation: fadeInFrame 1s ease-out 0.5s forwards; 
 }
 
-/* Replace '.skip-hint' with the ACTUAL class name of your text */
-.skip-hint, 
-#hero p, 
-#hero h1 { 
-    position: relative; 
-    z-index: 50 !important; /* Higher than the frame (20) */
+/* 1. THE PRE-ROLL TEXT (Typewriter Style) */
+.preroll-text {
+    position: absolute;
+    bottom: 130px; 
+    left: 50%;
+    transform: translateX(-50%);
+    
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0em;
+    color: rgba(255, 255, 255, 0.8);
+    
+    z-index: 50;
+    white-space: nowrap;      /* Keeps text on one line */
+    overflow: hidden;         /* Hides letters before they are typed */
+    
+    /* The Typing Cursor */
+    border-right: 2px solid rgba(255, 255, 255, 0.8);
+    
+    /* Start with width 0 (invisible) */
+    width: 0;
+    
+    /* Animation: Name | Duration | Timing | Delay | Fill Mode */
+    /* 3.5s duration buys you plenty of load time */
+    animation: 
+        typing 3.5s steps(40, end) forwards, 
+        blink-caret 0.75s step-end infinite;
+    
+    transition: opacity 0.5s ease, filter 0.5s ease, transform 0.5s ease;
+}
+
+/* The Typing Motion */
+@keyframes typing {
+    from { width: 0 }
+    to { width: 100% } /* Reveals the text */
+}
+
+/* The Cursor Blinking */
+@keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: rgba(255, 255, 255, 0.8); }
+}
+
+/* 2. THE SWAP (Triggered by JS) */
+body.video-playing .preroll-text {
+    opacity: 0;
+    filter: blur(10px);
+    transform: translateX(-50%) scale(1.1);
+    border-right: none; /* Hide cursor when fading out */
+}
+
+body.video-playing .enter-btn {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) scale(1);
+    transition-delay: 0.2s; /* Small pause for elegance */
 }

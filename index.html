@@ -76,7 +76,9 @@
         </svg>
         <div id="loader-number" class="loader-number">0</div>
     </div>
-        <button class="enter-btn" onclick="completeHeroDismiss()">Action.</button>
+        <div id="preroll-text" class="preroll-text">Sound... Lights... Camera...</div>
+
+<button id="action-btn" class="enter-btn" onclick="completeHeroDismiss()">Action.</button>
     </div>
 
     <header>
@@ -2212,22 +2214,25 @@
         }
     }, 4000);
 
-    // 3. VIDEO START
-    if (heroVideo) {
-        heroVideo.addEventListener('playing', () => {
-            // Fill circle instantly
-            setProgress(100);
-            clearTimeout(safetyTimer);
-            clearInterval(loadInterval);
-            
-            // Wait a tiny moment so user sees "100", then fade out
-            setTimeout(() => {
-                if (loaderWrap) loaderWrap.style.opacity = '0';
-            }, 200);
-        });
+    // 3. VIDEO START LISTENER
+if (heroVideo) {
+    heroVideo.addEventListener('playing', () => {
+        // A. Handle the Circle Loader (Existing code)
+        setProgress(100);
+        clearTimeout(safetyTimer);
+        clearInterval(loadInterval);
+        
+        setTimeout(() => {
+            if (loaderWrap) loaderWrap.style.opacity = '0';
+        }, 200);
 
-        heroVideo.play().catch(e => console.log("Autoplay waiting..."));
-    }
+        // B. NEW: Trigger the Text-to-Button Swap
+        // This adds the class that blurs the text and reveals "Action."
+        document.body.classList.add('video-playing'); 
+    });
+
+    heroVideo.play().catch(e => console.log("Autoplay waiting..."));
+}
 
     // 4. MANUAL INTERACTION
     window.addEventListener('wheel', (e) => { 
