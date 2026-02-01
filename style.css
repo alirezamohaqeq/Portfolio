@@ -1518,6 +1518,7 @@ body.hero-hint-on #hero .skip-hint { opacity: 1; }
     padding: 20px 0 5px; /* Reduced bottom padding since it floats now */
     
     /* STICKY MAGIC */
+    position: -webkit-sticky;
     position: sticky;
     top: 70px; /* Sits comfortably below the "ALEE" signature/Header */
     z-index: 80; /* High enough to float over cards, low enough to be under overlays */
@@ -2552,5 +2553,38 @@ body.no-scroll #floating-top {
     }
     #category-headline {
         height: 110px !important;
+    }
+}
+
+/* --- CRITICAL FIX FOR STICKY MENU --- */
+html, body {
+    height: auto !important; /* Forces the page to scroll naturally */
+    overflow-x: clip !important; /* Stops horizontal scroll without breaking sticky */
+    overflow-y: visible !important; /* Ensures vertical scrolling works */
+}
+
+/* Ensure the gallery doesn't trap the menu */
+#gallery {
+    /* Only keeping this to allow sticky. */
+    /* We REMOVED transform and transition so the original animation works! */
+    overflow: visible !important; 
+}
+
+/* Force the menu to stick - WITH OFFSET */
+.show-more-wrap {
+    position: -webkit-sticky !important;
+    position: sticky !important;
+    
+    /* 85px pushes it down below the signature. 
+       Adjust this number if you need more/less space. */
+    top: 85px !important; 
+    
+    z-index: 999 !important;
+}
+
+/* Tablet & Mobile Tweaks: usually the header is smaller here */
+@media (max-width: 768px) {
+    .show-more-wrap {
+        top: 60px !important; /* Smaller gap for mobile screens */
     }
 }

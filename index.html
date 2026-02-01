@@ -2156,34 +2156,43 @@
     }
 
     function completeHeroDismiss() {
-        if (heroFinished) return;
-        heroFinished = true;
-        
-        clearInterval(loadInterval);
-        
-        document.body.classList.add('hero-done');
-        
-        // Fade out specific elements first
-        if (loaderWrap) loaderWrap.style.opacity = '0';
-        
-        if (hero) {
-            hero.style.opacity = '0';
-            hero.style.pointerEvents = 'none';
-            setTimeout(() => { hero.style.display = 'none'; }, 1000);
-        }
-        
-        if (heroVideo) heroVideo.pause();
-        window.scrollTo(0, 0);
-
-        setTimeout(() => {
-            mainGallery.style.transform = 'none';
-        }, 1000);
-
-        if (window.innerWidth <= 768) {
-            window.dispatchEvent(new Event('resize')); 
-            setTimeout(() => window.dispatchEvent(new Event('resize')), 500);
-        }
+    if (heroFinished) return;
+    heroFinished = true;
+    
+    clearInterval(loadInterval);
+    
+    document.body.classList.add('hero-done');
+    
+    // Fade out specific elements first
+    if (loaderWrap) loaderWrap.style.opacity = '0';
+    
+    if (hero) {
+        hero.style.opacity = '0';
+        hero.style.pointerEvents = 'none';
+        // This hides the hero layer visually after 1s
+        setTimeout(() => { hero.style.display = 'none'; }, 1000);
     }
+    
+    if (heroVideo) heroVideo.pause();
+    window.scrollTo(0, 0);
+
+    // --- THE CRITICAL FIX IS HERE ---
+    // We changed 1000ms to 2100ms. 
+    // This waits for the CSS animation (1.9s) to finish completely
+    // before releasing the menu so it can stick.
+    setTimeout(() => {
+        if (mainGallery) {
+            mainGallery.style.transform = 'none';
+            // Optional: cleans up memory usage
+            mainGallery.style.willChange = 'auto'; 
+        }
+    }, 2100);
+
+    if (window.innerWidth <= 768) {
+        window.dispatchEvent(new Event('resize')); 
+        setTimeout(() => window.dispatchEvent(new Event('resize')), 500);
+    }
+}
 
     // 1. ANIMATE LOADER (0 -> 99)
     let progress = 0;
