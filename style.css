@@ -78,16 +78,30 @@
     padding: 0;
 }
 
+/* GLOBAL FIX: Lock width to prevent carousel from pushing page wide */
+html {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden !important;
+}
+
 body {
+    /* New Layout Fixes */
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden !important;
+    overscroll-behavior-x: none; /* Stops "bounce" scroll on iOS */
+    
+    /* Your Original Styles */
     background-color: #050505;
     color: #f0f0f0;
     font-family: "Courier New", Courier, monospace;
-    overflow-x: hidden;
     padding: 20px 15px;
     position: relative;
-    overflow-y: hidden; /* lock scroll until hero is dismissed */
+    overflow-y: hidden;
     transition: background-color 0.4s ease;
 }
+
 body.hero-done {
   overflow-y: auto; /* unlock scroll after hero */
 }
@@ -125,11 +139,63 @@ body.hero-done .top-signature {
     transition: opacity 1.2s ease, transform 1.2s ease;
 }
 
+/* --- CIRCULAR LOADER STYLES --- */
+.circle-loader-wrap {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 120px;
+    height: 120px;
+    z-index: 20;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.5s ease;
+}
+
+.circle-loader-svg {
+    transform: rotate(-90deg); /* Start from top */
+}
+
+/* 1. The Track (Dark Grey Ring) */
+.loader-track {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.15);
+    stroke-width: 4; /* Thickness of the empty ring */
+}
+
+/* 2. The Progress (White Filling Ring) */
+.loader-progress {
+    fill: none;
+    stroke: #ffffff;
+    stroke-width: 4; /* Thickness of the filled ring */
+    stroke-linecap: round; /* Rounded ends look nicer */
+    
+    /* MATH: 2 * PI * R (54) ≈ 339.29 */
+    stroke-dasharray: 339.29; 
+    stroke-dashoffset: 339.29; /* Start empty */
+    
+    transition: stroke-dashoffset 0.1s linear; /* Smooth filling */
+}
+
+/* 3. The Number */
+.loader-number {
+    position: absolute;
+    font-family: 'Outfit', sans-serif; /* Clean font */
+    font-size: 1.2rem; /* Small size */
+    font-weight: 600;
+    color: #ffffff;
+    letter-spacing: 1px;
+}
+
 #hero video {
     width: 100%;
     height: 100%;
     object-fit: cover;   /* fills the screen, keeps aspect ratio, crops if needed */
     display: block;
+    transition: opacity 1s ease;
 }
 
 .skip-hint {
@@ -145,6 +211,7 @@ body.hero-done .top-signature {
     font-weight: 700;               /* bold */
     text-align: center;
     text-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
+    cursor: pointer;
 
     animation: hint-pulse 1.6s ease-in-out infinite;
 }
@@ -429,7 +496,7 @@ body.hero-done #gallery {
 @media (max-width: 780px) {
     /* 1. ALLOW CONTENT TO SLIDE OFF-SCREEN NATURALLY */
     .featured-strip-viewport {
-        width: 100%;
+        width: 100% !important;
         overflow: visible !important; /* Stops the "cutoff" */
         --peek: 0px; 
     }
@@ -770,13 +837,16 @@ video {
     top: 0; left: 0;
     width: 100%; height: 100%;
     z-index: 10; 
-    pointer-events: none !important; /* <--- THIS IS THE KEY FIX */
+    
+    /* FIX: Allow touches, but disable browser scrolling */
+    pointer-events: auto !important; 
+    touch-action: none; 
 }
 
 /* 2. Content: Visible but un-selectable (prevents blue highlighting) */
 .about-content-layout {
     position: relative;
-    z-index: 5; 
+    z-index: 20; 
     pointer-events: none; 
     
     /* FIX: Disables text highlighting while dragging boxes */
@@ -2305,6 +2375,7 @@ body.no-scroll #floating-top {
     z-index: 10; /* Physics on TOP so you can grab boxes */
     pointer-events: auto;
     overflow: hidden;
+    touch-action: none;
 }
 
 /* 2. Make Content visible UNDER the physics layer */
@@ -2385,5 +2456,101 @@ body.no-scroll #floating-top {
         width: 100vw !important;
         max-width: 100% !important;
         overflow: hidden !important;
+    }
+}
+
+/* --- FIX: FORCE LINKS TO BE CLICKABLE --- */
+
+/* 1. Ensure the container sits ABOVE the physics canvas */
+.about-content-layout {
+    position: relative !important;
+    z-index: 50 !important; /* Higher than #physics-container (10) */
+    pointer-events: none !important; /* Let clicks pass through empty space */
+}
+
+/* 2. Target EVERY link and button inside the About section */
+.about-content a, 
+.about-content button, 
+.contact-info a, 
+.socials a,
+.close-btn {
+    /* CRITICAL: Re-enable mouse interaction */
+    pointer-events: auto !important; 
+    cursor: pointer !important;
+    
+    /* CRITICAL: 'position' is required for z-index to work */
+    position: relative !important; 
+    z-index: 9999 !important; /* Force it to the very top */
+}
+
+/* 3. Ensure the text column itself doesn't block clicks */
+.about-text-col,
+.about-photo-col {
+    pointer-events: none !important;
+    position: relative !important;
+    z-index: 50 !important;
+}
+
+/* --- FIX: PIN CLOSE BUTTON TO TOP-RIGHT --- */
+.close-btn {
+    /* Break out of any flex container */
+    position: fixed !important; 
+    
+    /* Pin to top-right corner */
+    top: 30px !important;
+    right: 30px !important;
+    
+    /* Ensure it sits on top of EVERYTHING (Physics & Text) */
+    z-index: 10000 !important; 
+    
+    /* Reset margins/transforms that might be pushing it */
+    margin: 0 !important;
+    transform: none !important;
+    
+    /* Keep your existing look */
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 3rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+/* Hover Effect (Optional, keeps it snappy) */
+.close-btn:hover {
+    transform: rotate(90deg) !important;
+    transition: transform 0.3s ease;
+}
+
+/* Mobile Tweak: Move it slightly inward so it doesn't hit the screen edge */
+@media (max-width: 768px) {
+    .close-btn {
+        top: 20px !important;
+        right: 20px !important;
+        font-size: 2.5rem !important; /* Slightly smaller on phone */
+    }
+}
+
+/* --- TABLET FIX: Resize Wosker Headline --- */
+@media screen and (max-width: 1300px) {
+    .headline-word {
+        /* Reduce from 12rem to 8rem to prevent cutoff */
+        font-size: 8rem !important; 
+    }
+
+    #category-headline {
+        /* Shrink the container height to match the smaller text */
+        height: 140px !important; 
+        margin-top: 5px !important;
+    }
+}
+
+/* Optional: Even smaller for Portrait Tablets (like iPad vertical) */
+@media screen and (max-width: 900px) {
+    .headline-word {
+        font-size: 6rem !important;
+    }
+    #category-headline {
+        height: 110px !important;
     }
 }

@@ -68,8 +68,14 @@
     <img src="images/Signature.png" alt="Alee Signature" class="top-signature">
 
     <div id="hero" class="hero">
-        <video id="hero-video" src="videos/hero-signature.mp4" autoplay muted playsinline preload="auto"></video>
-        <div id="hero-loader" class="hero-loader" aria-label="Loading"></div>
+        <video id="hero-video" src="videos/hero-signature.mp4" poster="images/hero-cover.jpg" autoplay muted playsinline preload="auto"></video>
+        <div class="circle-loader-wrap">
+        <svg class="circle-loader-svg" width="120" height="120" viewBox="0 0 120 120">
+            <circle class="loader-track" cx="60" cy="60" r="54"></circle>
+            <circle id="loader-ring" class="loader-progress" cx="60" cy="60" r="54"></circle>
+        </svg>
+        <div id="loader-number" class="loader-number">0</div>
+    </div>
         <div class="skip-hint">Scroll or tap to continue</div>
     </div>
 
@@ -2124,54 +2130,104 @@
 <button id="floating-top" aria-label="Back to Top">↑</button>
 
     <script>
-    // --- FINAL CINEMATIC HERO & MOBILE FIX ---
+// --- FINAL HERO LOGIC (CIRCULAR LOADER) ---
     const hero = document.getElementById('hero');
     const heroVideo = document.getElementById('hero-video');
     const mainGallery = document.getElementById('gallery');
+    
+    // Loader Elements
+    const numberDisplay = document.getElementById('loader-number');
+    const progressRing = document.getElementById('loader-ring');
+    const loaderWrap = document.querySelector('.circle-loader-wrap');
+    
+    // Circle Math: Radius 54 -> Circumference ~339.29
+    const circumference = 339.29;
+    
     let heroFinished = false;
+    let loadInterval;
+
+    function setProgress(percent) {
+        if (numberDisplay) numberDisplay.innerText = percent;
+        if (progressRing) {
+            // Calculate how much dash is hidden
+            const offset = circumference - (percent / 100) * circumference;
+            progressRing.style.strokeDashoffset = offset;
+        }
+    }
 
     function completeHeroDismiss() {
         if (heroFinished) return;
         heroFinished = true;
         
+        clearInterval(loadInterval);
+        
         document.body.classList.add('hero-done');
+        
+        // Fade out specific elements first
+        if (loaderWrap) loaderWrap.style.opacity = '0';
+        
         if (hero) {
             hero.style.opacity = '0';
             hero.style.pointerEvents = 'none';
             setTimeout(() => { hero.style.display = 'none'; }, 1000);
         }
+        
         if (heroVideo) heroVideo.pause();
         window.scrollTo(0, 0);
 
         setTimeout(() => {
             mainGallery.style.transform = 'none';
-        }, 1200); // Waits for the 1.1s CSS transition to finish
+        }, 1000);
 
-        // MOBILE FIX: Force carousels to recalculate layout after dismiss
-        // We trigger it twice: once instantly, once after the layout settles
         if (window.innerWidth <= 768) {
             window.dispatchEvent(new Event('resize')); 
-            setTimeout(() => {
-                window.dispatchEvent(new Event('resize'));
-            }, 500);
+            setTimeout(() => window.dispatchEvent(new Event('resize')), 500);
         }
     }
 
-    if (window.innerWidth <= 768) {
-        completeHeroDismiss();
-    } else {
-        if (heroVideo) {
-            heroVideo.addEventListener('playing', () => {
-                document.body.classList.add('hero-ready');
-            }, { once: true });
-            heroVideo.addEventListener('ended', completeHeroDismiss);
+    // 1. ANIMATE LOADER (0 -> 99)
+    let progress = 0;
+    loadInterval = setInterval(() => {
+        let increment = (progress > 85) ? 0.5 : 1; // Slow down at the end
+        if (progress < 99) {
+            progress += increment;
+            setProgress(Math.floor(progress));
         }
-        window.addEventListener('wheel', (e) => { 
-            if (!heroFinished) { e.preventDefault(); completeHeroDismiss(); } 
-        }, { passive: false });
-        if (hero) hero.addEventListener('click', completeHeroDismiss);
+    }, 30); 
+
+    // 2. SAFETY TIMER (4s)
+    let safetyTimer = setTimeout(() => {
+        if (!heroFinished && window.scrollY < 50) {
+            console.log("Timer skipped hero");
+            completeHeroDismiss();
+        }
+    }, 4000);
+
+    // 3. VIDEO START
+    if (heroVideo) {
+        heroVideo.addEventListener('playing', () => {
+            // Fill circle instantly
+            setProgress(100);
+            clearTimeout(safetyTimer);
+            clearInterval(loadInterval);
+            
+            // Wait a tiny moment so user sees "100", then fade out
+            setTimeout(() => {
+                if (loaderWrap) loaderWrap.style.opacity = '0';
+            }, 200);
+        });
+
+        heroVideo.play().catch(e => console.log("Autoplay waiting..."));
     }
-    // --- END HERO LOGIC ---
+
+    // 4. MANUAL INTERACTION
+    window.addEventListener('wheel', (e) => { 
+        if (!heroFinished) { e.preventDefault(); completeHeroDismiss(); } 
+    }, { passive: false });
+    
+    if (hero) hero.addEventListener('click', completeHeroDismiss);
+
+    // END
 
         // --- FILTER & SHOW MORE LOGIC (Restored Original Logic) ---
         const filterItems = document.querySelectorAll('.filter-menu li');
@@ -3250,7 +3306,7 @@ window.addEventListener('popstate', () => {
 
 
     /* --- MOBILE OVERRIDE (GLOBAL DISABLE) --- */
-    @media (max-width: 1200px) {
+    @media (max-width: 1200px), (pointer: coarse) {
         #magic-cursor { display: none !important; }
         .quote-break, .quote-trigger-wrap { cursor: auto !important; }
 
@@ -3407,7 +3463,8 @@ window.addEventListener('popstate', () => {
     // --- WOSKER HEADLINE: FINAL FIX (Prevents Double Animation) ---
     (function() {
         const container = document.getElementById('category-headline');
-        const menuItems = document.querySelectorAll('.show-more-menu li');
+        // FIX: Select BOTH menus so the headline updates when clicking Header OR Pill
+const menuItems = document.querySelectorAll('.filter-menu li, .show-more-menu li');
         const navContainer = document.querySelector('.nav-right');
         const pillContainer = document.querySelector('.show-more-menu');
 
@@ -3502,12 +3559,12 @@ window.addEventListener('popstate', () => {
         updateToActive();
 
         menuItems.forEach(item => {
-            // Click: Always triggers the update
+            // 1. Click: Applies to BOTH menus so the headline updates when you change page
             item.addEventListener('click', () => setTimeout(updateToActive, 50));
             
-            // Hover: ONLY run if the device has a mouse (Desktop)
-            // This prevents touch devices from triggering the hover state on tap
-            if (window.matchMedia("(hover: hover)").matches) {
+            // 2. Hover: ONLY applies to the Floating Pill Menu
+            // We check if the item lives inside '.show-more-menu'
+            if (item.closest('.show-more-menu') && window.matchMedia("(hover: hover)").matches) {
                 item.addEventListener('mouseenter', () => {
                     const category = item.innerText;
                     if (category) switchText(getDisplayName(category));
@@ -3522,38 +3579,26 @@ window.addEventListener('popstate', () => {
 </script>
 
 <script>
-    // --- FINAL PHYSICS: SELF-CONTAINED FIX (NO CSS EDIT NEEDED) ---
+    // --- FINAL PHYSICS & INTERACTION FIX ---
     (function() {
-        // 1. INJECT STYLES PROGRAMMATICALLY (Fixes Text Selection without touching style.css)
+        // 1. INJECT STYLES (Fixes Selection Issues)
         const styleFix = document.createElement('style');
         styleFix.innerHTML = `
-            /* Stop text selection while dragging */
             .about-content-layout, .about-content, .script-block, 
-            .script-dialogue, .about-content p, .about-content h2, 
-            .about-photo-col {
-                user-select: none !important;
-                -webkit-user-select: none !important;
-            }
-            /* Stop image ghost dragging */
-            .about-portrait, .about-photo-col img {
-                -webkit-user-drag: none !important;
-                user-select: none !important;
-                pointer-events: none !important;
-            }
-            /* Allow clicking links, but not selecting them */
-            .contact-info a {
-                user-select: none !important; 
-                -webkit-user-select: none !important;
-                cursor: pointer !important;
-            }
+            .about-photo-col { user-select: none !important; -webkit-user-select: none !important; }
+            .about-portrait, .about-photo-col img { -webkit-user-drag: none !important; pointer-events: none !important; }
+            .contact-info a, .socials a, .close-btn { cursor: pointer !important; }
         `;
         document.head.appendChild(styleFix);
 
         const aboutBtn = document.getElementById('about-btn');
         const closeBtn = document.getElementById('close-btn');
+        const footerBrand = document.querySelector('.footer-brand');
         const physicsContainer = document.getElementById('physics-container');
         const customCursor = document.getElementById('physics-cursor');
+        const aboutOverlay = document.getElementById('about-overlay');
 
+        // Matter.js Aliases
         const Engine = Matter.Engine,
               Render = Matter.Render,
               Runner = Matter.Runner,
@@ -3607,15 +3652,14 @@ window.addEventListener('popstate', () => {
         }
 
         function initPhysics() {
-            // TABLET/MOBILE CHECK: Stop if screen is small (iPad/Phone)
-            if (window.innerWidth <= 1024) return; 
-            
             if (isPhysicsRunning) return;
             isPhysicsRunning = true;
 
+            // 1. Setup Engine
             engine = Engine.create();
             engine.world.gravity.y = 1.5; 
 
+            // 2. Setup Renderer
             render = Render.create({
                 element: physicsContainer,
                 engine: engine,
@@ -3628,10 +3672,11 @@ window.addEventListener('popstate', () => {
                 }
             });
 
-            // Make canvas transparent to clicks (so links work)
-            render.canvas.style.pointerEvents = 'none';
+            // FIX: Allow Touch Events on Canvas
+            render.canvas.style.pointerEvents = 'auto';
+            render.canvas.style.touchAction = 'none';
 
-            // WALLS: Floor is exactly at window height
+            // 3. create Walls
             const wallOpts = { isStatic: true, render: { visible: false }, friction: 0.5, restitution: 0.2 };
             const thickness = 100;
             const floor = Bodies.rectangle(window.innerWidth/2, window.innerHeight + (thickness/2), window.innerWidth, thickness, wallOpts);
@@ -3642,7 +3687,7 @@ window.addEventListener('popstate', () => {
             Composite.add(engine.world, [floor, leftWall, rightWall]);
             setTimeout(() => Composite.add(engine.world, ceiling), 2500);
 
-            // PHOTO COLLIDER
+            // 4. Create Photo Collider
             const photoElem = document.querySelector('.about-photo-col'); 
             if (photoElem) {
                 const rect = photoElem.getBoundingClientRect();
@@ -3655,7 +3700,7 @@ window.addEventListener('popstate', () => {
                 Composite.add(engine.world, photoBody);
             }
 
-            // SPAWN ROLES
+            // 5. Spawn Boxes
             roles.forEach((role, index) => {
                 const width = role.length * 18 + 50; 
                 const height = 64; 
@@ -3673,8 +3718,9 @@ window.addEventListener('popstate', () => {
                 Composite.add(engine.world, box);
             });
 
-            // MOUSE CONTROL
-            const mouse = Mouse.create(document.body);
+            // 6. Mouse/Touch Control
+            // FIX: Bind mouse to the render canvas to avoid scroll conflicts
+            const mouse = Mouse.create(render.canvas);
             mouse.pixelRatio = window.devicePixelRatio;
 
             mouseConstraint = MouseConstraint.create(engine, {
@@ -3683,25 +3729,24 @@ window.addEventListener('popstate', () => {
             });
             Composite.add(engine.world, mouseConstraint);
 
-            Events.on(engine, 'beforeUpdate', function() {
-                // No offset needed
-            });
-            
-            // LINK PROTECTION: Stop physics if clicking a link/button/close
-            function handleMouseDown(e) {
+            // FIX: Link Protection (Touch & Click)
+            // If dragging/touching a link or button, disable physics drag immediately
+            function handleInput(e) {
                 if (e.target.closest('a') || e.target.closest('button') || e.target.closest('.close-btn')) {
                     mouseConstraint.mouse.button = -1;
                     mouseConstraint.body = null;
                     return; 
                 }
             }
-            window.addEventListener('mousedown', handleMouseDown);
+            window.addEventListener('mousedown', handleInput);
+            window.addEventListener('touchstart', handleInput, {passive: false});
 
-            // GLOBAL RELEASE: Stop dragging if mouse leaves or lifts
+            // Release
             window.addEventListener('mouseup', forceDrop);
+            window.addEventListener('touchend', forceDrop);
             document.documentElement.addEventListener('mouseleave', forceDrop);
 
-            // RENDER LOOP
+            // 7. Custom Rendering
             Events.on(render, 'afterRender', function() {
                 const ctx = render.context;
                 const bodies = Composite.allBodies(engine.world);
@@ -3732,6 +3777,7 @@ window.addEventListener('popstate', () => {
                 });
             });
 
+            // Start
             Render.run(render);
             runner = Runner.create();
             Runner.run(runner, engine);
@@ -3743,14 +3789,18 @@ window.addEventListener('popstate', () => {
         }
 
         function stopPhysics() {
-            // Remove listeners
+            // Remove listeners to prevent leaks
             document.documentElement.removeEventListener('mouseleave', forceDrop);
             window.removeEventListener('mouseup', forceDrop);
+            window.removeEventListener('touchend', forceDrop);
             
             if (isPhysicsRunning) {
-                Render.stop(render); Runner.stop(runner);
+                Render.stop(render); 
+                Runner.stop(runner);
                 if (render.canvas) render.canvas.remove();
-                Composite.clear(engine.world); Engine.clear(engine);
+                Composite.clear(engine.world); 
+                Engine.clear(engine);
+                
                 isPhysicsRunning = false;
                 physicsContainer.innerHTML = '';
                 customCursor.style.display = 'none';
@@ -3763,32 +3813,45 @@ window.addEventListener('popstate', () => {
             customCursor.style.top = e.clientY + 'px';
         }
 
-        // CONNECT BUTTONS
-        const footerBrand = document.querySelector('.footer-brand');
-        aboutBtn.addEventListener('click', () => setTimeout(initPhysics, 300));
-
-        if (footerBrand) {
-            footerBrand.addEventListener('click', (e) => {
-                e.preventDefault();
-                document.getElementById('about-overlay').classList.add('active');
-                document.body.style.overflow = 'hidden';
-                setTimeout(initPhysics, 300); 
-            });
+        // --- BUTTON TRIGGERS ---
+        
+        // Open
+        function openAbout(e) {
+            if(e) e.preventDefault();
+            aboutOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            setTimeout(initPhysics, 100);
         }
 
-        closeBtn.addEventListener('click', stopPhysics);
-        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') stopPhysics(); });
+        if(aboutBtn) aboutBtn.addEventListener('click', openAbout);
+        if(footerBrand) footerBrand.addEventListener('click', openAbout);
+
+        // Close (Universal Handler)
+        function closeAbout(e) {
+            if(e) e.preventDefault();
+            aboutOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+            stopPhysics();
+        }
+
+        // Use pointerup for instant response on touch
+        if(closeBtn) {
+            closeBtn.addEventListener('pointerup', closeAbout);
+            closeBtn.addEventListener('click', closeAbout); // Backup
+        }
+        
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeAbout(); });
 
     })();
 
-    // --- NUCLEAR EVENT BLOCKER (Prevent Dragging/Selecting) ---
+    // --- NUCLEAR EVENT BLOCKER (Keep this for the black background only) ---
     window.addEventListener('dragstart', function(e) {
-        if (e.target.closest('#about-overlay')) {
+        // Only block if we are dragging the background, NOT the physics canvas
+        if (e.target.id === 'about-overlay') {
             e.preventDefault(); 
             return false;
         }
     }, { passive: false });
-
 </script>
 
 </body>
