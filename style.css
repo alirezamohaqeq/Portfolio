@@ -139,6 +139,55 @@ body.hero-done .top-signature {
     transition: opacity 1.2s ease, transform 1.2s ease;
 }
 
+/* Creates a floating white frame inside the hero */
+#hero:after {
+    content: '';
+    position: absolute;
+    /* This creates the gap from the screen edge */
+    top: 80px; 
+    left: 80px;
+    right: 80px;
+    bottom: 80px;
+    
+    /* The Line itself */
+    border: 7px solid rgb(201, 201, 201); /* Change 1px to 2px for a thicker line */
+    border-radius: 15px;
+    z-index: 20; /* Sits on top of the video */
+    pointer-events: none; /* Lets you click through it */
+}
+
+/* Creates the "Frosted Glass" Blur outside the frame */
+#hero:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 18;
+    pointer-events: none;
+    
+    /* --- ADD THIS LINE TO FIX THE RIGHT & BOTTOM --- */
+    box-sizing: border-box; 
+    /* ----------------------------------------------- */
+
+    /* Your existing settings... */
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    
+    /* Ensure this padding matches your white frame's position */
+    padding: 80px; 
+    
+    /* Your existing mask settings... */
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    
+    /* If your white frame is rounded, add this too */
+    border-radius: 15px; 
+}
+
 /* --- CIRCULAR LOADER STYLES --- */
 .circle-loader-wrap {
     position: absolute;
@@ -198,22 +247,53 @@ body.hero-done .top-signature {
     transition: opacity 1s ease;
 }
 
-.skip-hint {
+/* --- THE NEW GLASSY HERO BUTTON --- */
+.enter-btn {
     position: absolute;
-    bottom: 40px;
+    
+    /* 1. Positioning: Sits inside the frame (80px frame + gap) */
+    bottom: 130px; 
     left: 50%;
     transform: translateX(-50%);
-    font-size: 0.9rem;              /* bigger */
-    letter-spacing: 0.25em;
+    
+    /* 2. The Glassy Effect (Matches your Category Menu) */
+    background: rgba(100, 100, 100, 0.35);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 30px rgba(63, 63, 63, 0.5);
+    
+    /* 3. Shape & Typography */
+    padding: 10px 25px;
+    border-radius: 50px; /* Perfect pill shape */
+    color: #fff;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
     text-transform: uppercase;
-    color: #f5d47a;                 /* same warm highlight as logo hover */
-    opacity: 0.9;                   /* much more visible */
-    font-weight: 700;               /* bold */
-    text-align: center;
-    text-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
+    letter-spacing: 0em;
     cursor: pointer;
+    
+    /* 4. Layering */
+    z-index: 50; /* Sits above the blur/frame layers */
+    
+    /* 5. Animation (Fade in with the frame) */
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    animation: fadeInFrame 1s ease-out 0.5s forwards; /* Waits 2s before appearing */
+}
 
-    animation: hint-pulse 1.6s ease-in-out infinite;
+/* Hover State: Brightens and lifts slightly */
+.enter-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+    transform: translateX(-50%) translateY(-2px);
+}
+
+/* Active Click: Snappy press effect */
+.enter-btn:active {
+    transform: translateX(-50%) scale(0.96);
 }
 
 /* soft pulsing attention animation */
@@ -2587,4 +2667,27 @@ html, body {
     .show-more-wrap {
         top: 60px !important; /* Smaller gap for mobile screens */
     }
+}
+
+/* 1. Define the Fade In Animation */
+@keyframes fadeInFrame {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* 2. Apply it to the Frame (:after) and the Blur (:before) */
+#hero:before, 
+#hero:after {
+    opacity: 0; /* Start hidden */
+    
+    /* Animate: name | duration | easing | delay | stick-at-end */
+    animation: fadeInFrame 1s ease-out 0.5s forwards; 
+}
+
+/* Replace '.skip-hint' with the ACTUAL class name of your text */
+.skip-hint, 
+#hero p, 
+#hero h1 { 
+    position: relative; 
+    z-index: 50 !important; /* Higher than the frame (20) */
 }
