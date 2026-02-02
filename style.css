@@ -353,77 +353,126 @@ header {
     opacity: 1;
 }
 
-/* --- Filter Dropdown --- */
+/* --- APPLE IOS "LIQUID GLASS" UI --- */
+
 .filter-nav {
     position: relative;
     cursor: pointer;
     font-size: 0.9rem;
-    text-align: right;
-    display: flex;
-    align-items: center;
+    z-index: 100;
 }
 
+/* The Button Itself */
 .current-filter {
-    opacity: 0.7;
-    transition: opacity 0.3s;
-    padding-bottom: 0;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    
+    /* IOS GLASS EFFECT */
+    background: rgba(30, 30, 30, 0.65); /* Dark translucent base */
+    backdrop-filter: blur(20px) saturate(180%); /* Apple's "Vibrancy" effect */
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    
+    /* BORDER: Subtle gradient-like rim */
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-top: 1px solid rgba(255, 255, 255, 0.25); /* Top light catch */
+    
+    border-radius: 50px; /* Perfect Pill Shape */
+    box-shadow: 
+        0 4px 20px rgba(0, 0, 0, 0.4), /* Deep shadow */
+        inset 0 0 0 1px rgba(255, 255, 255, 0.05); /* Inner rim */
+        
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
+/* Hover State: "Liquid" brightening */
 .filter-nav:hover .current-filter {
-    opacity: 1;
+    background: rgba(50, 50, 50, 0.75);
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 
+        0 8px 30px rgba(0, 0, 0, 0.5),
+        inset 0 0 10px rgba(255, 255, 255, 0.05);
+    transform: translateY(-1px);
 }
 
-/* Glassy drop-down panel */
+/* Active/Open State */
+.filter-nav.open .current-filter {
+    background: rgba(255, 255, 255, 0.9); /* Invert to white (iOS Active style) */
+    color: #000;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+/* The Dropdown Menu */
 .filter-menu {
-    list-style: none;
     position: absolute;
     right: 0;
-    top: 100%;
-    margin-top: 5px;
-
-    /* Maximum Darkness: Pure black with 90% opacity */
-    background-color: rgba(0, 0, 0, 0.9);
-    border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
-
-    /* Blur effect */
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-
-    padding: 10px 0;
-    z-index: 50;
-
+    top: calc(100% + 12px); /* Spacing from button */
+    
+    /* IOS GLASS PANEL */
+    background: rgba(20, 20, 20, 0.75);
+    backdrop-filter: blur(25px) saturate(200%);
+    -webkit-backdrop-filter: blur(25px) saturate(200%);
+    
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px; /* Smooth corners */
+    
+    padding: 8px;
+    min-width: 180px;
+    
+    box-shadow: 
+        0 20px 50px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(0, 0, 0, 0.2);
+        
     display: none;
     opacity: 0;
-    transform: translateY(-10px);
-    pointer-events: none;
-    transition: opacity 0.25s ease, transform 0.25s ease;
+    transform: translateY(-10px) scale(0.98);
+    transform-origin: top right;
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    
+    list-style: none;
+    overflow: hidden;
 }
 
+/* Open Animation */
 .filter-nav.open .filter-menu {
     display: block;
     opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto;
+    transform: translateY(0) scale(1);
 }
 
-
-/* List item styling */
+/* Menu Items */
 .filter-menu li {
-    padding: 8px 20px; 
+    padding: 10px 16px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
     cursor: pointer;
-    white-space: nowrap; 
-    transition: background-color 0.2s ease;
+    border-radius: 12px; /* Inner radius */
+    transition: all 0.2s ease;
+    margin-bottom: 2px;
 }
 
+.filter-menu li:last-child {
+    margin-bottom: 0;
+}
+
+/* Item Hover */
 .filter-menu li:hover {
-    background-color: rgba(255, 255, 255, 0.12); 
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    backdrop-filter: brightness(1.2);
 }
 
+/* Active Item */
 .filter-menu li.active {
-    color: #fff;
-    font-weight: bold;
+    background: rgba(255, 255, 255, 0.9);
+    color: #000;
+    font-weight: 600;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
 }
 /* *** END NEW MENU STYLES *** */
 
@@ -2726,7 +2775,7 @@ html, body {
 .enter-btn {
     /* Your Glassy Styles */
     position: absolute;
-    bottom: 115px; 
+    bottom: 120px; 
     left: 50%;
     transform: translateX(-50%);
     background: rgba(40, 40, 40, 0.35);
@@ -2734,14 +2783,14 @@ html, body {
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
-    padding: 16px 40px;
+    padding: 10px 20px;
     border-radius: 50px;
     color: #fff;
     font-family: 'Outfit', sans-serif;
-    font-size: 1.2rem;
+    font-size: 1.5rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.15em;
+    letter-spacing: 0em;
     cursor: pointer;
     z-index: 60;
     
@@ -2775,4 +2824,165 @@ body.video-playing .enter-btn {
 .enter-btn:hover {
     background: rgba(255, 255, 255, 0.15);
     transform: translateX(-50%) translateY(-2px);
+}
+
+/* --- FINAL FIXED HEADER & GLASS UI --- */
+
+/* 1. ADJUST SPACING (Bring buttons closer) */
+.nav-right {
+    gap: 12px !important; /* Reduced from 30px */
+}
+
+/* 2. SHARED GLASS CLASS */
+.enter-btn,
+.current-filter,
+.show-more-menu,
+#about-btn {
+    /* Base Glass Texture */
+    background: rgba(40, 40, 40, 0.35) !important; 
+    backdrop-filter: blur(25px) saturate(220%) !important; 
+    -webkit-backdrop-filter: blur(25px) saturate(220%) !important;
+    
+    /* THICKER STROKE (2px) */
+    border: 2px solid rgba(255, 255, 255, 0.15) !important;
+    border-top: 2px solid rgba(255, 255, 255, 0.35) !important;
+    
+    /* Shadow */
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.5), 
+        inset 0 0 0 1px rgba(255, 255, 255, 0.05) !important; 
+        
+    /* Text & Shape */
+    color: rgba(255, 255, 255, 0.95) !important;
+    border-radius: 50px !important;
+    font-family: 'Outfit', sans-serif !important;
+    font-weight: 500;
+    
+    /* CRITICAL FIXES FOR 'ABOUT' BUTTON */
+    opacity: 1 !important;       /* Fixes the "dim/less blur" issue */
+    appearance: none !important; /* Removes default button borders */
+    outline: none !important;
+    
+    /* Animation Settings */
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), 
+                background 0.3s ease, 
+                border-color 0.3s ease, 
+                box-shadow 0.3s ease !important;
+    
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+/* 3. HOVER EFFECTS (Standard Buttons) */
+.filter-nav:hover .current-filter,
+.show-more-menu:hover,
+#about-btn:hover {
+    transform: scale(1.05) translateY(-2px) !important; 
+    background: rgba(80, 80, 80, 0.5) !important;
+    border-color: rgba(255, 255, 255, 0.5) !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 0 12px rgba(255, 255, 255, 0.15) !important;
+}
+
+/* 4. HOVER EFFECTS (Hero Button Fix - Keeps Centering) */
+.enter-btn:hover {
+    transform: translateX(-50%) scale(1.05) translateY(-2px) !important; 
+    background: rgba(80, 80, 80, 0.5) !important;
+    border-color: rgba(255, 255, 255, 0.5) !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 0 12px rgba(255, 255, 255, 0.15) !important;
+}
+
+/* 5. SIZING */
+.enter-btn {
+    padding: 15px 30px !important;
+    font-size: 1.5rem !important;
+    font-weight: 700 !important;
+}
+
+.current-filter, 
+#about-btn {
+    padding: 12px 24px !important;
+    gap: 8px;
+    font-size: 0.9rem !important;
+    height: 46px !important; /* Force exact same height */
+    box-sizing: border-box !important;
+}
+
+.show-more-menu {
+    padding: 10px 20px !important;
+    gap: 12px;
+    display: flex !important;
+}
+
+/* 6. DROPDOWN MENU */
+.filter-menu {
+    background: rgba(30, 30, 30, 0.75) !important;
+    backdrop-filter: blur(30px) saturate(200%) !important;
+    -webkit-backdrop-filter: blur(30px) saturate(200%) !important;
+    border: 2px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 30px !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7) !important;
+    padding: 10px !important;
+    z-index: 1000 !important;
+    position: absolute;
+    top: calc(100% + 15px);
+    right: 0;
+    min-width: 180px;
+    display: none;
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.filter-nav.open .filter-menu {
+    display: block;
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.filter-menu li {
+    background: transparent !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+    border-radius: 14px !important;
+    padding: 10px 16px !important;
+    margin-bottom: 4px;
+    font-family: 'Outfit', sans-serif !important;
+    font-weight: 400;
+    transition: all 0.2s ease !important;
+}
+
+.filter-menu li:hover {
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: #fff !important;
+    transform: translateX(5px);
+}
+
+.filter-menu li.active {
+    background: rgba(255, 255, 255, 0.9) !important; 
+    color: #000 !important;
+    font-weight: 600 !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3) !important;
+}
+
+/* 7. PILL MENU ITEMS */
+.show-more-menu li {
+    padding: 8px 16px !important;
+    border-radius: 50px !important;
+    color: rgba(255, 255, 255, 0.8) !important;
+    font-family: 'Outfit', sans-serif !important;
+    transition: all 0.2s ease !important;
+}
+
+.show-more-menu li:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: #fff !important;
+    transform: scale(1.05);
+}
+
+.show-more-menu li.active {
+    background: #fff !important;
+    color: #000 !important;
+    font-weight: 600 !important;
+    box-shadow: 0 0 15px rgba(255,255,255,0.4) !important;
 }
