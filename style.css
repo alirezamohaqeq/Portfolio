@@ -10,6 +10,35 @@
     font-display: swap;
 }
 
+/* --- SMOOTH SCROLL SETUP --- */
+html.lenis {
+    height: auto;
+}
+
+.lenis.lenis-smooth {
+    scroll-behavior: auto; /* Disable native scroll behavior */
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+    overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+    pointer-events: none; /* Improves performance while scrolling over videos */
+}
+
+/* Optimize the moving parts for 60fps */
+.gallery-grid, 
+.featured-strip-stack, 
+.photography-bg-container {
+    transition: transform 0.1s linear; /* Smooths out the skew steps */
+    will-change: transform;
+}
+
 /* Container for the big text */
 #category-headline {
     position: relative;

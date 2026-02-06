@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;700&family=Outfit:wght@300;400;600;700&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
     <link rel="stylesheet" href="style.css">
 
     <style>
@@ -3121,6 +3122,62 @@ if (projectLayout) {
             });
         });
     }
+
+    // --- BUTTERMAX "LIQUID" SMOOTH SCROLL ---
+    (function() {
+        // 1. Initialize Lenis (The Physics Engine)
+        const lenis = new Lenis({
+            duration: 1.2,           // The "Weight" (Higher = heavier/slower stop)
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Exponential falloff
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothTouch: false,      // Keep native feel on mobile (better UX)
+            touchMultiplier: 2,
+        });
+
+        // 2. The Animation Loop (60fps)
+        // We hook into this to create the "Liquid" skew effect
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+            
+            // Calculate Velocity (How fast are we scrolling?)
+            // We clamp it so it doesn't skew too crazy on fast swipes
+            const velocity = lenis.velocity;
+            const skewAmount = velocity * 0.15; // Sensitivity (0.15 is subtle, 0.25 is extreme)
+            const scaleAmount = 1 + (Math.abs(velocity) * 0.002); // Subtle vertical stretch
+            
+            // 3. Apply "Liquid" Distortion to specific heavy elements
+            // We target grids and strips, but NOT the text/menus (keeps them readable)
+            const targets = document.querySelectorAll('.gallery-grid, .featured-strip-stack, .photography-bg-container');
+            
+            targets.forEach(el => {
+                // Apply the Jelly Skew
+                el.style.transform = `skewY(${skewAmount}deg) scaleY(${scaleAmount})`;
+                el.style.transformOrigin = 'center center';
+                el.style.willChange = 'transform'; // Optimizes performance
+            });
+        }
+
+        requestAnimationFrame(raf);
+
+        // 4. Connect Lenis to your Anchor Links (e.g. "Back to Top")
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                lenis.scrollTo(this.getAttribute('href'));
+            });
+        });
+        
+        // Connect your existing "Back to Top" buttons
+        const backToTopBtns = document.querySelectorAll('#back-to-top, #floating-top, .logo, .top-signature');
+        backToTopBtns.forEach(btn => {
+            btn.addEventListener('click', () => lenis.scrollTo(0));
+        });
+        
+    })();
 
     // --- DEEP LINKING & SMART HERO SKIP ---
 window.addEventListener('DOMContentLoaded', () => {
