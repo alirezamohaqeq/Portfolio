@@ -54,10 +54,15 @@
         (function() {
             var hash = window.location.hash.substring(1);
             if (hash && hash !== 'all') {
+                // Force scroll unlock immediately for deep links
+                document.documentElement.classList.add('hero-done');
+                document.body.classList.add('hero-done');
+                
                 var style = document.createElement('style');
                 style.innerHTML = `
                     #hero { display: none !important; opacity: 0 !important; pointer-events: none !important; }
-                    body { overflow-y: auto !important; }
+                    /* Ensure scroll is unlocked even before CSS loads */
+                    html, body { height: auto !important; overflow-y: visible !important; }
                     .top-signature { opacity: 1 !important; }
                 `;
                 document.head.appendChild(style);
@@ -2168,40 +2173,41 @@
         });
     }
 
-    // 2. Core Function: Dismiss Hero (Restored!)
+    // 2. Core Function: Dismiss Hero (FIXED: FADE + SLIDE)
     function completeHeroDismiss() {
         if (heroFinished) return;
         heroFinished = true;
         
         clearInterval(loadInterval);
+        document.documentElement.classList.add('hero-done');
         document.body.classList.add('hero-done');
         
-        // Hide loader/text/button immediately
+        // Hide small UI elements immediately
         if (loaderWrap) loaderWrap.style.opacity = '0';
         if (textContainer) textContainer.style.opacity = '0';
         if (actionBtn) actionBtn.style.opacity = '0';
         
-        // Fade out hero background
+        // CRITICAL FIX: Start fading the Hero IMMEDIATELY
+        // This solves the "stays there as background" issue.
         if (hero) {
-            hero.style.opacity = '0';
+            hero.style.opacity = '0'; 
             hero.style.pointerEvents = 'none';
-            setTimeout(() => { hero.style.display = 'none'; }, 1000);
         }
         
-        if (heroVideo) heroVideo.pause();
         window.scrollTo(0, 0);
 
-        // Release the Sticky Menu after animation
-        setTimeout(() => {
-            if (mainGallery) {
-                mainGallery.style.transform = 'none';
-                mainGallery.style.willChange = 'auto'; 
-            }
-        }, 2100);
-
-        if (window.innerWidth <= 768) {
-            window.dispatchEvent(new Event('resize')); 
+        // Trigger the Gallery Slide-Up
+        if (mainGallery) {
+            mainGallery.style.transform = 'translateY(0)'; 
         }
+
+        // Cleanup: Remove Hero from DOM after animation (1.2s)
+        setTimeout(() => {
+            if (hero) hero.style.display = 'none';
+            if (heroVideo) heroVideo.pause();
+            if (mainGallery) mainGallery.style.willChange = 'auto';
+            window.dispatchEvent(new Event('resize')); 
+        }, 1200);
     }
 
     // 3. Loader Logic
@@ -2450,49 +2456,127 @@ filterItems.forEach(item => {
         if (category === 'all') landingExpanded = false;
         applyCategory(category);
 
-        // Scroll up
-        const headerHeight = document.querySelector('header').offsetHeight;
-        window.scrollTo({ top: mainGallery.offsetTop - headerHeight - 10, behavior: 'smooth' });
-
         filterNav.classList.remove('open');
     });
 });
 
-        // Initialize Default View
-        applyCategory('all');
+        // --- SMART STARTUP (No Flash) ---
+    (function() {
+        const hash = window.location.hash.substring(1);
+        const targetBtn = document.querySelector(`.filter-menu li[data-filter="${hash}"]`);
+
+        if (hash && targetBtn) {
+            // 1. URL has a category (e.g. #motion) -> Load THAT immediately.
+            // The Carousel (#featured) is hidden in CSS, so it won't flash.
+            applyCategory(hash);
+            
+            // Set active button
+            document.querySelectorAll('.filter-menu li').forEach(li => li.classList.remove('active'));
+            targetBtn.classList.add('active');
+        } else {
+            // 2. URL is empty -> We are on Home -> Show the Carousel now.
+            applyCategory('all');
+        }
+    })();
 
 
-        // --- FEATURED STRIP LOGIC (FIXED ANIMATION) ---
+        // --- FEATURED STRIP LOGIC (CLICKABLE + FIXED) ---
         (function initFeaturedStrip(){
             const stack = document.getElementById('featured-strip-stack');
             const viewport = document.getElementById('featured-strip-viewport'); 
             if (!stack || !viewport) return;
 
+            // 1. Define Full Project Data (Video + Metadata for Overlay)
+            const projects = [
+                {
+                    src: 'videos/previews/perfectbrand_preview.mp4',
+                    title: "The Perfect Brand",
+                    category: "Commercial",
+                    youtube: "https://www.youtube.com/embed/NIeAOVKxTNs",
+                    roles: "Scriptwriter, Director, DOP, Editor"
+                },
+                {
+                    src: 'videos/previews/We Are A Family_preview.mp4',
+                    title: "We Are A Family",
+                    category: "AI Ads",
+                    youtube: "https://www.youtube.com/embed/mb71cggg5fM",
+                    roles: "AI Director, Prompt Engineering, Editor"
+                },
+                {
+                    src: 'videos/previews/Halloween Party_preview.mp4',
+                    title: "Halloween Party",
+                    category: "Commercial",
+                    youtube: "https://www.youtube.com/embed/VB9bE0H21hg",
+                    roles: "Director, DOP, Editor"
+                },
+                {
+                    src: 'videos/previews/Zoviz Short Commercial 1_preview.mp4',
+                    title: "Zoviz Commercial",
+                    category: "Commercial",
+                    youtube: "https://www.youtube.com/embed/VLGKpOgGjwk",
+                    roles: "Scriptwriter, Director, DOP, Editor"
+                },
+                {
+                    src: 'videos/previews/Meera Centrum_preview.mp4',
+                    title: "Meera Centrum",
+                    category: "Commercial",
+                    youtube: "https://www.youtube.com/embed/TXkWJ6taMWM",
+                    roles: "Editor"
+                },
+                {
+                    src: 'videos/previews/Zoviz Promo English_preview.mp4',
+                    title: "Zoviz Promo",
+                    category: "Commercial",
+                    youtube: "https://www.youtube.com/embed/Z498elRylGo",
+                    roles: "Scriptwriter, Director, DOP, Editor"
+                }
+            ];
+
             const items = Array.from(stack.querySelectorAll('.featured-strip-item'));
             const videos = items.map(it => it.querySelector('video'));
             
-            const sources = [
-                'videos/previews/perfectbrand_preview.mp4',
-                'videos/previews/We Are A Family_preview.mp4',
-                'videos/previews/Halloween Party_preview.mp4',
-                'videos/previews/Zoviz Short Commercial 1_preview.mp4',
-                'videos/previews/Meera Centrum_preview.mp4',
-                'videos/previews/Zoviz Promo English_preview.mp4'
-            ];
-
-            const featuredTitles = ["The Perfect Brand", "We Are A Family", "Halloween Party", "Zoviz Commercial", "Meera Centrum", "Zoviz Promo"];
-
             let timer = null;
             let isAnimating = false;
             let currentBaseX = 0;
 
-            videos.forEach((v, i) => {
-                const src = sources[i % sources.length];
-                v.src = src;
-                const label = v.parentElement.querySelector('.strip-label');
-                if (label) label.textContent = featuredTitles[i % featuredTitles.length];
-                v.muted = true; v.loop = true; v.playsInline = true;
-                v.play().catch(()=>{});
+            // 2. Assign Data & Enable Clicks
+            items.forEach((item, i) => {
+                const data = projects[i % projects.length];
+                const v = item.querySelector('video');
+                const label = item.querySelector('.strip-label');
+
+                // Visuals
+                if(v) {
+                    v.src = data.src;
+                    v.muted = true; v.loop = true; v.playsInline = true;
+                    v.play().catch(()=>{});
+                }
+                if(label) label.textContent = data.title;
+
+                // CLICK LOGIC: Attach Data Attributes for openProject()
+                item.setAttribute('data-youtube', data.youtube);
+                item.setAttribute('data-roles', data.roles);
+                
+                // Add hidden metadata elements for openProject to read
+                if (!item.querySelector('h3')) {
+                    const h3 = document.createElement('h3');
+                    h3.innerText = data.title;
+                    h3.style.display = 'none';
+                    item.appendChild(h3);
+                    
+                    const p = document.createElement('p');
+                    p.className = 'category';
+                    p.innerText = data.category + ", 2025";
+                    p.style.display = 'none';
+                    item.appendChild(p);
+                }
+
+                // Make Clickable
+                item.style.cursor = 'pointer';
+                item.onclick = (e) => {
+                    // Prevent opening if we are currently dragging/swiping
+                    if(!isAnimating) openProject(item);
+                };
             });
 
             // Initial setup: Move last item to front for the infinite loop buffer
@@ -2505,14 +2589,12 @@ filterItems.forEach(item => {
                 const gap = 16; 
                 const itemW = item.getBoundingClientRect().width; 
                 const screenW = window.innerWidth;
-                
-                // Calculate Center: (Screen/2) - (Item/2) - (One Item Offset for buffer) - Gap
                 const centerOffset = (screenW - itemW) / 2;
                 return centerOffset - itemW - gap;
             }
 
             function resetPosition() {
-                if (isAnimating) return; // Don't interrupt animation
+                if (isAnimating) return; 
                 currentBaseX = getBasePosition();
                 stack.style.transition = 'none';
                 stack.style.transform = `translateX(${currentBaseX}px)`;
@@ -2520,8 +2602,6 @@ filterItems.forEach(item => {
 
             // Set initial position
             setTimeout(resetPosition, 50);
-
-            // Safety: Don't let resize/scroll kill the animation while it's running
             window.addEventListener('resize', () => { if(!isAnimating) resetPosition(); });
             
             const observer = new IntersectionObserver((entries) => {
@@ -2535,7 +2615,6 @@ filterItems.forEach(item => {
                 if (isAnimating) return;
                 isAnimating = true;
 
-                // 1. Ensure we are at the perfect starting spot
                 const startX = getBasePosition();
                 stack.style.transition = 'none';
                 stack.style.transform = `translateX(${startX}px)`;
@@ -2545,7 +2624,6 @@ filterItems.forEach(item => {
                 const gap = 16;
                 const moveDist = itemW + gap;
 
-                // 2. DOUBLE RAF: Guarantees the browser renders the starting spot before moving
                 requestAnimationFrame(() => {
                     requestAnimationFrame(() => {
                         stack.style.transition = 'transform 0.8s cubic-bezier(0.25, 1, 0.5, 1)';
@@ -2553,7 +2631,6 @@ filterItems.forEach(item => {
                     });
                 });
 
-                // 3. Cleanup after animation
                 stack.addEventListener('transitionend', function onEnd() {
                     stack.removeEventListener('transitionend', onEnd);
                     stack.appendChild(stack.firstElementChild); // Move first item to end
@@ -2574,14 +2651,10 @@ filterItems.forEach(item => {
                 const gap = 16;
                 const moveDist = itemW + gap;
 
-                // 1. Physically move the last item to the front FIRST
                 stack.prepend(stack.lastElementChild);
-
-                // 2. Instantly shift transform so it looks like it hasn't moved yet
                 stack.style.transition = 'none';
                 stack.style.transform = `translateX(${startX - moveDist}px)`;
 
-                // 3. DOUBLE RAF: Animate to the center
                 requestAnimationFrame(() => {
                     requestAnimationFrame(() => {
                         stack.style.transition = 'transform 0.8s cubic-bezier(0.25, 1, 0.5, 1)';
@@ -2598,10 +2671,13 @@ filterItems.forEach(item => {
             document.getElementById('featured-strip-next').addEventListener('click', () => { clearInterval(timer); slideNext(); startAuto(); });
             document.getElementById('featured-strip-prev').addEventListener('click', () => { clearInterval(timer); slidePrev(); startAuto(); });
 
-            // --- MOBILE SWIPE LOGIC ---
+            // --- MOBILE SWIPE LOGIC (FIXED) ---
             let touchStartX = 0;
             let touchEndX = 0;
             const swipeThreshold = 50;
+            
+            // Critical: prevents vertical scroll interference
+            stack.style.touchAction = "pan-y"; 
 
             stack.addEventListener('touchstart', e => {
                 touchStartX = e.changedTouches[0].screenX;
@@ -2610,13 +2686,15 @@ filterItems.forEach(item => {
 
             stack.addEventListener('touchend', e => {
                 touchEndX = e.changedTouches[0].screenX;
-                handleSwipe();
+                if (Math.abs(touchEndX - touchStartX) > swipeThreshold) {
+                     handleSwipe();
+                }
                 startAuto();
             }, {passive: true});
 
             function handleSwipe() {
-                if (touchEndX < touchStartX - swipeThreshold) slideNext();
-                if (touchEndX > touchStartX + swipeThreshold) slidePrev();
+                if (touchEndX < touchStartX) slideNext();
+                if (touchEndX > touchStartX) slidePrev();
             }
 
             function startAuto() {
@@ -2626,42 +2704,105 @@ filterItems.forEach(item => {
             startAuto();
         })();
 
-        // --- MOTION STRIP LOGIC (SMART VISIBILITY FIX) ---
+        // --- MOTION STRIP LOGIC (CLICKABLE + FIXED) ---
         (function initMotionStrip(){
             const stack = document.getElementById('motion-strip-stack');
             const viewport = document.getElementById('motion-strip-viewport'); 
             if (!stack) return;
 
+            // 1. Define Motion Project Data (Matched from your Gallery Grid)
+            const motionProjects = [
+                {
+                    src: 'videos/previews/Collabrium_preview.mp4',
+                    title: "Collabrium Commercial",
+                    category: "Motion Graphics",
+                    youtube: "https://www.youtube.com/embed/XYyo8Cjifn4",
+                    roles: "Creative Director, Motion Designer"
+                },
+                {
+                    src: 'videos/previews/Zoviz ad Feudeur_preview.mp4',
+                    title: "Zoviz AD",
+                    category: "Motion Graphics",
+                    youtube: "https://www.youtube.com/embed/W0wkJwbRdUM",
+                    roles: "Creative Director, Motion Designer"
+                },
+                {
+                    src: 'videos/previews/Chupacabra_preview.mp4',
+                    title: "The Legend of La Chupacabra",
+                    category: "Motion Graphics",
+                    youtube: "https://www.youtube.com/embed/aDslyZnDiRI",
+                    roles: "Animator, Compositor"
+                },
+                {
+                    src: 'videos/previews/Cafe Bazaar_preview.mp4',
+                    title: "Cafe Bazaar StopMotion",
+                    category: "Motion Graphics",
+                    youtube: "https://www.youtube.com/embed/D-551BcPRXM",
+                    roles: "Director, Stop Motion Animator"
+                },
+                {
+                    src: 'videos/previews/Toranj_preview.mp4',
+                    title: "Toranj Women's Awareness",
+                    category: "Motion Graphics",
+                    youtube: "https://www.youtube.com/embed/GFB80npRF-Q",
+                    roles: "Animator, Compositor, Sound Designer"
+                },
+                {
+                    src: 'videos/previews/Online IELTS Ad_preview.mp4',
+                    title: "Online IELTS Ad",
+                    category: "Motion Graphics",
+                    youtube: "https://www.youtube.com/embed/VjvDk6MhK5Q",
+                    roles: "Creative Director, Motion Designer"
+                }
+            ];
+
             const items = Array.from(stack.querySelectorAll('.featured-strip-item'));
             const videos = items.map(it => it.querySelector('video'));
-            
-            const sources = [
-                'videos/previews/Collabrium_preview.mp4',
-                'videos/previews/Zoviz ad Feudeur_preview.mp4',
-                'videos/previews/Chupacabra_preview.mp4',
-                'videos/previews/Cafe Bazaar_preview.mp4',
-                'videos/previews/Toranj_preview.mp4',
-                'videos/previews/Online IELTS Ad_preview.mp4'
-            ];
-            
-            const motionTitles = ["Collabrium Ad", "Zoviz Ad", "The Legend of Chupacabra", "Cafe Bazaar StopMotion Ad", "Toranj Women's Awareness", "Online IELTS Ad"];
 
             let timer = null;
             let isAnimating = false;
-            let isInitialized = false; // New flag to track if we've set up the strip
+            let isInitialized = false;
 
-            videos.forEach((v, i) => {
-                v.src = sources[i % sources.length];
-                const label = v.parentElement.querySelector('.strip-label');
-                if (label) label.textContent = motionTitles[i % motionTitles.length];
-                v.muted = true; v.loop = true; v.playsInline = true;
-                v.play().catch(()=>{});
+            // 2. Assign Data & Enable Clicks
+            items.forEach((item, i) => {
+                const data = motionProjects[i % motionProjects.length];
+                const v = item.querySelector('video');
+                const label = item.querySelector('.strip-label');
+
+                if(v) {
+                    v.src = data.src;
+                    v.muted = true; v.loop = true; v.playsInline = true;
+                    v.play().catch(()=>{});
+                }
+                if(label) label.textContent = data.title;
+
+                // CLICK LOGIC:
+                item.setAttribute('data-youtube', data.youtube);
+                item.setAttribute('data-roles', data.roles);
+
+                // Add hidden metadata for the overlay to find
+                if (!item.querySelector('h3')) {
+                    const h3 = document.createElement('h3');
+                    h3.innerText = data.title;
+                    h3.style.display = 'none';
+                    item.appendChild(h3);
+                    
+                    const p = document.createElement('p');
+                    p.className = 'category';
+                    p.innerText = data.category + ", 2025";
+                    p.style.display = 'none';
+                    item.appendChild(p);
+                }
+
+                // Make Clickable
+                item.style.cursor = 'pointer';
+                item.onclick = (e) => {
+                    if(!isAnimating) openProject(item);
+                };
             });
 
-            // Helper: Calculates where the strip should sit
             function getBasePosition() {
                 const item = stack.querySelector('.featured-strip-item');
-                // If width is 0, the element is hidden. Return null so we know to wait.
                 if(!item || item.offsetWidth === 0) return null; 
                 
                 const gap = 16;
@@ -2671,42 +2812,33 @@ filterItems.forEach(item => {
                 return centerOffset - itemW - gap;
             }
 
-            // Apply position (Only if visible)
             function resetPosition() {
                 if (isAnimating) return;
                 const x = getBasePosition();
-                if (x === null) return; // Stop if hidden
+                if (x === null) return;
                 
                 stack.style.transition = 'none';
                 stack.style.transform = `translateX(${x}px)`;
             }
 
-            // --- THE FIX: SMART INITIALIZATION ---
-            // We loop nicely until the carousel is actually visible on screen.
             function checkVisibility() {
                 if (isInitialized) return;
-
                 const x = getBasePosition();
                 if (x !== null) {
-                    // It's finally visible! Let's set it up.
-                    stack.prepend(stack.lastElementChild); // Move last item to front
-                    resetPosition();                       // Apply correct math
-                    isInitialized = true;                  // Mark as done
-                    startAuto();                           // Start the timer
+                    stack.prepend(stack.lastElementChild);
+                    resetPosition();
+                    isInitialized = true;
+                    startAuto();
                 } else {
-                    // Still hidden? Check again in 100ms.
                     setTimeout(checkVisibility, 100);
                 }
             }
-            // Start the sensor
-            checkVisibility(); 
+            checkVisibility();
 
-            // Re-adjust on resize (only if already initialized)
             window.addEventListener('resize', () => { 
                 if(!isAnimating && isInitialized) resetPosition(); 
             });
 
-            // Double check when scrolling into view
             if(viewport) {
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
@@ -2778,10 +2910,12 @@ filterItems.forEach(item => {
             if(nextBtn) nextBtn.addEventListener('click', () => { clearInterval(timer); slideNext(); startAuto(); });
             if(prevBtn) prevBtn.addEventListener('click', () => { clearInterval(timer); slidePrev(); startAuto(); });
 
-            // --- SWIPE LOGIC ---
+            // --- MOBILE SWIPE LOGIC (FIXED) ---
             let touchStartX = 0;
             let touchEndX = 0;
             const swipeThreshold = 50;
+
+            stack.style.touchAction = "pan-y"; // Prevent vertical scroll interference
 
             stack.addEventListener('touchstart', e => {
                 touchStartX = e.changedTouches[0].screenX;
@@ -2790,21 +2924,21 @@ filterItems.forEach(item => {
 
             stack.addEventListener('touchend', e => {
                 touchEndX = e.changedTouches[0].screenX;
-                handleSwipe();
+                if (Math.abs(touchEndX - touchStartX) > swipeThreshold) {
+                    handleSwipe();
+                }
                 startAuto();
             }, {passive: true});
 
             function handleSwipe() {
-                if (touchEndX < touchStartX - swipeThreshold) slideNext();
-                if (touchEndX > touchStartX + swipeThreshold) slidePrev();
+                if (touchEndX < touchStartX) slideNext();
+                if (touchEndX > touchStartX) slidePrev();
             }
 
             function startAuto() {
                 clearInterval(timer);
                 timer = setInterval(slideNext, 4500);
             }
-            // Note: We do NOT call startAuto() here anymore. 
-            // The checkVisibility() function will call it once the strip is actually visible.
         })();
 
         // --- OVERLAY CODE ---
@@ -3027,8 +3161,13 @@ projectOverlay.addEventListener('click', (e) => {
         // 2. Run the filtering logic
         oldApply(cat); 
 
-        // 3. Force a scroll to top so the observer resets correctly
-        window.scrollTo({ top: mainGallery.offsetTop - 80, behavior: 'instant' });
+        // 3. FORCE SCROLL TO TOP (The Fix)
+        // We use Lenis to jump instantly to the top of the gallery (-100px for header room)
+        if (window.lenis) {
+            window.lenis.scrollTo('#gallery', { offset: -100, immediate: true });
+        } else {
+            window.scrollTo({ top: mainGallery.offsetTop - 100, behavior: 'instant' });
+        }
 
         // 4. Trigger the rise after the browser finishes the display switch
         setTimeout(forceReveal, 100); 
@@ -3126,7 +3265,7 @@ if (projectLayout) {
     // --- BUTTERMAX "LIQUID" SMOOTH SCROLL ---
     (function() {
         // 1. Initialize Lenis (The Physics Engine)
-        const lenis = new Lenis({
+        window.lenis = new Lenis({ // <--- NOW GLOBALLY ACCESSIBLE
             duration: 1.2,           // The "Weight" (Higher = heavier/slower stop)
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Exponential falloff
             direction: 'vertical',
@@ -3138,26 +3277,29 @@ if (projectLayout) {
         });
 
         // 2. The Animation Loop (60fps)
-        // We hook into this to create the "Liquid" skew effect
         function raf(time) {
             lenis.raf(time);
             requestAnimationFrame(raf);
             
-            // Calculate Velocity (How fast are we scrolling?)
-            // We clamp it so it doesn't skew too crazy on fast swipes
             const velocity = lenis.velocity;
-            const skewAmount = velocity * 0.15; // Sensitivity (0.15 is subtle, 0.25 is extreme)
-            const scaleAmount = 1 + (Math.abs(velocity) * 0.002); // Subtle vertical stretch
             
-            // 3. Apply "Liquid" Distortion to specific heavy elements
-            // We target grids and strips, but NOT the text/menus (keeps them readable)
-            const targets = document.querySelectorAll('.gallery-grid, .featured-strip-stack, .photography-bg-container');
+            // --- CINEMATIC ZOOM OUT LOGIC ---
+            // Instead of stretching (scale > 1), we shrink slightly (scale < 1)
+            // This creates a "depth" effect where content pushes back.
+            
+            // 0.0004 is the intensity. Lower = subtler. Higher = more zoom.
+            const rawScale = 1 - (Math.abs(velocity) * 0.004);
+            
+            // Clamp it: Never let it shrink smaller than 0.95 (5% zoom max)
+            const scaleAmount = Math.max(0.95, rawScale);
+            
+            const targets = document.querySelectorAll('.gallery-grid, .photography-bg-container');
             
             targets.forEach(el => {
-                // Apply the Jelly Skew
-                el.style.transform = `skewY(${skewAmount}deg) scaleY(${scaleAmount})`;
+                // Apply pure Scale (Removes the Skew/Stretch)
+                el.style.transform = `scale(${scaleAmount})`;
                 el.style.transformOrigin = 'center center';
-                el.style.willChange = 'transform'; // Optimizes performance
+                el.style.willChange = 'transform'; 
             });
         }
 
@@ -3258,7 +3400,7 @@ window.addEventListener('popstate', () => {
         border-radius: 50%;
         
         pointer-events: none;
-        z-index: 99999;
+        z-index: 95;
         transform: translate(-50%, -50%);
         
         transition: width 0.35s cubic-bezier(0.25, 1, 0.5, 1), 

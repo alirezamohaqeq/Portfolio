@@ -529,7 +529,7 @@ body.hero-done #gallery {
 #featured {
   margin-top: 64px;          /* ← THIS fixes the black bar */
   margin-bottom: 0px;
-  display: block;
+  display: none;
 }
 
 
@@ -2420,6 +2420,7 @@ body.no-scroll {
     background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('images/photography-header.avif'); 
     background-size: cover;
     background-position: center;
+    margin-bottom: 80px !important;
 }
 
 /* --- MOBILE FIX FOR PHOTOGRAPHY HEADER --- */
@@ -2714,11 +2715,23 @@ body.no-scroll #floating-top {
     }
 }
 
-/* --- CRITICAL FIX FOR STICKY MENU --- */
+/* --- CRITICAL FIX FOR STICKY MENU & REFRESH --- */
+
+/* 1. Default State (Hero Active): LOCK SCROLL */
+/* This forces the browser to start at the top every time you refresh */
 html, body {
-    height: auto !important; /* Forces the page to scroll naturally */
-    overflow-x: clip !important; /* Stops horizontal scroll without breaking sticky */
-    overflow-y: visible !important; /* Ensures vertical scrolling works */
+    height: 100% !important;
+    overflow: hidden !important; 
+    margin: 0;
+}
+
+/* 2. Unlocked State (Hero Done): ENABLE SCROLL & STICKY */
+/* We switch to this only when the 'hero-done' class is added */
+html.hero-done, 
+body.hero-done {
+    height: auto !important;
+    overflow-x: clip !important;
+    overflow-y: visible !important; /* Restore scrolling and sticky menu support */
 }
 
 /* Ensure the gallery doesn't trap the menu */
@@ -3014,4 +3027,46 @@ body.video-playing .enter-btn {
     color: #000 !important;
     font-weight: 600 !important;
     box-shadow: 0 0 15px rgba(255,255,255,0.4) !important;
+}
+
+/* --- HERO FADE & GALLERY SLIDE FIX --- */
+
+/* 1. Hero: Sits in back, FADES OUT smoothly */
+#hero {
+    z-index: 1 !important; 
+    opacity: 1; /* Start visible */
+    transform: none !important; 
+    /* Ensure opacity animates over 1.2s to match the slide */
+    transition: opacity 1.2s ease, transform 1.2s ease !important;
+}
+
+/* 2. Gallery: Slides up over the fading hero */
+#gallery {
+    z-index: 50 !important; 
+    position: relative;
+    background-color: #050505 !important; /* Solid background (User Request) */
+    min-height: 100vh;
+    
+    /* Animation settings */
+    transform: translateY(100vh); 
+    transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+    will-change: transform;
+}
+
+/* 3. Hide Buttons Initially (Prevent overlap) */
+header, 
+.show-more-wrap,
+.top-signature {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transition: opacity 0.5s ease;
+}
+
+/* 4. Reveal Buttons after animation */
+body.hero-done header,
+body.hero-done .show-more-wrap,
+body.hero-done .top-signature {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    transition-delay: 1s; 
 }
