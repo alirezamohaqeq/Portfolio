@@ -2002,28 +2002,41 @@ body.hero-hint-on #hero .skip-hint { opacity: 1; }
     }
 }
 
-/* --- FINAL MOBILE HERO FIX (GRID) --- */
-/* --- MOBILE HERO SKIP --- */
+/* --- MOBILE HERO SKIP (FIXED) --- */
 @media (max-width: 768px) {
+    /* 1. Hide Hero Completely */
     #hero {
         display: none !important;
         visibility: hidden !important;
+        pointer-events: none !important;
     }
 
-    #gallery {
-        transform: translateY(0) !important;
-        margin-top: 20px !important; /* Adjust as needed for logo spacing */
-        opacity: 1 !important;
-    }
-
-    body {
+    /* 2. FORCE UNLOCK SCROLL (Overrides the "Sticky Menu" Lock) */
+    html, body {
+        height: auto !important;
         overflow-y: auto !important;
         overflow-x: hidden !important;
+        position: relative !important;
     }
-    
-    .top-signature {
+
+    /* 3. FORCE GALLERY VISIBILITY (Overrides the Slide-Up wait) */
+    #gallery {
+        transform: translateY(0) !important;
         opacity: 1 !important;
-        display: none; /* Keep hidden on mobile as per previous preference */
+        margin-top: 0 !important;
+    }
+
+    /* 4. FORCE HEADER & MENU VISIBILITY (Overrides the Fade-In wait) */
+    header, 
+    .show-more-wrap {
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        transition: none !important; /* Instant appear */
+    }
+
+    /* 5. Hide Signature (Optional preference) */
+    .top-signature {
+        display: none !important;
     }
 }
 
@@ -3069,4 +3082,29 @@ body.hero-done .top-signature {
     opacity: 1 !important;
     pointer-events: auto !important;
     transition-delay: 1s; 
+}
+
+/* --- FINAL MOBILE VISIBILITY OVERRIDE --- */
+/* This must be at the very bottom to defeat the Hero hiding logic */
+@media (max-width: 768px) {
+    header, 
+    .show-more-wrap,
+    .top-signature {
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        visibility: visible !important;
+        transition: none !important;
+    }
+
+    /* FIX: Add gap ONLY for Home (all) and Motion categories */
+    body[data-mode="all"] .show-more-wrap,
+    body[data-mode="motion"] .show-more-wrap {
+        margin-bottom: 40px !important; 
+    }
+    
+    /* Ensure the body scroll is definitely unlocked */
+    html, body {
+        height: auto !important;
+        overflow-y: auto !important;
+    }
 }

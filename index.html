@@ -2285,6 +2285,7 @@
         let landingExpanded = false;
 
         function applyCategory(category){
+        document.body.setAttribute('data-mode', category);
             let shown = 0;
 
             galleryItems.forEach(card => {
