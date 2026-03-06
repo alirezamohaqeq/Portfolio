@@ -476,13 +476,24 @@ header {
 
 /* Menu Items */
 .filter-menu li {
-    padding: 10px 16px;
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 0.9rem;
-    cursor: pointer;
-    border-radius: 12px; /* Inner radius */
-    transition: all 0.2s ease;
-    margin-bottom: 2px;
+    background: transparent !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+    border-radius: 14px !important;
+    padding: 10px 16px !important;
+    margin-bottom: 4px;
+    font-family: 'Outfit', sans-serif !important;
+    font-weight: 400;
+    
+    /* THE MENU FIX: Forces true centering and prevents the right-shift */
+    display: block !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    text-align: left;
+    transform-origin: center center !important;
+    
+    /* THE GHOST FIX: 'background' is excluded from the transition entirely! */
+    transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), 
+                color 0.15s ease !important;
 }
 
 .filter-menu li:last-child {
@@ -2892,7 +2903,8 @@ body.video-playing .enter-btn {
 .enter-btn,
 .current-filter,
 .show-more-menu,
-#about-btn {
+#about-btn,
+.gig-portfolio-btn {
     /* Base Glass Texture */
     background: rgba(40, 40, 40, 0.35) !important; 
     backdrop-filter: blur(25px) saturate(220%) !important; 
@@ -2929,11 +2941,11 @@ body.video-playing .enter-btn {
     justify-content: center;
     cursor: pointer;
 }
-
 /* 3. HOVER EFFECTS (Standard Buttons) */
 .filter-nav:hover .current-filter,
 .show-more-menu:hover,
-#about-btn:hover {
+#about-btn:hover,
+.gig-portfolio-btn:hover {
     transform: scale(1.05) translateY(-2px) !important; 
     background: rgba(80, 80, 80, 0.5) !important;
     border-color: rgba(255, 255, 255, 0.5) !important;
@@ -2955,8 +2967,9 @@ body.video-playing .enter-btn {
     font-weight: 700 !important;
 }
 
-.current-filter, 
-#about-btn {
+.current-filter,
+#about-btn,
+.gig-portfolio-btn {
     padding: 12px 24px !important;
     gap: 8px;
     font-size: 0.9rem !important;
@@ -3004,13 +3017,23 @@ body.video-playing .enter-btn {
     margin-bottom: 4px;
     font-family: 'Outfit', sans-serif !important;
     font-weight: 400;
-    transition: all 0.2s ease !important;
+    
+    /* FIX 1: Lock the scaling to the dead-center */
+    transform-origin: center center !important;
+    
+    /* FIX 2: Split transitions! Background vanishes instantly (0.05s), 
+       while transform stays smooth (0.25s) */
+    transition: background 0.05s linear, 
+                transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), 
+                color 0.15s ease !important;
 }
 
 .filter-menu li:hover {
     background: rgba(255, 255, 255, 0.15) !important;
     color: #fff !important;
-    transform: translateX(5px);
+    
+    /* FIX 3: True center scaling instead of sliding to the right */
+    transform: scale(1.04) !important; 
 }
 
 .filter-menu li.active {
@@ -3107,4 +3130,637 @@ body.hero-done .top-signature {
         height: auto !important;
         overflow-y: auto !important;
     }
+}
+
+/* =========================================
+   SERVICES SECTION & 3D IMAGE STACKS
+   ========================================= */
+
+/* 1. The Fade Out Gradient for the Grid (TRIPLED INTENSITY) */
+.gallery-fade-out {
+    width: 100%;
+    height: 1200px; /* Massive height for a very slow, smooth fade */
+    background: linear-gradient(to bottom, rgba(5,5,5,0) 0%, rgba(5,5,5,0.3) 35%, rgba(5,5,5,0.8) 70%, rgba(5,5,5,1) 100%);
+    margin-top: -1100px; /* Pulls it high up over the grid */
+    position: relative;
+    z-index: 10;
+    pointer-events: none;
+    display: none; 
+}
+
+/* 2. Visibility Logic (Only show on Home Page) */
+body[data-mode="all"] .gallery-fade-out,
+body[data-mode="all"] .services-section {
+    display: block;
+}
+
+.services-section {
+    display: none; 
+    padding: 20px 0px 140px; /* Pushed top padding from 20px to 120px to clear the sticky menu */
+    width: 100%; 
+    background-color: #050505; 
+    text-align: center;
+    position: relative;
+    z-index: 11;
+}
+
+/* 3. Section Typography (Massive Cinematic Font) */
+.section-headline {
+    font-family: 'Wosker', sans-serif;
+    font-size: 12rem; 
+    color: #ffba00;   
+    text-transform: uppercase;
+    margin-bottom: 0px; /* Gap closed! */
+    line-height: 1;
+    letter-spacing: 0;
+    font-weight: 400;
+}
+
+/* Responsive sizing for the massive headline */
+@media (max-width: 1300px) { .section-headline { font-size: 8rem; } }
+@media (max-width: 900px) { .section-headline { font-size: 6rem; } }
+@media (max-width: 768px) { .section-headline { font-size: 4.5rem; margin-bottom: 0px; } }
+
+/* 4. The Grid (WIDER & BIGGER) */
+.services-grid {
+    max-width: 1600px; /* Increased from 1300px to spread them out */
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 80px; /* Increased gap for more horizontal breathing room */
+    padding: 0 40px; /* Keeps them off the exact edges of ultra-wide monitors */
+}
+
+/* 5. The Cards & Text */
+.service-card {
+    cursor: pointer;
+    text-align: center;
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.service-card h3 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: 0.03em;
+    margin-top: 25px;
+    transition: color 0.3s ease;
+}
+
+.service-card:hover h3 {
+    color: #ffba00; /* Subtle highlight on hover */
+}
+
+/* 6. The 3D Stacks */
+.service-stack {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    perspective: 1200px; /* Gives the 3D depth */
+}
+
+/* Individual Images in the Stack */
+.stack-img {
+    position: absolute;
+    width: 70%;
+    height: 85%;
+    object-fit: cover;
+    border-radius: 25px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+    transition: all 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transform-origin: center center;
+}
+
+/* Back Left Image */
+.img-back-left {
+    top: 5%; left: 0;
+    transform: translateZ(-60px) rotate(-6deg);
+    filter: brightness(0.5);
+    z-index: 1;
+}
+
+/* Back Right Image */
+.img-back-right {
+    top: 15%; right: 0;
+    transform: translateZ(-40px) rotate(6deg);
+    filter: brightness(0.7);
+    z-index: 2;
+}
+
+/* Front Image */
+.img-front {
+    bottom: 0; left: 15%;
+    transform: translateZ(0) rotate(0deg);
+    z-index: 3;
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* 7. THE HOVER ANIMATION (Wiggle & Float) */
+.service-card:hover {
+    transform: translateY(-5px);
+}
+
+.service-card:hover .img-back-left {
+    transform: translateZ(-60px) rotate(-12deg) translateX(-20px) translateY(10px);
+    filter: brightness(0.7);
+}
+
+.service-card:hover .img-back-right {
+    transform: translateZ(-40px) rotate(12deg) translateX(20px) translateY(-10px);
+    filter: brightness(0.9);
+}
+
+.service-card:hover .img-front {
+    transform: translateZ(30px) scale(1.08) translateY(-10px);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* 8. MOBILE LAYOUT */
+@media (max-width: 980px) {
+    .services-grid {
+        grid-template-columns: 1fr;
+        gap: 80px;
+    }
+    .section-headline { 
+        font-size: 3.5rem; 
+        margin-bottom: 50px;
+    }
+    .service-stack {
+        width: 85%;
+        margin: 0 auto;
+    }
+}
+
+/* =========================================
+   PHASE 2: GIG / SERVICES OVERLAY
+   ========================================= */
+
+.gig-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100vh;
+    background-color: #050505;
+    z-index: 100000;
+    
+    overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior-y: contain; 
+    touch-action: auto !important; /* CRITICAL FIX: Ensures you can swipe scroll on mobile */
+    
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gig-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* --- Gig Header --- */
+.gig-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(5,5,5,0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* Centers the buttons vertically */
+    padding: 20px 40px;
+}
+
+.gig-back-btn {
+    background: none; border: none; outline: none;
+    color: #fff; font-family: 'Outfit', sans-serif;
+    font-size: 1rem; cursor: pointer;
+    opacity: 0.6; transition: all 0.3s ease;
+}
+.gig-back-btn:hover { opacity: 1; transform: translateX(-5px); }
+
+/* --- Massive Cinematic Title (Standard Document Flow) --- */
+.gig-title {
+    font-family: 'Wosker', sans-serif;
+    font-size: 5.5rem; 
+    color: #ffba00;
+    margin: 0 auto 50px; /* Centered with a gap below */
+    line-height: 1;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 400;
+    letter-spacing: 0; 
+    text-shadow: none; 
+    white-space: nowrap;
+}
+
+.gig-nav-pill {
+    cursor: pointer;
+    margin: 0 !important; 
+}
+
+/* --- NEW: Gig Promo Carousel (Edge-to-Edge) --- */
+.gig-carousel-viewport {
+    position: relative;
+    width: 100vw; /* Forces it to span the entire screen width */
+    left: 50%; /* Breaks out of the padded container */
+    transform: translateX(-50%); /* Centers it perfectly */
+    margin-bottom: 60px; 
+    overflow: hidden; 
+    border-radius: 0; /* Removed border-radius so it bleeds flat against the edges */
+    perspective: 1200px; 
+}
+
+.gig-carousel-stack {
+    display: flex;
+    width: max-content; 
+    gap: 30px; 
+    align-items: center; 
+    position: relative;
+    left: 50%; 
+    transform-origin: center center;
+}
+
+.gig-carousel-item {
+    flex: 0 0 auto; 
+    width: 750px; 
+    aspect-ratio: 4 / 3; 
+    border-radius: 20px;
+    overflow: hidden;
+    background: #111;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    transform: scale(0.9); 
+    opacity: 0.6; 
+}
+
+.gig-carousel-item.active {
+    transform: scale(1);
+    opacity: 1;
+    border-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+}
+
+.gig-carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Position the buttons near the extreme edges of the screen */
+#gig-carousel-prev { left: 4vw; z-index: 10; }
+#gig-carousel-next { right: 4vw; z-index: 10; }
+
+/* --- Gig Content Layout --- */
+.gig-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 60px 20px 100px; /* Restored standard padding */
+}
+
+.gig-section-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2.2rem; font-weight: 300;
+    text-align: center; margin-bottom: 70px; color: #f0f0f0;
+}
+
+/* --- Media Grids --- */
+/* --- Media Grids (Now Only Videos in 4:5 Ratio) --- */
+.gig-media-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 15px; 
+    margin-bottom: 80px; /* Restored gap since the second row is gone */
+}
+
+.gig-media-grid video {
+    width: 100%; 
+    aspect-ratio: 4 / 5; /* Keeps the exact dimensions of your old images */
+    object-fit: cover; 
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    background: #111; /* Keeps containers dark before videos load */
+}
+
+/* --- Gig Description Text --- */
+.gig-description-box {
+    font-family: 'Outfit', sans-serif;
+    color: #cccccc;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    max-width: 1000px;
+    margin: 0 auto 60px;
+    text-align: left;
+    background: rgba(30, 30, 30, 0.4);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    padding: 40px 50px;
+    border-radius: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.gig-description-box p { margin-bottom: 20px; }
+.gig-description-box p:last-child { margin-bottom: 0; }
+.gig-description-box strong { color: #ffba00; font-weight: 600; letter-spacing: 0.05em; }
+
+/* --- Delivery & Revisions Badge --- */
+.pkg-delivery-rev {
+    display: flex;
+    gap: 15px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    color: #ffba00;
+    font-weight: 600;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Mobile Fixes for the new box */
+@media (max-width: 768px) {
+    .gig-description-box {
+        padding: 25px;
+        font-size: 0.95rem;
+        border-radius: 15px;
+    }
+}
+
+/* --- Pricing Cards (Glassmorphism) --- */
+.gig-pricing-cards {
+    display: flex; gap: 30px; justify-content: center;
+    align-items: stretch; margin-bottom: 80px;
+}
+
+.pricing-card {
+    flex: 1; max-width: 400px;
+    background: rgba(30, 30, 30, 0.4);
+    backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 30px; padding: 40px 30px;
+    text-align: left; position: relative;
+    cursor: pointer; transition: all 0.3s ease;
+    display: flex; flex-direction: column;
+}
+
+.pricing-card:hover, .pricing-card.selected {
+    background: rgba(50, 50, 50, 0.6);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-5px);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+}
+
+.pricing-card h4 { font-family: 'Outfit'; font-size: 1.8rem; font-weight: 600; margin-bottom: 10px; }
+.pricing-card .price { 
+    font-family: 'Outfit', sans-serif; /* Added the clean font */
+    font-size: 2.5rem; 
+    font-weight: 300; 
+    color: #ffba00; 
+    margin-bottom: 15px; 
+}
+.pricing-card .desc { font-family: 'Outfit'; font-size: 0.95rem; color: #ccc; margin-bottom: 25px; line-height: 1.5; }
+
+.pkg-features { list-style: none; padding: 0; margin-bottom: 30px; flex-grow: 1; }
+.pkg-features li {
+    font-family: 'Outfit', sans-serif; /* Swapped to the clean, modern font */
+    font-size: 1rem; /* Slightly larger for premium readability */
+    color: #e0e0e0; /* Brighter, cleaner white/grey */
+    font-weight: 300; 
+    margin-bottom: 12px; 
+    padding-left: 24px; /* Gives the arrow more breathing room */
+    position: relative;
+    line-height: 1.4;
+}
+
+.pkg-features li::before {
+    content: '→'; 
+    position: absolute; 
+    left: 0; 
+    color: #ffba00;
+    font-weight: 500; /* Makes the arrow a bit sharper */
+}
+
+.select-pkg-btn {
+    width: 100%; padding: 15px; border-radius: 50px;
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.2);
+    color: #fff; font-family: 'Outfit'; font-weight: 600; font-size: 1rem;
+    cursor: pointer; transition: 0.3s;
+}
+.pricing-card:hover .select-pkg-btn, .pricing-card.selected .select-pkg-btn {
+    background: #fff; color: #000;
+}
+
+.featured-pkg {
+    border-color: rgba(255, 186, 0, 0.4);
+    box-shadow: 0 0 30px rgba(255, 186, 0, 0.1);
+    transform: scale(1.05);
+}
+.featured-pkg:hover { transform: scale(1.05) translateY(-5px); border-color: #ffba00; }
+
+.pkg-badge {
+    position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
+    background: #ffba00; color: #000; padding: 5px 15px; border-radius: 20px;
+    font-family: 'Outfit'; font-weight: 700; font-size: 0.8rem; text-transform: uppercase;
+}
+
+/* --- Contact Form --- */
+.gig-form {
+    max-width: 800px; margin: 0 auto;
+    background: rgba(20, 20, 20, 0.6); border: 1px solid rgba(255,255,255,0.1);
+    padding: 40px; border-radius: 30px;
+}
+
+.form-row { margin-bottom: 20px; }
+.split-row { display: flex; gap: 20px; }
+
+.gig-form input, .gig-form textarea {
+    width: 100%; padding: 18px 20px;
+    background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 15px; color: #fff; font-family: 'Outfit'; font-size: 1rem;
+    transition: 0.3s; box-sizing: border-box;
+}
+.gig-form input:focus, .gig-form textarea:focus {
+    outline: none; border-color: #ffba00; background: rgba(0,0,0,0.8);
+}
+
+.selected-pkg-display {
+    display: flex; align-items: center; gap: 15px; margin-bottom: 30px;
+}
+.selected-pkg-display label { font-family: 'Outfit'; color: #ccc; }
+.selected-pkg-display input {
+    background: rgba(255, 186, 0, 0.1); border-color: #ffba00; color: #ffba00;
+    font-weight: 700; pointer-events: none; width: auto; flex-grow: 1;
+}
+
+.gig-submit-btn {
+    width: 100%; padding: 20px; border-radius: 50px;
+    background: #ffba00; border: none; color: #000;
+    font-family: 'Outfit'; font-weight: 700; font-size: 1.2rem;
+    cursor: pointer; transition: 0.3s; margin-top: 10px;
+}
+.gig-submit-btn:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(255,255,255,0.2); }
+
+/* --- Mobile Fixes --- */
+@media (max-width: 1100px) {
+    .gig-header { 
+        align-items: center; 
+        flex-direction: row; 
+        padding: 20px; 
+        gap: 20px; 
+        justify-content: space-between; 
+    }
+    .gig-title { 
+        font-size: 3.5rem; 
+        white-space: normal; 
+        margin-bottom: 40px;
+    }
+    .gig-media-grid { grid-template-columns: repeat(3, 1fr); }
+    .gig-pricing-cards { flex-direction: column; align-items: center; }
+    .featured-pkg { transform: scale(1); }
+    .featured-pkg:hover { transform: translateY(-5px); }
+    .split-row { flex-direction: column; }
+}
+
+@media (max-width: 768px) {
+    .gig-header { padding: 15px 20px; flex-wrap: wrap; gap: 15px; justify-content: center;}
+    .gig-title { font-size: 2rem; width: 100%; order: 3; }
+    .gig-image-grid { grid-template-columns: repeat(2, 1fr); }
+    .gig-video-grid { grid-template-columns: 1fr; }
+    .pricing-card { width: 100%; max-width: 100%; }
+}
+
+/* =========================================
+   Z-INDEX FIX: ABOUT PAGE ON TOP OF GIGS
+   ========================================= */
+#about-overlay {
+    z-index: 999999 !important; /* Forces About page above Gig Overlays (100000) */
+}
+
+/* Ensures the cursor and close buttons don't get trapped either */
+#physics-cursor,
+.close-btn {
+    z-index: 9999999 !important; 
+}
+
+/* =========================================
+   OPTIONAL ADD-ONS STYLING
+   ========================================= */
+.gig-addons-list {
+    max-width: 600px;
+    margin: 0 auto 80px;
+    background: rgba(30, 30, 30, 0.4);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 30px 40px;
+    display: none; /* Hidden by default, JS turns it on */
+}
+
+/* Fix for Add-ons Title Font */
+.addons-title {
+    font-family: 'Outfit', sans-serif !important; 
+    font-size: 1.3rem;
+    color: #fff;
+    margin-bottom: 20px;
+    font-weight: 500;
+    text-align: left;
+}
+
+/* Interactive Add-on Rows */
+.addon-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px; 
+    margin-bottom: 5px;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.15);
+    font-family: 'Outfit', sans-serif;
+    font-size: 1rem;
+    color: #ccc;
+    cursor: pointer;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+
+.addon-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.addon-item.selected {
+    background: rgba(255, 186, 0, 0.08); /* Cinematic gold tint */
+}
+
+.addon-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.addon-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* The Empty Circle */
+.addon-checkbox {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    display: inline-block;
+    position: relative;
+    transition: all 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+    flex-shrink: 0;
+}
+
+/* The Filled State */
+.addon-item.selected .addon-checkbox {
+    border-color: #ffba00;
+}
+
+.addon-item.selected .addon-checkbox::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    width: 12px;
+    height: 12px;
+    background: #ffba00;
+    border-radius: 50%;
+    animation: popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes popIn {
+    0% { transform: translate(-50%, -50%) scale(0); }
+    100% { transform: translate(-50%, -50%) scale(1); }
+}
+
+/* =========================================
+   SERVICES INTERACTIVE QUOTE
+   ========================================= */
+#services-quote {
+    padding: 10px 20px 80px !important; /* Pulls it tight to the header, keeps gap for the cards */
+    animation: none; /* It already animates in with the section */
+    opacity: 1 !important;
+}
+
+#services-quote h1 {
+    font-size: 2.5rem !important; /* MATCHES MAIN QUOTES */
+}
+
+@media (max-width: 768px) {
+    #services-quote h1 { font-size: 1.35rem !important; } /* MATCHES MOBILE QUOTES */
+    #services-quote { padding-bottom: 50px !important; }
 }

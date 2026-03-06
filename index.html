@@ -105,6 +105,7 @@
                     <li data-filter="motion">Motion Graphics</li>
                     <li data-filter="short">Short Film</li>
                     <li data-filter="photography">Photography</li>
+                    <li data-action="scroll-services">Services</li>
                 </ul>
             </nav>
         </div>
@@ -2108,6 +2109,47 @@
             </div>
         </section>
 
+<div class="gallery-fade-out"></div>
+
+        <section id="services-section" class="services-section">
+            <h2 class="section-headline">SERVICES</h2>
+            
+            <!-- NEW: Interactive Services Quote -->
+            <div class="quote-break" id="services-quote">
+                <h1>Let us narrate your unique <span>story</span> <br>with the cinematic services below.</h1>
+                <p>— ALEE</p>
+            </div>
+            
+            <div class="services-grid">
+                <div class="service-card" onclick="openGig('High-end Brand Commercial')">
+                    <div class="service-stack">
+                        <img src="images/covers/commercial-promo-3.jpg" class="stack-img img-back-left" alt="">
+                        <img src="images/covers/commercial-promo-2.jpg" class="stack-img img-back-right" alt="">
+                        <img src="images/covers/commercial-promo-1.jpg" class="stack-img img-front" alt="">
+                    </div>
+                    <h3>High-end Brand Commercial</h3>
+                </div>
+                
+                <div class="service-card" onclick="openGig('Viral Social Media Edit')">
+                    <div class="service-stack">
+                        <img src="images/covers/social-promo-3.jpg" class="stack-img img-back-left" alt="">
+                        <img src="images/covers/social-promo-2.jpg" class="stack-img img-back-right" alt="">
+                        <img src="images/covers/social-promo-1.jpg" class="stack-img img-front" alt="">
+                    </div>
+                    <h3>Viral Social Media Edit</h3>
+                </div>
+                
+                <div class="service-card" onclick="openGig('Motion Graphics')">
+                    <div class="service-stack">
+                        <img src="images/covers/motion-promo-3.jpg" class="stack-img img-back-left" alt="">
+                        <img src="images/covers/motion-promo-2.jpg" class="stack-img img-back-right" alt="">
+                        <img src="images/covers/motion-promo-1.jpg" class="stack-img img-front" alt="">
+                    </div>
+                    <h3>Motion Graphics</h3>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <div id="about-overlay" class="overlay-container">
@@ -2170,7 +2212,7 @@
         <div class="footer-left">
           <div class="footer-brand">ALEE</div>
           <div class="footer-note">Filmmaker • Motion Designer</div>
-          <div class="footer-copy">© <span id="footer-year"></span> Alireza Mohaqeq. All rights reserved.</div>
+          <div class="footer-copy">© <span class="footer-year"></span> Alireza Mohaqeq. All rights reserved.</div>
         </div>
         <div class="footer-links">
           <a href="mailto:alirezamohaqeq0@gmail.com" class="footer-link">Email</a>
@@ -2183,6 +2225,82 @@
         </div>
       </div>
     </footer>
+
+    <div id="gig-overlay" class="gig-overlay" data-lenis-prevent>
+        
+        <div class="gig-header">
+            <button class="gig-back-btn" onclick="closeGig()">← Back to Services</button>
+            <button class="gig-portfolio-btn" onclick="closeGigAndGoHome()">Back to Portfolio</button>
+        </div>
+
+        <div class="gig-content">
+
+            <h2 id="gig-title" class="gig-title">High-end Brand Commercial</h2>
+            
+            <div class="gig-media-section">
+                <div class="gig-carousel-viewport" id="gig-carousel-viewport">
+                    <div class="gig-carousel-stack" id="gig-carousel-stack"></div>
+                    <button type="button" class="featured-strip-btn featured-strip-btn-prev" id="gig-carousel-prev">&lt;</button>
+                    <button type="button" class="featured-strip-btn featured-strip-btn-next" id="gig-carousel-next">&gt;</button>
+                </div>
+                <div class="gig-media-grid" id="gig-media-grid"></div>
+            </div>
+
+            <div class="gig-packages-section">
+                <div class="gig-description-box" id="gig-description-box"></div>
+                <h3 class="gig-section-title">Select a Package</h3>
+                <div class="gig-pricing-cards" id="gig-pricing-cards"></div>
+                
+                <!-- NEW: Add-ons Container -->
+                <div id="gig-addons-list" class="gig-addons-list"></div>
+            </div>
+
+            <div class="gig-contact-section" id="gig-order-form">
+                <h3 class="gig-section-title">Let's Work Together</h3>
+                <form action="https://formspree.io/f/xbdzrqqq" method="POST" class="gig-form">
+                    <input type="hidden" name="Service Requested" id="form-service-name" value="">
+                    <input type="hidden" name="Selected Add-ons" id="form-addons" value="None">
+                    
+                    <div class="form-row selected-pkg-display">
+                        <label>Selected Package:</label>
+                        <input type="text" name="Package Chosen" id="form-package-name" value="None selected" readonly>
+                    </div>
+                    
+                    <div class="form-row split-row">
+                        <input type="text" name="Name" placeholder="Your Name" required>
+                        <input type="email" name="Email" placeholder="Your Email" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <textarea name="Project Details" placeholder="Tell me about your project... (timeline, references, goals, specific requirements)" rows="5" required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="gig-submit-btn">Send Inquiry</button>
+                </form>
+            </div>
+
+        </div>
+
+        <div class="site-footer gig-site-footer">
+          <div class="footer-inner">
+            <div class="footer-left">
+              <div class="footer-brand">ALEE</div>
+              <div class="footer-note">Filmmaker • Motion Designer</div>
+              <div class="footer-copy">© <span class="footer-year"></span> Alireza Mohaqeq. All rights reserved.</div>
+            </div>
+            <div class="footer-links">
+              <a href="mailto:alirezamohaqeq0@gmail.com" class="footer-link">Email</a>
+              <a href="https://instagram.com/alireza_mohaqeq" target="_blank" rel="noopener" class="footer-link">Instagram</a>
+              <a href="https://youtube.com/@alirezamohaqeq2461" target="_blank" rel="noopener" class="footer-link">YouTube</a>
+              <a href="https://www.linkedin.com/in/alirezamohaqeq/" target="_blank" rel="noopener" class="footer-link">LinkedIn</a>
+            </div>
+            <div class="footer-right">
+              <button id="gig-back-to-top" class="back-to-top" type="button">Back to top ↑</button>
+            </div>
+          </div>
+        </div>
+
+    </div>
 
 <button id="floating-top" aria-label="Back to Top">↑</button>
 
@@ -2330,7 +2448,7 @@
         const showMoreMenu = document.getElementById('show-more-menu');
         
         // SAMPLE LIMIT FOR HOME PAGE
-        const SAMPLE_LIMIT = 24; 
+        const SAMPLE_LIMIT = 12; 
         let landingExpanded = false;
 
         function applyCategory(category){
@@ -2409,7 +2527,7 @@ if (photoWrapper) {
 
 // --- UPDATED QUOTE VISIBILITY ---
 // 1. Select all quote elements
-const mainQuote = document.querySelector('.quote-break:not(#photo-quote):not(#commercial-quote):not(#social-quote):not(#motion-quote):not(#short-quote):not(#ai-quote)'); // Note: Added :not(#ai-quote)
+const mainQuote = document.querySelector('.quote-break:not(#photo-quote):not(#commercial-quote):not(#social-quote):not(#motion-quote):not(#short-quote):not(#ai-quote):not(#services-quote)');
 
 const photoQuote = document.getElementById('photo-quote');
 const commercialQuote = document.getElementById('commercial-quote');
@@ -2438,37 +2556,39 @@ if (aiQuote) aiQuote.style.display = (category === 'ai-ads') ? 'block' : 'none';
         }
 
         // --- BUILD THE HORIZONTAL PILL MENU ---
-    function buildLocalShowMoreMenu() {
-        if (!showMoreMenu || !document.querySelector('.filter-menu')) return;
-        showMoreMenu.innerHTML = '';
-        
-        // Clone categories from the main header menu
-        document.querySelectorAll('.filter-menu li[data-filter]').forEach(li => {
-            const clone = li.cloneNode(true);
+        function buildLocalShowMoreMenu() {
+            if (!showMoreMenu || !document.querySelector('.filter-menu')) return;
+            showMoreMenu.innerHTML = '';
             
-            showMoreMenu.appendChild(clone);
-        });
+            // FIX 1: Select ALL li items (including the Services action button)
+            document.querySelectorAll('.filter-menu li').forEach(li => {
+                const clone = li.cloneNode(true);
+                showMoreMenu.appendChild(clone);
+            });
 
-        /// Add event listeners to the new horizontal items
-showMoreMenu.querySelectorAll('li[data-filter]').forEach(li => {
-    li.addEventListener('click', () => {
-        const cat = li.getAttribute('data-filter');
+            // FIX 2: Add event listeners that understand both filters AND actions
+            showMoreMenu.querySelectorAll('li').forEach(li => {
+                li.addEventListener('click', () => {
+                    const cat = li.getAttribute('data-filter');
+                    const action = li.getAttribute('data-action');
+                    
+                    // Trigger the exact matching button in the main header menu
+                    if (cat) {
+                        const headerItem = document.querySelector(`.filter-menu li[data-filter="${cat}"]`);
+                        if (headerItem) headerItem.click();
+                    } else if (action) {
+                        const headerAction = document.querySelector(`.filter-menu li[data-action="${action}"]`);
+                        if (headerAction) headerAction.click();
+                    }
+                });
+            });
+        }
         
-        // Find the header item and click it
-        const headerItem = document.querySelector(`.filter-menu li[data-filter="${cat}"]`);
-        
-        // This click now triggers Step 1, which updates BOTH menus automatically
-        if (headerItem) headerItem.click();
-    });
-});
-    }
-    
-    // Initialize the pill menu on page load
-    buildLocalShowMoreMenu();
+        // Initialize the pill menu on page load
+        buildLocalShowMoreMenu();
 
         // Close local menu on outside click
         document.addEventListener('click', (e) => {
-            // Close header filter nav if clicked outside
             if (!filterNav.contains(e.target) && e.target !== filterToggle) {
                 filterNav.classList.remove('open');
             }
@@ -2477,38 +2597,62 @@ showMoreMenu.querySelectorAll('li[data-filter]').forEach(li => {
         // Toggle Header Filter Menu
         filterToggle.addEventListener('click', () => filterNav.classList.toggle('open'));
 
-        // --- SYNCHRONIZED FILTER CLICK LOGIC ---
-filterItems.forEach(item => {
-    item.addEventListener('click', () => {
-        const category = item.getAttribute('data-filter');
+        // --- SYNCHRONIZED FILTER & ACTION CLICK LOGIC ---
+        document.querySelectorAll('.filter-menu li').forEach(item => {
+            item.addEventListener('click', () => {
+                const category = item.getAttribute('data-filter');
+                const action = item.getAttribute('data-action');
 
-        // NEW: Update the URL address bar
-        if (category === 'all') {
-            history.pushState(null, null, ' '); // Clears the hash for Home
-        } else {
-            window.location.hash = category; // Adds #photography, #motion, etc.
-        }
+                // --- SCROLL TO SERVICES LOGIC ---
+                if (action === 'scroll-services') {
+                    filterNav.classList.remove('open');
+                    
+                    // 1. Switch to Home page first to reveal the Services section
+                    if (document.body.getAttribute('data-mode') !== 'all') {
+                        const homeBtn = document.querySelector('.filter-menu li[data-filter="all"]');
+                        if (homeBtn) homeBtn.click();
+                    }
+                    
+                    // 2. Force visual highlight on "Services" in both menus
+                    document.querySelectorAll('.filter-menu li, .show-more-menu li').forEach(li => li.classList.remove('active'));
+                    document.querySelectorAll('li[data-action="scroll-services"]').forEach(li => li.classList.add('active'));
+                    
+                    // 3. Scroll down smoothly using the physics engine
+                    setTimeout(() => {
+                        if (window.lenis) {
+                            window.lenis.scrollTo('#services-section', { offset: -80, duration: 1.5 });
+                        }
+                    }, 100);
+                    return; // Stop here! Do not run the filter logic below.
+                }
 
-        // 1. Update Header UI
-        document.querySelectorAll('.filter-menu li').forEach(li => li.classList.remove('active'));
-        item.classList.add('active');
+                // --- STANDARD CATEGORY FILTER LOGIC ---
+                if (category) {
+                    if (category === 'all') {
+                        history.pushState(null, null, ' ');
+                    } else {
+                        window.location.hash = category;
+                    }
 
-        // 2. THE FIX: Update the Bottom Pill Menu UI to match
-        const pillItems = document.querySelectorAll('#show-more-menu li');
-        pillItems.forEach(pill => {
-            pill.classList.remove('active');
-            if (pill.getAttribute('data-filter') === category) {
-                pill.classList.add('active');
-            }
+                    // Update Active States
+                    document.querySelectorAll('.filter-menu li').forEach(li => li.classList.remove('active'));
+                    item.classList.add('active');
+
+                    const pillItems = document.querySelectorAll('#show-more-menu li');
+                    pillItems.forEach(pill => {
+                        pill.classList.remove('active');
+                        if (pill.getAttribute('data-filter') === category) {
+                            pill.classList.add('active');
+                        }
+                    });
+
+                    // Render Gallery
+                    if (category === 'all') landingExpanded = false;
+                    applyCategory(category);
+                    filterNav.classList.remove('open');
+                }
+            });
         });
-
-        // 3. Apply standard gallery logic
-        if (category === 'all') landingExpanded = false;
-        applyCategory(category);
-
-        filterNav.classList.remove('open');
-    });
-});
 
         // --- SMART STARTUP (No Flash) ---
     (function() {
@@ -3158,9 +3302,19 @@ if (projectClose) {
             v.parentElement.addEventListener('mouseleave', () => { v.pause(); v.currentTime=0; });
         });
         
-        // Footer Year
-        document.getElementById('footer-year').textContent = new Date().getFullYear();
+        // Footer Year (Updated to handle multiple footers)
+        document.querySelectorAll('.footer-year').forEach(el => el.textContent = new Date().getFullYear());
+        
+        // Main Page Back to Top
         document.getElementById('back-to-top').addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+        
+        // NEW: Gig Overlay Back to Top
+        const gigBackToTop = document.getElementById('gig-back-to-top');
+        if (gigBackToTop) {
+            gigBackToTop.addEventListener('click', () => {
+                document.getElementById('gig-overlay').scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        }
 
         // --- IMPROVED OVERLAY CLOSURE ---
 projectOverlay.addEventListener('click', (e) => {
@@ -3245,19 +3399,15 @@ projectOverlay.addEventListener('click', (e) => {
         if (btn) btn.addEventListener('click', goHome);
     });
 
-    // --- REDIRECT FOOTER BRAND TO ABOUT ---
-const footerBrand = document.querySelector('.site-footer .footer-brand');
-
-if (footerBrand) {
-    footerBrand.addEventListener('click', (e) => {
-        // Prevent any default behavior
-        e.preventDefault(); 
-        
-        // Open the About Overlay
-        aboutOverlay.classList.add('active'); 
-        document.body.style.overflow = 'hidden'; 
+    // --- REDIRECT ALL FOOTER BRANDS TO ABOUT ---
+    const footerBrands = document.querySelectorAll('.footer-brand');
+    footerBrands.forEach(brand => {
+        brand.addEventListener('click', (e) => {
+            e.preventDefault(); 
+            aboutOverlay.classList.add('active'); 
+            document.body.style.overflow = 'hidden'; 
+        });
     });
-}
 
 // UNIVERSAL ESCAPE KEY EXIT
 document.addEventListener('keydown', (e) => {
@@ -3836,6 +3986,9 @@ const menuItems = document.querySelectorAll('.filter-menu li, .show-more-menu li
             }
         }
         
+        // FIX: Expose this globally so the Scroll Spy can trigger it
+        window.updateCinematicHeadline = updateToActive;
+        
         // Run on load
         updateToActive();
 
@@ -3874,7 +4027,7 @@ const menuItems = document.querySelectorAll('.filter-menu li, .show-more-menu li
 
         const aboutBtn = document.getElementById('about-btn');
         const closeBtn = document.getElementById('close-btn');
-        const footerBrand = document.querySelector('.footer-brand');
+        const allFooterBrands = document.querySelectorAll('.footer-brand');
         const physicsContainer = document.getElementById('physics-container');
         const customCursor = document.getElementById('physics-cursor');
         const aboutOverlay = document.getElementById('about-overlay');
@@ -4105,7 +4258,7 @@ const menuItems = document.querySelectorAll('.filter-menu li, .show-more-menu li
         }
 
         if(aboutBtn) aboutBtn.addEventListener('click', openAbout);
-        if(footerBrand) footerBrand.addEventListener('click', openAbout);
+        allFooterBrands.forEach(brand => brand.addEventListener('click', openAbout));
 
         // Close (Universal Handler)
         function closeAbout(e) {
@@ -4134,6 +4287,490 @@ const menuItems = document.querySelectorAll('.filter-menu li, .show-more-menu li
         }
     }, { passive: false });
 </script>
+
+<script>
+// --- SCROLL SPY FOR SERVICES MENU ---
+    // Automatically highlights "Services" when you scroll down to it
+    window.addEventListener('DOMContentLoaded', () => {
+        const servicesSection = document.getElementById('services-section');
+        
+        if (servicesSection) {
+            // Watch for the Services section to enter the viewport
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const pillMenuItems = document.querySelectorAll('.show-more-menu li');
+                    const headerMenuItems = document.querySelectorAll('.filter-menu li');
+                    
+                    if (entry.isIntersecting) {
+                        // We are looking at Services! Highlight it everywhere.
+                        pillMenuItems.forEach(li => li.classList.remove('active'));
+                        headerMenuItems.forEach(li => li.classList.remove('active'));
+                        
+                        const servicesPill = document.querySelector('.show-more-menu li[data-action="scroll-services"]');
+                        const servicesHeader = document.querySelector('.filter-menu li[data-action="scroll-services"]');
+                        
+                        if (servicesPill) servicesPill.classList.add('active');
+                        if (servicesHeader) servicesHeader.classList.add('active');
+                        
+                    } else {
+                        // We scrolled away from Services. Revert back to the current category (usually 'Home')
+                        const currentMode = document.body.getAttribute('data-mode') || 'all';
+                        
+                        // Only auto-revert if the Services button is currently the one lit up
+                        const activePill = document.querySelector('.show-more-menu li.active');
+                        if (activePill && activePill.getAttribute('data-action') === 'scroll-services') {
+                            
+                            pillMenuItems.forEach(li => li.classList.remove('active'));
+                            headerMenuItems.forEach(li => li.classList.remove('active'));
+                            
+                            const targetPill = document.querySelector(`.show-more-menu li[data-filter="${currentMode}"]`);
+                            const targetHeader = document.querySelector(`.filter-menu li[data-filter="${currentMode}"]`);
+                            
+                            if (targetPill) targetPill.classList.add('active');
+                            if (targetHeader) targetHeader.classList.add('active');
+                        }
+                    }
+
+                    // FIX: Tell the massive Wosker headline to update itself!
+                    if (window.updateCinematicHeadline) {
+                        window.updateCinematicHeadline();
+                    }
+                });
+            }, { 
+                threshold: 0.25, // Triggers when 25% of the Services section is visible
+                rootMargin: "-100px 0px 0px 0px" // Accounts for the sticky header
+            });
+
+            observer.observe(servicesSection);
+        }
+    });
+</script>
+
+<script>
+    // =========================================
+    // GIG / SERVICES OVERLAY LOGIC (DYNAMIC MEDIA + FIXES)
+    // =========================================
+
+    let gigCarouselTimer = null; // Global timer for the new carousel
+
+    // 1. The Gig Database (Text + Media Assets + ADD-ONS)
+    const gigData = {
+        'High-end Brand Commercial': {
+            desc: "Are you looking for more than just a basic social media cut? I specialize in crafting premium brand anthems, corporate commercials, and lifestyle edits that actually drive impact.<br><br>With over 10 years of experience as a Senior Video Editor and Motion Graphics Artist, I've partnered with US branding startups and luxury agencies to deliver high-end visual storytelling. My approach goes beyond simply cutting footage together. Because of my background in creative writing, I focus heavily on the narrative flow, pacing, and emotional resonance to ensure your brand's message is felt, not just seen.",
+            packages: {
+                'Starter': { price: '$350', delivery: '2 Days', revisions: '1 Revision', desc: 'Perfect for concise, high-impact brand messaging.', features: ['15 Mins Footage Provided', '1 Min Running Time', 'Color Grading', 'Subtitles'] },
+                'Standard': { price: '$650', delivery: '3 Days', revisions: '2 Revisions', desc: 'Premium commercial edit with advanced audio.', features: ['30 Mins Footage Provided', '1 Min Running Time', 'Color Grading', 'Sound Design & Mixing', 'Subtitles'] },
+                'Advanced': { price: '$950', delivery: '5 Days', revisions: '3 Revisions', desc: 'Full-scale cinematic production and storytelling.', features: ['45 Mins Footage Provided', '2 Mins Running Time', 'Color Grading', 'Sound Design & Mixing', 'Motion Graphics', 'Subtitles'] }
+            },
+            addons: [
+                { name: "Additional Revision", price: "+$50", time: "" },
+                { name: "Provide Source Files", price: "+$150", time: "" }
+            ],
+            carousel: [
+                'images/covers/commercial-promo-1.jpg',
+                'images/covers/commercial-promo-2.jpg',
+                'images/covers/commercial-promo-3.jpg',
+                'images/covers/commercial-promo-4.jpg',
+                'images/covers/commercial-promo-5.jpg',
+                'images/covers/commercial-promo-6.jpg',
+                'images/covers/commercial-promo-7.jpg'
+            ],
+            videos: ['videos/previews/perfectbrand_preview.mp4', 'videos/previews/Halloween Party_preview.mp4', 'videos/previews/Zoviz Short Commercial 1_preview.mp4', 'videos/previews/Meera Centrum_preview.mp4', 'videos/previews/Tivali Home Landing Page Video_preview.mp4', 'videos/previews/Nandel_preview.mp4']
+        },
+        'Viral Social Media Edit': {
+            desc: "Are your social media ads getting skipped? I specialize in crafting high-converting, scroll-stopping short video ads for TikTok, Instagram Reels, and YouTube Shorts that actually hold audience attention and drive action.<br><br>With over 10 years of experience as a Creative Producer, Senior Video Editor and Motion Graphics Artist, I don't just chop up footage—I engineer retention. Leveraging my background in narrative storytelling and creative writing, I understand the psychology of a strong hook and high-retention pacing.",
+            packages: {
+                'Starter': { price: '$150', delivery: '2 Days', revisions: '1 Revision', desc: 'Clean, dynamic edit up to 15s. Perfect for quick social media updates.', features: ['30 Seconds Running Time', '1 Length Variation', '1 Orientation', 'Video Editing', 'Show Product Imagery', 'Background Music'] },
+                'Standard': { price: '$350', delivery: '4 Days', revisions: '2 Revisions', desc: 'High-quality 60s edit with voice-over integration and dynamic graphics.', features: ['60 Seconds Running Time', '1 Length Variation', '1 Orientation', 'Video Editing', 'Show Product Imagery', 'Background Music', 'Voice-Over Recording'] },
+                'Advanced': { price: '$600', delivery: '6 Days', revisions: '3 Revisions', desc: 'Premium 90s edit plus a 30s cut. Includes scriptwriting & source files.', features: ['90 Seconds Running Time', '2 Length Variations', '1 Orientation', 'Video Editing', 'Scriptwriting', 'Show Product Imagery', 'Background Music', 'Voice-Over Recording'] }
+            },
+            addons: [
+                { name: "Additional Revision", price: "+$40", time: "" },
+                { name: "Additional Orientation", price: "+$50", time: "(+ 1 Day)" },
+                { name: "Scriptwriting", price: "+$50", time: "(+ 1 Day)" }
+            ],
+            carousel: [
+                'images/covers/social-promo-1.jpg',
+                'images/covers/social-promo-2.jpg',
+                'images/covers/social-promo-3.jpg',
+                'images/covers/social-promo-4.jpg',
+                'images/covers/social-promo-5.jpg',
+                'images/covers/social-promo-6.jpg',
+                'images/covers/social-promo-7.jpg'
+            ],
+            videos: ['videos/previews/project2_preview.mp4', 'videos/previews/Hostage_preview.mp4', 'videos/previews/100K_preview.mp4', 'videos/previews/This is the WOW_preview.mp4', 'videos/previews/Pet Shop Logo Design_preview.mp4', 'videos/previews/Logo Tut Afghan Rug_preview.mp4']
+        },
+        'Motion Graphics': {
+            desc: "If you are a SaaS founder, startup, or agency, you need your product to look premium and effortless. With over 10 years of experience in motion design, I specialize in creating broadcast-quality motion graphics that elevate your brand and clearly explain complex ideas.<br><br><strong>What I Specialize In:</strong><br><br><strong>SaaS & App Demos:</strong> Minimalist UI/UX animation, cursor tracking, and screen replacements that make your software look flawless.<br><br><strong>Broadcast Explainers:</strong> High-contrast, editorial motion (Vox/Bloomberg style) featuring dynamic typography and fluid transitions.",
+            packages: {
+                'Starter': { price: '$250', delivery: '3 Days', revisions: '1 Revision', desc: 'Clean, minimalist animations for simple ideas.', features: ['30 Seconds Running Time', '75 Words', 'Background Music', 'Full HD (1080p)'] },
+                'Standard': { price: '$550', delivery: '5 Days', revisions: '2 Revisions', desc: 'Broadcast-quality explainer with assets.', features: ['60 Seconds Running Time', '150 Words', 'Background Music', 'Background Imagery', 'Full HD (1080p)'] },
+                'Advanced': { price: '$850', delivery: '7 Days', revisions: '3 Revisions', desc: 'Premium editorial motion with complete assets.', features: ['90 Seconds Running Time', '225 Words', 'Storyboard', 'Background Music', 'Background Imagery', 'Full HD (1080p)', 'Ultra HD (4K)'] }
+            },
+            addons: [
+                { name: "Voice-Over Recording", price: "+$30", time: "" },
+                { name: "Scriptwriting", price: "+$100", time: "(+ 1 Day)" },
+                { name: "After Effects Source Files", price: "+$150", time: "(+ 1 Day)" }
+            ],
+            carousel: [
+                'images/covers/motion-promo-1.jpg',
+                'images/covers/motion-promo-2.jpg',
+                'images/covers/motion-promo-3.jpg',
+                'images/covers/motion-promo-4.jpg',
+                'images/covers/motion-promo-5.jpg',
+                'images/covers/motion-promo-6.jpg',
+                'images/covers/motion-promo-7.jpg'
+            ],
+            videos: ['videos/previews/Collabrium_preview.mp4', 'videos/previews/My Design_preview.mp4', 'videos/previews/Zoviz Ad August_preview.mp4', 'videos/previews/Editor intro Motion Graphic_preview.mp4', 'videos/previews/Tivali Home City Motion_preview.mp4', 'videos/previews/Online IELTS Ad_preview.mp4']
+        }
+    };
+    
+    const gigOverlay = document.getElementById('gig-overlay');
+    const gigTitleDisplay = document.getElementById('gig-title');
+    const formServiceName = document.getElementById('form-service-name');
+    const formPackageName = document.getElementById('form-package-name');
+
+    // 2. Open the Gig Overlay & Inject Data
+    function openGig(gigName) {
+        gigTitleDisplay.innerText = gigName;
+        formServiceName.value = gigName; 
+        
+        const data = gigData[gigName];
+        
+        if (data) {
+            // Inject Description
+            document.getElementById('gig-description-box').innerHTML = data.desc;
+            
+            // Inject Videos into the new 4:5 grid
+            const mediaGrid = document.getElementById('gig-media-grid');
+            const carouselStack = document.getElementById('gig-carousel-stack');
+
+            // Maps your video array into the HTML
+            mediaGrid.innerHTML = data.videos.map(src => `<video src="${src}" muted loop playsinline autoplay></video>`).join('');
+            
+            // Force play to fix the reopening bug
+            setTimeout(() => {
+                mediaGrid.querySelectorAll('video').forEach(vid => vid.play().catch(e => {}));
+            }, 100);
+
+            // Inject Carousel
+            carouselStack.innerHTML = data.carousel.map(src => `<div class="gig-carousel-item"><img src="${src}" alt="Promo Image"></div>`).join('');
+            
+            // Initialize the Carousel Logic
+            setupGigCarousel();
+            
+            // Inject Pricing Cards
+            const cardsContainer = document.getElementById('gig-pricing-cards');
+            cardsContainer.innerHTML = ''; 
+            
+            const tiers = ['Starter', 'Standard', 'Advanced'];
+            tiers.forEach(tier => {
+                const tierData = data.packages[tier];
+                const isFeatured = tier === 'Standard' ? 'featured-pkg' : '';
+                const badge = tier === 'Standard' ? `<div class="pkg-badge">Recommended</div>` : '';
+                const featuresList = tierData.features.map(f => `<li>${f}</li>`).join('');
+
+                cardsContainer.innerHTML += `
+                    <div class="pricing-card ${isFeatured}" onclick="selectPackage('${tier}')">
+                        ${badge}
+                        <h4>${tier}</h4>
+                        <p class="price">${tierData.price}</p>
+                        <div class="pkg-delivery-rev">
+                            <span>⏱ ${tierData.delivery}</span>
+                            <span>⟲ ${tierData.revisions}</span>
+                        </div>
+                        <p class="desc">${tierData.desc}</p>
+                        <ul class="pkg-features">
+                            ${featuresList}
+                        </ul>
+                        <button class="select-pkg-btn">Select ${tier}</button>
+                    </div>
+                `;
+            });
+
+            // NEW: Inject Add-ons! (Using safe string concatenation to fix VS Code highlighting)
+            const addonsContainer = document.getElementById('gig-addons-list');
+            if (data.addons && data.addons.length > 0) {
+                
+                let addonsListHTML = '';
+                data.addons.forEach(addon => {
+                    addonsListHTML += '<li class="addon-item" onclick="toggleAddon(this)" data-addon="' + addon.name + '">';
+                    addonsListHTML += '<div class="addon-left">';
+                    addonsListHTML += '<span class="addon-checkbox"></span>';
+                    addonsListHTML += '<span class="addon-name">' + addon.name + ' <small>' + addon.time + '</small></span>';
+                    addonsListHTML += '</div>';
+                    addonsListHTML += '<span class="addon-price">' + addon.price + '</span>';
+                    addonsListHTML += '</li>';
+                });
+
+                let finalAddonsContainer = '<h4 class="addons-title">Optional Add-ons</h4>';
+                finalAddonsContainer += '<ul class="addons-ul">';
+                finalAddonsContainer += addonsListHTML;
+                finalAddonsContainer += '</ul>';
+
+                addonsContainer.innerHTML = finalAddonsContainer;
+                addonsContainer.style.display = 'block';
+            } else {
+                addonsContainer.style.display = 'none';
+            }
+        } // <--- This is the bracket that was likely missing!
+
+        resetPackages();
+
+        // Show Overlay
+        gigOverlay.classList.add('active');
+        document.body.classList.add('no-scroll');
+        document.documentElement.classList.add('no-scroll');
+        gigOverlay.scrollTop = 0; 
+    }
+
+    // 3. Carousel Controller Function (Infinite Loop & Fixed Directions)
+    function setupGigCarousel() {
+        const stack = document.getElementById('gig-carousel-stack');
+        const prevBtn = document.getElementById('gig-carousel-prev');
+        const nextBtn = document.getElementById('gig-carousel-next');
+
+        clearInterval(gigCarouselTimer); 
+        if (!stack.children.length) return;
+
+        let isAnimating = false;
+
+        // FIX 1: Instantly move the last image to the front so the left side is never empty!
+        stack.prepend(stack.lastElementChild);
+
+        // Calculate the center resting position
+        function getBasePosition() {
+            // We use the exact 750px width and 30px gap set in your CSS
+            const itemWidth = stack.querySelector('.gig-carousel-item').offsetWidth || 750; 
+            const gap = 30; 
+            // Offset the track to center the 2nd item (which is our actual 1st image)
+            return (itemWidth + gap) + (itemWidth / 2);
+        }
+
+        const currentX = getBasePosition();
+
+        // Snap to the starting position invisibly
+        stack.style.transition = 'none';
+        stack.style.transform = `translateX(-${currentX}px)`;
+
+        // Highlight the center item visually
+        function updateActive() {
+            const currentItems = stack.querySelectorAll('.gig-carousel-item');
+            currentItems.forEach((el, i) => {
+                if (i === 1) el.classList.add('active');
+                else el.classList.remove('active');
+            });
+        }
+        updateActive();
+
+        // -----------------------------------------
+        // MOVEMENT LOGIC
+        // -----------------------------------------
+
+        // Physically slides track LEFT (Reveals the next image on the right)
+        function slideTrackLeft() {
+            if (isAnimating) return;
+            isAnimating = true;
+
+            const itemWidth = stack.querySelector('.gig-carousel-item').offsetWidth || 750;
+            const moveDist = itemWidth + 30;
+
+            // Animate
+            stack.style.transition = 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1)';
+            stack.style.transform = `translateX(-${currentX + moveDist}px)`;
+
+            // Pre-calculate visual active state
+            const currentItems = stack.querySelectorAll('.gig-carousel-item');
+            currentItems[1].classList.remove('active');
+            currentItems[2].classList.add('active');
+
+            stack.addEventListener('transitionend', function onEnd() {
+                stack.removeEventListener('transitionend', onEnd);
+                // Move the front item to the back of the line
+                stack.appendChild(stack.firstElementChild); 
+                // Snap track back
+                stack.style.transition = 'none';
+                stack.style.transform = `translateX(-${currentX}px)`;
+                updateActive();
+                isAnimating = false;
+            }, { once: true });
+        }
+
+        // Physically slides track RIGHT (Reveals the previous image on the left)
+        function slideTrackRight() {
+            if (isAnimating) return;
+            isAnimating = true;
+
+            const itemWidth = stack.querySelector('.gig-carousel-item').offsetWidth || 750;
+            const moveDist = itemWidth + 30;
+
+            // Move the back item to the front of the line instantly
+            stack.prepend(stack.lastElementChild); 
+            // Hide the snap by offsetting the track left
+            stack.style.transition = 'none';
+            stack.style.transform = `translateX(-${currentX + moveDist}px)`;
+
+            stack.offsetHeight; // Force browser repaint
+
+            // Animate back to center
+            stack.style.transition = 'transform 0.6s cubic-bezier(0.25, 1, 0.5, 1)';
+            stack.style.transform = `translateX(-${currentX}px)`;
+
+            // Pre-calculate visual active state
+            const currentItems = stack.querySelectorAll('.gig-carousel-item');
+            currentItems[2].classList.remove('active'); // what used to be center is now right
+            currentItems[1].classList.add('active');    // what used to be left is now center
+
+            stack.addEventListener('transitionend', function onEnd() {
+                stack.removeEventListener('transitionend', onEnd);
+                updateActive();
+                isAnimating = false;
+            }, { once: true });
+        }
+
+        // -----------------------------------------
+        // USER PREFERENCES (BUTTONS & SWIPE)
+        // -----------------------------------------
+
+        // 1. Buttons (Preserving your custom inverted logic)
+        nextBtn.onclick = () => { slideTrackRight(); startTimer(); };
+        prevBtn.onclick = () => { slideTrackLeft(); startTimer(); };
+
+        // 2. FIX: Auto-Swipe (Reversed so it moves the opposite direction of what it was doing)
+        function startTimer() {
+            clearInterval(gigCarouselTimer);
+            gigCarouselTimer = setInterval(() => {
+                slideTrackLeft(); 
+            }, 3500); 
+        }
+
+        startTimer();
+    }
+
+    // 4. Utility Functions
+    function closeGig() {
+        gigOverlay.classList.remove('active');
+        document.body.classList.remove('no-scroll');
+        document.documentElement.classList.remove('no-scroll');
+        gigOverlay.querySelectorAll('video').forEach(vid => vid.pause());
+        clearInterval(gigCarouselTimer); // Stop carousel when closed
+    }
+
+    function closeGigAndGoHome() {
+        closeGig();
+        setTimeout(() => goHome(), 300); 
+    }
+
+    function selectPackage(packageName) {
+        const pricingCards = document.querySelectorAll('.pricing-card');
+        pricingCards.forEach(card => card.classList.remove('selected'));
+        
+        const selectedCard = Array.from(pricingCards).find(card => card.querySelector('h4').innerText === packageName);
+        if (selectedCard) selectedCard.classList.add('selected');
+
+        formPackageName.value = packageName + " Package";
+
+        const formSection = document.getElementById('gig-order-form');
+        gigOverlay.scrollTo({
+            top: formSection.offsetTop - 100,
+            behavior: 'smooth'
+        });
+    }
+
+    // NEW: Add-on Toggle Logic (Safely outside!)
+    function toggleAddon(element) {
+        element.classList.toggle('selected');
+        
+        // Gather all selected add-ons
+        const selectedAddons = Array.from(document.querySelectorAll('.addon-item.selected'))
+            .map(item => item.getAttribute('data-addon'));
+        
+        // Update the hidden form field
+        const addonsInput = document.getElementById('form-addons');
+        if (selectedAddons.length > 0) {
+            addonsInput.value = selectedAddons.join(', ');
+        } else {
+            addonsInput.value = "None";
+        }
+    }
+
+    // UPDATED: Reset Packages & Add-ons
+    function resetPackages() {
+        const pricingCards = document.querySelectorAll('.pricing-card');
+        pricingCards.forEach(card => card.classList.remove('selected'));
+        if (formPackageName) formPackageName.value = "None selected";
+        
+        // Also reset the add-ons visually and in the form
+        const addonsInput = document.getElementById('form-addons');
+        if(addonsInput) addonsInput.value = "None";
+        
+        const selectedAddonUI = document.querySelectorAll('.addon-item.selected');
+        selectedAddonUI.forEach(addon => addon.classList.remove('selected'));
+        
+        const gigForm = document.querySelector('.gig-form');
+        if (gigForm) gigForm.reset();
+    }
+    </script>
+
+    <script>
+        // =========================================
+    // SEAMLESS FORM SUBMISSION (No Formspree Redirect)
+    // =========================================
+    const gigForm = document.querySelector('.gig-form');
+    
+    if (gigForm) {
+        gigForm.addEventListener("submit", async function(event) {
+            // This physically stops the browser from leaving your website
+            event.preventDefault(); 
+            
+            const submitBtn = gigForm.querySelector('.gig-submit-btn');
+            const originalText = submitBtn.innerText;
+            
+            // 1. Show a loading state
+            submitBtn.innerText = "Sending...";
+            submitBtn.style.opacity = "0.7";
+            submitBtn.style.pointerEvents = "none";
+
+            const data = new FormData(gigForm);
+            
+            try {
+                // 2. Send the data silently in the background
+                const response = await fetch(gigForm.action, {
+                    method: gigForm.method,
+                    body: data,
+                    headers: { 'Accept': 'application/json' }
+                });
+                
+                if (response.ok) {
+                    // 3. Success State!
+                    submitBtn.innerText = "Message Sent! ✓";
+                    submitBtn.style.backgroundColor = "#4caf50"; // Premium Green
+                    submitBtn.style.color = "#fff";
+                    gigForm.reset();
+                    
+                    // Reset the package input field visually
+                    document.getElementById('form-package-name').value = "None selected";
+                    
+                    // 4. Revert the button back to normal after 4 seconds
+                    setTimeout(() => {
+                        submitBtn.innerText = originalText;
+                        submitBtn.style.backgroundColor = "#ffba00"; // Back to cinematic yellow
+                        submitBtn.style.color = "#000";
+                        submitBtn.style.opacity = "1";
+                        submitBtn.style.pointerEvents = "auto";
+                    }, 4000);
+                    
+                } else {
+                    submitBtn.innerText = "Oops! Error.";
+                    submitBtn.style.backgroundColor = "#f44336"; // Red error
+                }
+            } catch (error) {
+                submitBtn.innerText = "Network Error!";
+                submitBtn.style.backgroundColor = "#f44336";
+            }
+        });
+    }
+    </script>
 
 </body>
 </html>
