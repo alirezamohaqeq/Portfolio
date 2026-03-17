@@ -3136,12 +3136,12 @@ body.hero-done .top-signature {
    SERVICES SECTION & 3D IMAGE STACKS
    ========================================= */
 
-/* 1. The Fade Out Gradient for the Grid (TRIPLED INTENSITY) */
+/* 1. The Fade Out Gradient for the Grid (Intensified) */
 .gallery-fade-out {
     width: 100%;
-    height: 1200px; /* Massive height for a very slow, smooth fade */
-    background: linear-gradient(to bottom, rgba(5,5,5,0) 0%, rgba(5,5,5,0.3) 35%, rgba(5,5,5,0.8) 70%, rgba(5,5,5,1) 100%);
-    margin-top: -1100px; /* Pulls it high up over the grid */
+    height: 800px; /* Reduced from 1200px for a faster, denser fade */
+    background: linear-gradient(to bottom, rgba(5,5,5,0) 0%, rgba(5,5,5,0.7) 40%, rgba(5,5,5,1) 90%);
+    margin-top: -800px; /* Matches the height to pull it over the grid */
     position: relative;
     z-index: 10;
     pointer-events: none;
@@ -3156,9 +3156,10 @@ body[data-mode="all"] .services-section {
 
 .services-section {
     display: none; 
-    padding: 20px 0px 140px; /* Pushed top padding from 20px to 120px to clear the sticky menu */
+    padding: 0px 0px 140px; /* Removed top padding */
+    margin-top: -120px;     /* CRITICAL: Pulls the Services section UP into the black gradient */
     width: 100%; 
-    background-color: #050505; 
+    background-color: transparent; /* Lets the gradient behind it do the work */
     text-align: center;
     position: relative;
     z-index: 11;
@@ -3763,4 +3764,41 @@ body[data-mode="all"] .services-section {
 @media (max-width: 768px) {
     #services-quote h1 { font-size: 1.35rem !important; } /* MATCHES MOBILE QUOTES */
     #services-quote { padding-bottom: 50px !important; }
+}
+
+/* =========================================
+   MOBILE FIX: GIG CAROUSEL SIZING
+   ========================================= */
+@media (max-width: 768px) {
+    /* 1. Shrink the massive images to fit the phone screen */
+    .gig-carousel-item {
+        width: 82vw !important; /* Leaves a little room on the edges for the next/prev images to peek */
+    }
+    
+    /* 2. Tighten the gap below the carousel */
+    .gig-carousel-viewport {
+        margin-bottom: 30px !important;
+    }
+    
+    /* 3. Scale down the navigation arrows so they don't cover the image */
+    #gig-carousel-prev,
+    #gig-carousel-next {
+        width: 40px !important;
+        height: 40px !important;
+        font-size: 1rem !important;
+    }
+}
+
+/* =========================================
+   MOBILE FIX: SERVICES TYPOGRAPHY & SPACING
+   ========================================= */
+@media (max-width: 768px) {
+    .section-headline {
+        font-size: 5.5rem !important; /* Massive cinematic size */
+    }
+    
+    #services-quote {
+        padding-top: 0 !important; 
+        margin-top: -25px !important; /* Pulls the quote up into the invisible font box */
+    }
 }

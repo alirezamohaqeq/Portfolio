@@ -2448,7 +2448,7 @@
         const showMoreMenu = document.getElementById('show-more-menu');
         
         // SAMPLE LIMIT FOR HOME PAGE
-        const SAMPLE_LIMIT = 12; 
+        const SAMPLE_LIMIT = 18; 
         let landingExpanded = false;
 
         function applyCategory(category){
@@ -3465,9 +3465,8 @@ if (projectLayout) {
     // --- BUTTERMAX "LIQUID" SMOOTH SCROLL ---
     (function() {
         // 1. Initialize Lenis (The Physics Engine)
-        window.lenis = new Lenis({ // <--- NOW GLOBALLY ACCESSIBLE
-            duration: 1.2,           // The "Weight" (Higher = heavier/slower stop)
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Exponential falloff
+        window.lenis = new Lenis({ 
+            lerp: 0.07,              // Uses momentum friction instead of fixed duration (buttery smooth!)
             direction: 'vertical',
             gestureDirection: 'vertical',
             smooth: true,
@@ -3483,20 +3482,14 @@ if (projectLayout) {
             
             const velocity = lenis.velocity;
             
-            // --- CINEMATIC ZOOM OUT LOGIC ---
-            // Instead of stretching (scale > 1), we shrink slightly (scale < 1)
-            // This creates a "depth" effect where content pushes back.
-            
-            // 0.0004 is the intensity. Lower = subtler. Higher = more zoom.
-            const rawScale = 1 - (Math.abs(velocity) * 0.004);
-            
-            // Clamp it: Never let it shrink smaller than 0.95 (5% zoom max)
-            const scaleAmount = Math.max(0.95, rawScale);
+            // --- CINEMATIC ZOOM OUT LOGIC (Refined & Subtle) ---
+            // Greatly reduced the intensity so it doesn't interfere with your popping photos
+            const rawScale = 1 - (Math.abs(velocity) * 0.001); 
+            const scaleAmount = Math.max(0.98, rawScale); // Caps maximum shrink at 2% instead of 5%
             
             const targets = document.querySelectorAll('.gallery-grid, .photography-bg-container');
             
             targets.forEach(el => {
-                // Apply pure Scale (Removes the Skew/Stretch)
                 el.style.transform = `scale(${scaleAmount})`;
                 el.style.transformOrigin = 'center center';
                 el.style.willChange = 'transform'; 
