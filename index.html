@@ -457,6 +457,18 @@
                 </div>
             </div>
 
+            <div class="gallery-item vertical"
+                 data-category="ai-ads"
+                data-youtube="https://www.youtube.com/embed/FlB1s_ctrF8"
+                data-roles="AI Director, Prompt Engineering, Editor, Sound Design">
+                <img class="cover" src="images/covers/Pure_Glow_Brand_Story_AI_Ad_Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Pure_Glow_Brand_Story_AI_Ad.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Pure Glow Brand Story: AI Ad</h3>
+                    <p>Social Media, 2026</p>
+                </div>
+            </div>
+
             <div class="gallery-item"
                  data-category="social"
                 data-youtube="https://www.youtube.com/embed/xKm9tDlqG_I"
@@ -1118,6 +1130,18 @@
                 </div>
             </div>
 
+            <div class="gallery-item vertical" 
+                 data-category="social"
+                data-youtube="https://www.youtube.com/embed/t0xklR-tH6g"
+                data-roles="Editor, Motion Designer, Sound Design">
+                <img class="cover" src="images/covers/Flow_UGC_Ad.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Flow_UGC_Ad.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Flow's UGC Ad</h3>
+                    <p>Social Media, 2026</p>
+                </div>
+            </div>
+
             <div class="gallery-item" 
                  data-category="commercial"
                 data-youtube="https://www.youtube.com/embed/aysliekcmZ8"
@@ -1288,6 +1312,18 @@
 
             <div class="gallery-item vertical" 
                  data-category="motion"
+                data-youtube="https://www.youtube.com/embed/2762NcNKwvw"
+                data-roles="Creative Director, Motion Designer, Video Editor, Sound Design">
+                <img class="cover" src="images/covers/SaaS_Motion_Ad_Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/SaaS_Motion_Ad.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>SaaS Motion Ad</h3>
+                    <p>Motion Graphics, 2026</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" 
+                 data-category="motion"
                 data-youtube="https://www.youtube.com/embed/6_5h_a6F4vk"
                 data-roles="Creative Director, Motion Designer">
                 <img class="cover" src="images/covers/Phone App motion cover.jpg" alt="Project cover">
@@ -1324,6 +1360,18 @@
 
             <div class="gallery-item vertical" 
                  data-category="motion"
+                data-youtube="https://www.youtube.com/embed/-Y1KLDFVRoc"
+                data-roles="Prompt Engineering, Editor, Motion Designer, Sound Design">
+                <img class="cover" src="images/covers/Product_Image_SaaS_Explainer_Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Product_Image_SaaS_Explainer.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Product Image SaaS Explainer</h3>
+                    <p>Motion Graphics, 2026</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" 
+                 data-category="motion"
                 data-youtube="https://www.youtube.com/embed/Ke3adMSN0cQ"
                 data-roles="Creative Director, Motion Designer">
                 <img class="cover" src="images/covers/My Design Cloud Cover.jpg" alt="Project cover">
@@ -1343,6 +1391,18 @@
                 <div class="overlay">
                     <h3>Online IELTS Ad</h3>
                     <p>Motion Graphics, 2022</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical" 
+                 data-category="motion"
+                data-youtube="https://www.youtube.com/embed/Gct0cZTCHuk"
+                data-roles="Motion Designer, Video Editor, Sound Design">
+                <img class="cover" src="images/covers/Aspire_Drinks_Motion_Ad.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Aspire_Drinks_Motion_Ad.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Aspire Drinks Motion Ad</h3>
+                    <p>Motion Graphics, 2026</p>
                 </div>
             </div>
 
@@ -2112,6 +2172,7 @@
 <div class="gallery-fade-out"></div>
 
         <section id="services-section" class="services-section">
+            <div class="watch-more-glass">To watch more, select a category ↑</div>
             <h2 class="section-headline">SERVICES</h2>
             
             <!-- NEW: Interactive Services Quote -->
@@ -2607,20 +2668,16 @@ if (aiQuote) aiQuote.style.display = (category === 'ai-ads') ? 'block' : 'none';
                 if (action === 'scroll-services') {
                     filterNav.classList.remove('open');
                     
-                    // 1. Switch to Home page first to reveal the Services section
-                    if (document.body.getAttribute('data-mode') !== 'all') {
-                        const homeBtn = document.querySelector('.filter-menu li[data-filter="all"]');
-                        if (homeBtn) homeBtn.click();
-                    }
-                    
-                    // 2. Force visual highlight on "Services" in both menus
+                    // 1. Force visual highlight on "Services" in both menus
                     document.querySelectorAll('.filter-menu li, .show-more-menu li').forEach(li => li.classList.remove('active'));
                     document.querySelectorAll('li[data-action="scroll-services"]').forEach(li => li.classList.add('active'));
                     
-                    // 3. Scroll down smoothly using the physics engine
+                    // 2. Scroll down smoothly using the physics engine
                     setTimeout(() => {
                         if (window.lenis) {
                             window.lenis.scrollTo('#services-section', { offset: -80, duration: 1.5 });
+                        } else {
+                            document.getElementById('services-section').scrollIntoView({behavior: 'smooth'});
                         }
                     }, 100);
                     return; // Stop here! Do not run the filter logic below.
@@ -3802,19 +3859,21 @@ window.addEventListener('popstate', () => {
 
         // C. ANIMATION LOOP (FIXED)
         function animate() {
-            // 1. CHECK BLOCKERS
+            // 1. CHECK BLOCKERS (Global)
             const isMobile = window.innerWidth <= 768;
-            const isPhotography = photoWrapper && photoWrapper.classList.contains('active-photography');
             // FIX: Check if About Page is active
             const isAboutOpen = aboutOverlay && aboutOverlay.classList.contains('active'); 
 
-            if (isMobile || isPhotography || isAboutOpen) {
-                // If any of these are true, hide cursor and STOP interacting
+            if (isMobile || isAboutOpen) {
+                // If any of these are true, hide cursor and STOP interacting entirely
                 cursor.classList.remove('visible', 'active');
                 wrappers.forEach(w => w.classList.remove('active'));
                 requestAnimationFrame(animate);
                 return;
             }
+
+            // Check if we are in Photography mode (Used for local disabling)
+            const isPhotography = photoWrapper && photoWrapper.classList.contains('active-photography');
 
             // 2. NORMAL LOGIC
             const distX = mouseX - cursorX;
@@ -3830,6 +3889,9 @@ window.addEventListener('popstate', () => {
 
             // Check Visibility (Section)
             quoteSections.forEach(sec => {
+                // Skip the quote if it's inside the Photography header and we are in Photography mode
+                if (isPhotography && photoWrapper.contains(sec)) return;
+
                 const rect = sec.getBoundingClientRect();
                 if (rect.width === 0 || rect.height === 0) return; 
 
@@ -3841,6 +3903,12 @@ window.addEventListener('popstate', () => {
 
             // Check Active State (Big Yellow Wrapper)
             wrappers.forEach(wrap => {
+                // Skip the wrapper if it's inside the Photography header and we are in Photography mode
+                if (isPhotography && photoWrapper.contains(wrap)) {
+                    wrap.classList.remove('active');
+                    return;
+                }
+
                 const rect = wrap.getBoundingClientRect();
                 if (rect.width === 0 || rect.height === 0) {
                     wrap.classList.remove('active');
@@ -3864,6 +3932,9 @@ window.addEventListener('popstate', () => {
 
             // Text Reveal Math
             activeTextElements.forEach(el => {
+                // Skip the text elements if they are inside the Photography header
+                if (isPhotography && photoWrapper.contains(el)) return;
+
                 const rect = el.getBoundingClientRect();
                 if (rect.width === 0 || rect.height === 0) return;
 

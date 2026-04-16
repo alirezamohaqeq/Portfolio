@@ -142,7 +142,7 @@ body.hero-done {
     left: 50%;
     transform: translateX(-50%);
     height: 40px;
-    z-index: 3;
+    z-index: 999;
     pointer-events: auto;       /* ← allow clicking */
     cursor: pointer;            /* ← show it's clickable */
     opacity: 0;
@@ -2910,15 +2910,15 @@ body.video-playing .enter-btn {
     backdrop-filter: blur(25px) saturate(220%) !important; 
     -webkit-backdrop-filter: blur(25px) saturate(220%) !important;
     
-    /* THICKER STROKE (2px) */
-    border: 2px solid rgba(255, 255, 255, 0.15) !important;
-    border-top: 2px solid rgba(255, 255, 255, 0.35) !important;
+    /* REFINED GLASS BORDER (Seamless 1px stroke instead of mismatched colors) */
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
     
-    /* Shadow */
+    /* Shadow & Inner Highlight (Creates the top reflection smoothly without harsh corners) */
     box-shadow: 
         0 8px 32px rgba(0, 0, 0, 0.5), 
-        inset 0 0 0 1px rgba(255, 255, 255, 0.05) !important; 
-        
+        inset 0 1px 1px rgba(255, 255, 255, 0.25), /* Soft top highlight */
+        inset 0 -1px 1px rgba(0, 0, 0, 0.05) !important;
+
     /* Text & Shape */
     color: rgba(255, 255, 255, 0.95) !important;
     border-radius: 50px !important;
@@ -3139,30 +3139,59 @@ body.hero-done .top-signature {
 /* 1. The Fade Out Gradient for the Grid (Intensified) */
 .gallery-fade-out {
     width: 100%;
-    height: 800px; /* Reduced from 1200px for a faster, denser fade */
+    height: 800px; 
     background: linear-gradient(to bottom, rgba(5,5,5,0) 0%, rgba(5,5,5,0.7) 40%, rgba(5,5,5,1) 90%);
-    margin-top: -800px; /* Matches the height to pull it over the grid */
+    margin-top: -800px; 
     position: relative;
     z-index: 10;
     pointer-events: none;
-    display: none; 
+    display: none; /* Keep hidden by default */
 }
 
-/* 2. Visibility Logic (Only show on Home Page) */
-body[data-mode="all"] .gallery-fade-out,
-body[data-mode="all"] .services-section {
+/* 2. Show gradient ONLY on the Home Page */
+body[data-mode="all"] .gallery-fade-out {
     display: block;
 }
 
+/* 3. Base Services Section (For Category Pages: No overlap, normal gap) */
 .services-section {
-    display: none; 
-    padding: 0px 0px 140px; /* Removed top padding */
-    margin-top: -120px;     /* CRITICAL: Pulls the Services section UP into the black gradient */
+    display: block; /* Show everywhere */
+    padding: 80px 0px 140px; /* Adds a nice gap after the gallery ends */
+    margin-top: 0px; /* Resets the negative margin so it doesn't pull up */
     width: 100%; 
-    background-color: transparent; /* Lets the gradient behind it do the work */
+    background-color: transparent; 
     text-align: center;
     position: relative;
     z-index: 11;
+}
+
+/* 4. Home Page Override (Pulls Services UP into the gradient) */
+body[data-mode="all"] .services-section {
+    padding-top: 0px; 
+    margin-top: -120px; 
+}
+
+.watch-more-glass {
+    display: none; /* Changed: Hidden by default on all pages */
+    background: rgba(40, 40, 40, 0.35);
+    backdrop-filter: blur(25px) saturate(220%);
+    -webkit-backdrop-filter: blur(25px) saturate(220%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-top: 1px solid rgba(255, 255, 255, 0.30);
+    border-radius: 50px;
+    padding: 12px 24px;
+    color: rgba(255, 255, 255, 0.9);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    margin-bottom: 30px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    letter-spacing: 0.02em;
+    pointer-events: none;
+}
+
+/* ONLY show it on the Home/Main page */
+body[data-mode="all"] .watch-more-glass {
+    display: inline-block;
 }
 
 /* 3. Section Typography (Massive Cinematic Font) */
