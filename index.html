@@ -2701,6 +2701,16 @@ if (aiQuote) aiQuote.style.display = (category === 'ai-ads') ? 'block' : 'none';
                         window.location.hash = category;
                     }
 
+                    // 👇 ADD THIS BLOCK FOR GOOGLE ANALYTICS 👇
+    if (typeof gtag === 'function') {
+        gtag('event', 'page_view', {
+            page_title: category === 'all' ? 'Home' : category.toUpperCase(),
+            page_location: window.location.href,
+            page_path: category === 'all' ? '/' : '/#' + category
+        });
+    }
+    // 👆 END OF GOOGLE ANALYTICS BLOCK 👆
+
                     // Update Active States
                     document.querySelectorAll('.filter-menu li').forEach(li => li.classList.remove('active'));
                     item.classList.add('active');
