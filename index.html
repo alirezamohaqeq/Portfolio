@@ -2182,7 +2182,7 @@
 <div class="gallery-fade-out"></div>
 
         <section id="services-section" class="services-section">
-            <div class="watch-more-glass">To watch more, select a category ↑</div>
+            <div class="watch-more-glass">Select a category to watch more!</div>
             <h2 class="section-headline">SERVICES</h2>
             
             <!-- NEW: Interactive Services Quote -->
@@ -2519,7 +2519,7 @@
         const showMoreMenu = document.getElementById('show-more-menu');
         
         // SAMPLE LIMIT FOR HOME PAGE
-        const SAMPLE_LIMIT = 18; 
+        const SAMPLE_LIMIT = 26; 
         let landingExpanded = false;
 
         function applyCategory(category){
@@ -2534,7 +2534,7 @@
                 card.classList.remove('in-view');
 
                 if (category === 'all') {
-                    shouldShow = cardCategory !== 'motion' && cardCategory !== 'photography';
+                    shouldShow = cardCategory !== 'photography';
                     if (card.getAttribute('data-hide-on-home') === 'true') shouldShow = false;
 
                     if (shouldShow && !landingExpanded) {

@@ -9,6 +9,13 @@
     font-style: normal;
     font-display: swap;
 }
+@font-face {
+    font-family: 'Vanitha';
+    src: url('fonts/VanithaRegular.otf'); 
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
 
 /* --- SMOOTH SCROLL SETUP --- */
 html.lenis {
@@ -721,11 +728,7 @@ body.hero-done #gallery {
     .featured-strip-btn-prev { left: 10px !important; }
     .featured-strip-btn-next { right: 10px !important; }
 }
-/* --- FIX: HIDES SMALL MOTION GRAPHICS ITEMS BY DEFAULT --- */
-/* This targets all gallery items that have the data-category="motion" attribute */
-.gallery-item[data-category="motion"] {
-    display: none;
-}
+
 /* --- MOTION FEATURED FULL-WIDTH ITEM --- */
 #motion-featured {
     margin-bottom: 30px;
@@ -1421,7 +1424,6 @@ backdrop-filter: blur(14px) saturate(115%);
     min-width: 0;
 }
 
-/* Shared media styles */
 .project-media-col iframe,
 .project-media-col video,
 .project-media-col img {
@@ -1430,6 +1432,15 @@ backdrop-filter: blur(14px) saturate(115%);
     border: 2px solid rgba(255, 255, 255, 0.28);
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.65);
     background: #000;
+
+    /* --- FIX FOR GLITCHY LINES & CORNER BLEEDING --- */
+    overflow: hidden; 
+    transform: translateZ(0); /* Forces hardware acceleration */
+    isolation: isolate;       /* Prevents background bleed */
+    
+    /* Safely masked for all browsers to appease the linter */
+    -webkit-mask-image: radial-gradient(white, black); 
+    mask-image: radial-gradient(white, black); 
 }
 
 /* Media sizing (90vh height) */
@@ -3172,21 +3183,45 @@ body[data-mode="all"] .services-section {
 }
 
 .watch-more-glass {
-    display: none; /* Changed: Hidden by default on all pages */
-    background: rgba(40, 40, 40, 0.35);
-    backdrop-filter: blur(25px) saturate(220%);
-    -webkit-backdrop-filter: blur(25px) saturate(220%);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-top: 1px solid rgba(255, 255, 255, 0.30);
-    border-radius: 50px;
-    padding: 12px 24px;
-    color: rgba(255, 255, 255, 0.9);
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.95rem;
-    margin-bottom: 30px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    display: none; 
+    font-family: 'Vanitha', sans-serif;
+    font-size: 3rem;
+    margin-bottom: 50px;
     letter-spacing: 0.02em;
     pointer-events: none;
+    line-height: 1.5; 
+    padding-bottom: 10px;
+
+    /* --- BULLETPROOF ANIMATION MAGIC --- */
+    background: linear-gradient(
+        to right, 
+        rgba(255, 186, 0, 0) 0%, 
+        rgba(255, 186, 0, 0) 35%, /* Widen the spread slightly */
+        #ffba00 50%,               
+        rgba(255, 186, 0, 0) 65%, /* Widen the spread slightly */
+        rgba(255, 186, 0, 0) 100%
+    );
+    
+    /* 300% size gives the gradient plenty of runway to sweep across */
+    background-size: 300% auto;
+    
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    
+    /* Animation runs continuously without needing JS */
+    animation: textSweep 4s linear infinite;
+}
+
+/* Animating from 100% to 0% on a 300% canvas forces a perfect Left-to-Right sweep */
+@keyframes textSweep {
+    0% {
+        background-position: 100% center; 
+    }
+    100% {
+        background-position: 0% center; 
+    }
 }
 
 /* ONLY show it on the Home/Main page */
