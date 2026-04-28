@@ -16,6 +16,13 @@
     font-style: normal;
     font-display: swap;
 }
+@font-face {
+    font-family: 'Aminute';
+    src: url('fonts/Aminute.otf'); 
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
 
 /* --- SMOOTH SCROLL SETUP --- */
 html.lenis {
@@ -134,8 +141,364 @@ body {
     font-family: "Courier New", Courier, monospace;
     padding: 20px 15px;
     position: relative;
-    overflow-y: hidden;
     transition: background-color 0.4s ease;
+}
+
+/* =========================================
+   MINIMAL HERO HEADER
+   ========================================= */
+.hero-minimal-header {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    padding: 30px 50px;
+    z-index: 99999 !important; 
+    pointer-events: auto;
+    box-sizing: border-box;
+    cursor: none !important;
+}
+
+/* Hides the hollow circle ONLY when hovering over the buttons */
+.hero-minimal-header:has(.hero-nav-link:hover) ~ .hero-cursor {
+    opacity: 0 !important;
+    transition: opacity 0.2s ease;
+}
+
+.hero-minimal-nav { display: flex; gap: 40px; }
+
+.hero-minimal-right {
+    position: absolute;
+    right: 50px; /* Pins the contact button to the far right edge */
+}
+
+.hero-nav-link {
+    background: none; border: none; text-decoration: none;
+    color: #a0a0a0; font-family: 'Outfit', sans-serif;
+    font-size: 1rem; font-weight: 500; 
+    cursor: pointer !important; /* Forces the default hand pointer */
+    transition: color 0.3s ease;
+}
+
+.hero-nav-link:hover { color: #fff; }
+
+.hero-action-btn {
+    background: rgba(255,255,255,0.1); color: #fff;
+    text-decoration: none; font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem; font-weight: 600; padding: 10px 24px;
+    border-radius: 50px; border: 1px solid rgba(255,255,255,0.2);
+    transition: all 0.3s ease;
+}
+.hero-action-btn:hover { background: #fff; color: #000; }
+
+/* =========================================
+   FLAWLESS 2D COVER-FLOW HERO
+   ========================================= */
+.hero-3d-wrapper {
+    position: relative; width: 100vw; height: 100vh;
+    left: 50%; transform: translateX(-50%);
+    background-color: #050505;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 140px 0 60px; overflow: hidden;
+    z-index: 10; cursor: none; 
+}
+
+/* Typography */
+/* Typography */
+.hero-text-content {
+    position: relative; /* CRITICAL: Allows absolute positioning of scribbles */
+    text-align: center; 
+    z-index: 20;
+    pointer-events: none; 
+    margin-bottom: 30px; 
+}
+
+/* The "Aminute" Handwritten Headline */
+.hero-3d-headline {
+    font-family: 'Aminute', cursive; /* Applied to the main text! */
+    font-size: 5.5rem; /* Increased size to compensate for script font dimensions */
+    font-weight: normal; 
+    line-height: 1.1; 
+    color: #f0f0f0;
+    margin-bottom: 25px; 
+    letter-spacing: 0; /* Reset tracking so cursive letters connect naturally */
+}
+
+/* Wrapper for the yellow text and the underline */
+.highlight-wrapper {
+    position: relative;
+    display: inline-block;
+    color: #ffba00;
+}
+
+.hero-3d-subhead {
+    font-family: 'Outfit', sans-serif; 
+    font-size: 1.1rem;
+    font-weight: 300; 
+    color: #a0a0a0; 
+    max-width: 520px;
+    margin: 0 auto; 
+    line-height: 1.6;
+}
+
+/* =========================================
+   SCRIBBLES & ANIMATIONS
+   ========================================= */
+
+/* Animated Underline */
+.hero-underline {
+    position: absolute;
+    bottom: -28px; /* Sits just below the text */
+    left: 0;
+    width: 100%;
+    height: 30px;
+    pointer-events: none;
+}
+
+.hero-underline path {
+    /* The SVG Animation Math */
+    stroke-dasharray: 400;
+    stroke-dashoffset: 400;
+    animation: drawLine 3s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    animation-delay: 0.8s; /* Waits a moment after page load */
+}
+
+@keyframes drawLine {
+    to { stroke-dashoffset: 0; }
+}
+
+/* Base Scribble Styles */
+.scribble {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    pointer-events: none;
+    opacity: 0;
+    animation: fadeInScribble 0.8s ease forwards;
+    animation-delay: 0.8s;
+}
+
+.scribble-text {
+    font-family: 'Aminute', sans-serif; /* Your new custom font! */
+    font-size: 1.6rem; /* Increased slightly for handwriting legibility */
+    color: #a0a0a0;
+    white-space: nowrap;
+    /* Removed italics since handwritten fonts usually have natural slant */
+}
+
+@keyframes fadeInScribble {
+    to { opacity: 1; }
+}
+
+/* Specific Positions */
+.scribble-left {
+    top: 60px; /* Pushed down slightly to align with the second line of text */
+    left: -70px;
+    transform: rotate(-10deg);
+}
+
+.scribble-right {
+    top: -30px;
+    right: -160px;
+}
+
+.scribble-right .scribble-text {
+    margin-bottom: 5px;
+    transform: rotate(8deg); /* Tweaked the angle */
+}
+
+/* Fixed the CTA wrapper to make positioning easier */
+.hero-cta-wrapper {
+    position: relative;
+    z-index: 20;
+    margin-top: 50px; /* Gives the carousel a bit more breathing room */
+}
+
+.scribble-bottom {
+    top: 10px; /* Moved down so it doesn't clip into the carousel */
+    left: -150px;
+    flex-direction: row;
+    gap: 12px;
+    align-items: flex-end;
+}
+
+.scribble-bottom .scribble-text {
+    transform: rotate(-12deg);
+    margin-bottom: -5px; /* Aligns the text nicely with the new arrow */
+}
+
+/* Hide scribbles on small screens so they don't cause horizontal scrolling */
+@media (max-width: 980px) {
+    .scribble { display: none !important; }
+}
+
+/* FLAWLESS 3D CONCAVE STAGE */
+.scene-3d {
+    position: relative; 
+    width: 100%; 
+    height: 440px; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+    z-index: 15;
+    perspective: 1500px; 
+}
+
+/* THE FIX: Removed the global '*' override so buttons can have pointers */
+.hero-3d-wrapper {
+    cursor: none !important;
+}
+
+/* Ensure header buttons get their pointer back */
+.hero-minimal-header * {
+    cursor: auto;
+}
+.hero-nav-link {
+    cursor: pointer !important;
+}
+
+.carousel-3d {
+    position: absolute; 
+    width: 100%; 
+    height: 360px; 
+    transform-style: preserve-3d; 
+    will-change: transform;
+}
+
+.carousel-card {
+    position: absolute;
+    left: 50%; 
+    top: 50%;
+    margin-left: -110px; 
+    margin-top: -180px;  
+    width: 220px; 
+    height: 360px; 
+    border-radius: 24px; 
+    overflow: hidden;
+    background: #111; 
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+    backface-visibility: hidden; 
+    will-change: transform;
+}
+
+.carousel-card video {
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover;
+}
+
+/* REFINED CUSTOM CURSOR */
+.hero-cursor {
+    position: absolute;
+    width: 50px; 
+    height: 50px;
+    border: 2px solid rgba(255, 255, 255, 0.6); 
+    background: transparent;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 100000;
+    transform: translate(-50%, -50%) scale(1);
+    /* Beautiful, smooth fade for background and border */
+    transition: opacity 0.3s, transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), background 0.4s ease, border-color 0.4s ease;
+}
+
+/* Filled white state when dragging */
+.hero-cursor.filled {
+    background: rgba(255, 255, 255, 0.95); /* Solid white */
+    border-color: rgba(255, 255, 255, 0.95);
+    transform: translate(-50%, -50%) scale(1); /* Keeps the exact same diameter */
+}
+
+.hero-cursor.hidden { opacity: 0; }
+
+/* Call to Action Button */
+.hero-3d-cta {
+    padding: 16px 40px;
+    border-radius: 50px;
+    background: #ffba00;
+    color: #000;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    border: none;
+    cursor: none; 
+    z-index: 20;
+    margin-top: 40px;
+    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.hero-3d-cta:hover {
+    transform: translateY(-3px) scale(1.05);
+    background: #fff;
+    box-shadow: 0 15px 40px rgba(255, 255, 255, 0.3);
+}
+
+/* =========================================
+   MOBILE ADJUSTMENTS (HERO FIXES)
+   ========================================= */
+@media (max-width: 768px) {
+    /* 1. Header & Buttons Restoration */
+    .hero-minimal-header { 
+        padding: 15px 10px; 
+        justify-content: center; /* Center everything */
+        flex-wrap: wrap;         /* Prevent overlap on tiny screens */
+        gap: 8px;
+    }
+    .hero-minimal-nav { 
+        display: flex !important; /* Bring back the hidden links */
+        gap: 8px; 
+    }
+    .hero-minimal-right {
+        position: static !important; /* Un-pin Contact from the right edge */
+    }
+    .hero-nav-link { 
+        font-size: 0.85rem !important; 
+        padding: 8px 12px !important; 
+        height: auto !important;
+    }
+
+    /* 2. Headline & Wrapper Sizing */
+    .hero-3d-wrapper { 
+        padding: 120px 0 40px; 
+        cursor: auto; 
+    }
+    .hero-3d-headline { 
+        font-size: 2.4rem !important; /* Scaled down for mobile */
+        margin-bottom: 20px !important;
+    }
+    .hero-underline {
+        bottom: -24px !important; /* Pull the yellow swoosh up */
+        height: 20px !important;
+    }
+
+    .hero-underline path {
+        stroke-width: 4 !important; /* Makes the actual drawn line thinner */
+    }
+
+    /* 3. Small Carousel (Forces 4-5 Videos on Screen) */
+    .scene-3d {
+        height: 220px !important;
+        perspective: 800px !important; /* Flattens the extreme fisheye */
+    }
+    .carousel-3d { 
+        width: 100% !important;
+        height: 180px !important; 
+    }
+    .carousel-card {
+        width: 110px !important;
+        height: 180px !important;
+        /* margin MUST be exactly negative half of width/height to center 3D objects */
+        margin-left: -55px !important; 
+        margin-top: -90px !important;  
+        border-radius: 12px !important;
+    }
+    
+    .hero-cursor { display: none !important; }
 }
 
 body.hero-done {
@@ -530,17 +893,8 @@ header {
     max-width: 100%;
     margin: 0 auto;
     margin-top: 12px;
-    position: relative;
     z-index: 1;
-
-    /* start hidden below viewport */
-    transform: translateY(100vh);
-    transition: transform 1.1s ease-out;
-}
-
-/* when hero is done, pull gallery up into place */
-body.hero-done #gallery {
-    transform: translateY(0);
+    /* DELETED: The translateY(100vh) that was breaking your scroll! */
 }
 
 /* --- FEATURED FULL-WIDTH ITEM --- */
@@ -3076,48 +3430,6 @@ body.video-playing .enter-btn {
     box-shadow: 0 0 15px rgba(255,255,255,0.4) !important;
 }
 
-/* --- HERO FADE & GALLERY SLIDE FIX --- */
-
-/* 1. Hero: Sits in back, FADES OUT smoothly */
-#hero {
-    z-index: 1 !important; 
-    opacity: 1; /* Start visible */
-    transform: none !important; 
-    /* Ensure opacity animates over 1.2s to match the slide */
-    transition: opacity 1.2s ease, transform 1.2s ease !important;
-}
-
-/* 2. Gallery: Slides up over the fading hero */
-#gallery {
-    z-index: 50 !important; 
-    position: relative;
-    background-color: #050505 !important; /* Solid background (User Request) */
-    min-height: 100vh;
-    
-    /* Animation settings */
-    transform: translateY(100vh); 
-    transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
-    will-change: transform;
-}
-
-/* 3. Hide Buttons Initially (Prevent overlap) */
-header, 
-.show-more-wrap,
-.top-signature {
-    opacity: 0 !important;
-    pointer-events: none !important;
-    transition: opacity 0.5s ease;
-}
-
-/* 4. Reveal Buttons after animation */
-body.hero-done header,
-body.hero-done .show-more-wrap,
-body.hero-done .top-signature {
-    opacity: 1 !important;
-    pointer-events: auto !important;
-    transition-delay: 1s; 
-}
-
 /* --- FINAL MOBILE VISIBILITY OVERRIDE --- */
 /* This must be at the very bottom to defeat the Hero hiding logic */
 @media (max-width: 768px) {
@@ -3184,8 +3496,8 @@ body[data-mode="all"] .services-section {
 
 .watch-more-glass {
     display: none; 
-    font-family: 'Vanitha', sans-serif;
-    font-size: 3rem;
+    font-family: 'Aminute', cursive; /* <--- CHANGED TO AMINUTE */
+    font-size: 3rem; /* You might need to bump this up to 4rem if the handwriting looks too small */
     margin-bottom: 50px;
     letter-spacing: 0.02em;
     pointer-events: none;
@@ -3196,21 +3508,17 @@ body[data-mode="all"] .services-section {
     background: linear-gradient(
         to right, 
         rgba(255, 186, 0, 0) 0%, 
-        rgba(255, 186, 0, 0) 35%, /* Widen the spread slightly */
+        rgba(255, 186, 0, 0) 35%, 
         #ffba00 50%,               
-        rgba(255, 186, 0, 0) 65%, /* Widen the spread slightly */
+        rgba(255, 186, 0, 0) 65%, 
         rgba(255, 186, 0, 0) 100%
     );
     
-    /* 300% size gives the gradient plenty of runway to sweep across */
     background-size: 300% auto;
-    
     color: transparent;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    
-    /* Animation runs continuously without needing JS */
     animation: textSweep 4s linear infinite;
 }
 
@@ -3865,4 +4173,135 @@ body[data-mode="all"] .watch-more-glass {
         padding-top: 0 !important; 
         margin-top: -25px !important; /* Pulls the quote up into the invisible font box */
     }
+}
+
+/* =========================================
+   GENERAL CONTACT OVERLAY
+   ========================================= */
+#contact-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100vh;
+    background-color: rgba(5, 5, 5, 0.90);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 999999; /* Highest layer */
+    
+    display: none; 
+    align-items: center; 
+    justify-content: center;
+    
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+#contact-overlay.active {
+    display: flex;
+    opacity: 1;
+    visibility: visible;
+}
+
+.contact-content-layout {
+    width: 100%;
+    max-width: 800px;
+    padding: 20px;
+    transform: translateY(20px);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#contact-overlay.active .contact-content-layout {
+    transform: translateY(0);
+}
+
+/* Ensure mobile responsiveness */
+@media (max-width: 768px) {
+    .contact-content-layout {
+        padding-top: 60px; /* Space for the close button */
+    }
+}
+
+/* =========================================
+   1. SURGICAL STRIKE: 3D HAND CURSOR
+   ========================================= */
+/* Using exact IDs to crush the old !important rules hidden in your CSS */
+#hero-portfolio-btn,
+#hero-services-btn,
+#hero-about-btn,
+#hero-contact-btn,
+#hero-scroll-btn,
+#close-btn,
+#project-close,
+#contact-close-btn,
+.filter-nav, 
+.current-filter,
+.filter-menu li, 
+.show-more-menu li,
+.service-card, 
+.pricing-card, 
+.addon-item {
+    cursor: url('images/3d-hand.png') 12 5, pointer !important;
+}
+
+/* Force all text/icons inside these elements to inherit the hand 
+   (This fixes the edges of the category menu!) */
+#hero-portfolio-btn *,
+#hero-services-btn *,
+#hero-about-btn *,
+#hero-contact-btn *,
+#hero-scroll-btn *,
+.filter-nav *, 
+.current-filter *,
+.filter-menu li *, 
+.show-more-menu li * {
+    cursor: inherit !important;
+}
+
+/* --- THE "X" BUTTON DEAD-CENTER FIX --- */
+/* Places a physical transparent block over the X text so WebKit doesn't glitch */
+.close-btn::after, 
+.project-close::after {
+    content: '';
+    position: absolute;
+    top: -10px; left: -10px; right: -10px; bottom: -10px;
+    z-index: 1000;
+    cursor: url('images/3d-hand.png') 12 5, pointer !important;
+}
+
+/* =========================================
+   2. REEL CURSOR FOR VIDEOS
+   ========================================= */
+/* Protects your cinematic exception! */
+.gallery-item, 
+.gallery-item *,
+.featured-strip-item,
+.featured-strip-item *,
+.carousel-card,
+.carousel-card *,
+#project-video,
+#project-youtube {
+    cursor: url('images/cursor-reel.png') 16 16, pointer !important;
+}
+
+/* --- HIDE HOLLOW CIRCLE ON 'EXPLORE' BUTTON HOVER --- */
+.hero-3d-wrapper:has(#hero-scroll-btn:hover) .hero-cursor {
+    opacity: 0 !important;
+    transition: opacity 0.2s ease;
+}
+
+/* =========================================
+   CATEGORY PAGE OVERRIDES (Hide Hero & Show Signature)
+   ========================================= */
+
+/* 1. Erase the entire 3D Hero section when not on the "Home" (all) category */
+body:not([data-mode="all"]) #hero-3d {
+    display: none !important;
+}
+
+/* 2. Force the signature to stay visible on sub-pages, 
+   overriding the JS that normally hides it at the top of the screen */
+body:not([data-mode="all"]) .top-signature {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
 }

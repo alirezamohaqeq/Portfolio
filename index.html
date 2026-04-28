@@ -83,19 +83,41 @@
 
     <img src="images/Signature.png" alt="Alee Signature" class="top-signature">
 
-    <div id="hero" class="hero">
-        <video id="hero-video" src="videos/hero-signature.mp4" poster="images/hero-cover.jpg" autoplay muted playsinline preload="auto"></video>
-        <div class="circle-loader-wrap">
-        <svg class="circle-loader-svg" width="120" height="120" viewBox="0 0 120 120">
-            <circle class="loader-track" cx="60" cy="60" r="54"></circle>
-            <circle id="loader-ring" class="loader-progress" cx="60" cy="60" r="54"></circle>
-        </svg>
-        <div id="loader-number" class="loader-number">0</div>
-    </div>
-        <div id="preroll-text" class="preroll-text" aria-label="Sound... Lights... Camera..."></div>
+    <div id="hero-3d" class="hero-3d-wrapper">
+        
+        <header class="hero-minimal-header">
+            <nav class="hero-minimal-nav">
+                <button id="hero-portfolio-btn" class="hero-nav-link">Portfolio</button>
+                <button id="hero-services-btn" class="hero-nav-link">Services</button>
+                <button id="hero-about-btn" class="hero-nav-link">About</button>
+            </nav>
+            <div class="hero-minimal-right">
+                <button id="hero-contact-btn" class="hero-nav-link">Contact</button>
+            </div>
+        </header>
 
-<button id="action-btn" class="enter-btn" onclick="completeHeroDismiss()">Action.</button>
-    </div>
+        <div class="hero-cursor hidden"></div>
+        
+        <div class="hero-text-content">
+            <h1 class="hero-3d-headline">
+                Engage Audiences<br>
+                with <span class="highlight-wrapper">Stunning Videos
+                    <svg class="hero-underline" viewBox="0 0 300 30" preserveAspectRatio="none">
+                        <path d="M 5 20 C 50 5, 150 25, 290 10" fill="none" stroke="#ffba00" stroke-width="6" stroke-linecap="round"/>
+                    </svg>
+                </span>
+            </h1>
+        </div>
+
+        <div class="scene-3d">
+            <div class="carousel-3d" id="carousel-3d">
+                </div>
+        </div>
+
+        <div class="hero-cta-wrapper">
+            <button id="hero-scroll-btn" class="hero-3d-cta">Explore My World</button>
+        </div>
+        </div>
 
     <header>
         <div class="logo">ALEE</div>
@@ -2297,6 +2319,29 @@
       </div>
     </footer>
 
+    <div id="contact-overlay">
+        <button id="contact-close-btn" class="close-btn">&times;</button>
+        
+        <div class="contact-content-layout">
+            <h3 class="gig-section-title" style="margin-bottom: 40px;">Let's Work Together</h3>
+            
+            <form action="https://formspree.io/f/xbdzrqqq" method="POST" class="gig-form">
+                <input type="hidden" name="Source" value="General Contact Form">
+                
+                <div class="form-row split-row">
+                    <input type="text" name="Name" placeholder="Your Name" required>
+                    <input type="email" name="Email" placeholder="Your Email" required>
+                </div>
+                
+                <div class="form-row">
+                    <textarea name="Message" placeholder="Tell me about your project... (timeline, references, goals, specific requirements)" rows="5" required></textarea>
+                </div>
+                
+                <button type="submit" class="gig-submit-btn">Send Inquiry</button>
+            </form>
+        </div>
+    </div>
+
     <div id="gig-overlay" class="gig-overlay" data-lenis-prevent>
         
         <div class="gig-header">
@@ -2375,136 +2420,232 @@
 
 <button id="floating-top" aria-label="Back to Top">↑</button>
 
-    <script>
-    // --- FINAL HERO LOGIC (RESTORED & UPGRADED) ---
-    const hero = document.getElementById('hero');
-    const heroVideo = document.getElementById('hero-video');
-    const mainGallery = document.getElementById('gallery');
-    
-    // Loader Elements
-    const numberDisplay = document.getElementById('loader-number');
-    const progressRing = document.getElementById('loader-ring');
-    const loaderWrap = document.querySelector('.circle-loader-wrap');
-    
-    // Text & Button Elements
-    const textContainer = document.getElementById('preroll-text');
-    const actionBtn = document.getElementById('action-btn');
-    
-    // Config
-    const circumference = 339.29;
-    let heroFinished = false;
-    let loadInterval;
-    
-    // 1. Setup Cinematic Text Animation (Immediately)
-    const phrase = "Sound... Lights... Camera...";
-    const animDuration = 2200; // Time allowed for text to animate fully
-    let animationStartTime = Date.now();
+<script>
+    // =========================================
+    // LUXURY 3D CONCAVE CAROUSEL ENGINE
+    // =========================================
+    (function init3DHero() {
+        const carousel = document.getElementById('carousel-3d');
+        const heroWrap = document.querySelector('.hero-3d-wrapper');
+        if (!carousel || !heroWrap) return;
 
-    if (textContainer) {
-        textContainer.innerHTML = ''; 
-        phrase.split('').forEach((char, index) => {
-            const span = document.createElement('span');
-            span.textContent = char === ' ' ? '\u00A0' : char; 
-            span.className = 'preroll-char';
-            span.style.animationDelay = `${index * 80}ms`; // Staggered reveal
-            textContainer.appendChild(span);
+        const baseVideos = [
+            'videos/previews/perfectbrand_preview.mp4',
+            'videos/previews/Halloween Party_preview.mp4',
+            'videos/previews/Zoviz Short Commercial 1_preview.mp4',
+            'videos/previews/project2_preview.mp4',
+            'videos/previews/Collabrium_preview.mp4',
+            'videos/previews/LogoFashionShow_preview.mp4',
+            'videos/previews/We Are A Family_preview.mp4',
+            'videos/previews/This is the WOW_preview.mp4',
+            'videos/previews/Black Friday Offer_preview.mp4',
+            'videos/previews/Zoviz Ad August_preview.mp4',
+            'videos/previews/Tivali_Home_Guaranteed_Rent_preview.mp4',
+            'videos/previews/Steer Clear_preview.mp4'
+        ];
+
+        const isMobile = window.innerWidth < 768;
+        
+        // THE FIX: Use 24 cards on mobile too! 
+        // This fills the empty space on the wider cylinder.
+        const videos = [...baseVideos, ...baseVideos]; 
+        
+        const numCards = videos.length;
+        
+        // PERFECT RADIUS: 460px precisely fits 24 tiny cards with a tight 10px gap
+        const radius = isMobile ? 460 : 950; 
+
+        // 1. Inject Cards into 3D Space
+        videos.forEach((src, i) => {
+            const card = document.createElement('div');
+            card.className = 'carousel-card';
+            
+            const vid = document.createElement('video');
+            vid.src = src; vid.muted = true; vid.loop = true; vid.playsInline = true;
+            vid.autoplay = true; 
+            
+            card.appendChild(vid);
+            carousel.appendChild(card);
+
+            const angle = (360 / numCards) * i;
+            card.style.transform = `rotateY(${angle}deg) translateZ(${-radius}px)`;
         });
-    }
 
-    // 2. Core Function: Dismiss Hero (FIXED: FADE + SLIDE)
-    function completeHeroDismiss() {
-        if (heroFinished) return;
-        heroFinished = true;
-        
-        clearInterval(loadInterval);
-        document.documentElement.classList.add('hero-done');
-        document.body.classList.add('hero-done');
-        
-        // Hide small UI elements immediately
-        if (loaderWrap) loaderWrap.style.opacity = '0';
-        if (textContainer) textContainer.style.opacity = '0';
-        if (actionBtn) actionBtn.style.opacity = '0';
-        
-        // CRITICAL FIX: Start fading the Hero IMMEDIATELY
-        // This solves the "stays there as background" issue.
-        if (hero) {
-            hero.style.opacity = '0'; 
-            hero.style.pointerEvents = 'none';
-        }
-        
-        window.scrollTo(0, 0);
+        // 2. Heavy Physics Variables
+        let currentRot = 0;
+        let targetRot = 0;
+        const BASE_SPEED = -0.035; 
+        let velocity = BASE_SPEED; 
+        let dragSpeed = 0;
+        let isDragging = false;
+        let startX = 0;
+        let lastX = 0;
 
-        // Trigger the Gallery Slide-Up
-        if (mainGallery) {
-            mainGallery.style.transform = 'translateY(0)'; 
+        const customCursor = document.querySelector('.hero-cursor');
+
+        // 3. Pointer Interactions
+        function onDown(e) {
+            if(e.target.closest('#hero-scroll-btn') || e.target.closest('header')) return;
+            
+            isDragging = true;
+            startX = e.clientX || (e.touches && e.touches[0].clientX);
+            lastX = startX;
+            dragSpeed = 0;
+            
+            if(customCursor) customCursor.classList.add('filled');
         }
 
-        // Cleanup: Remove Hero from DOM after animation (1.2s)
-        setTimeout(() => {
-            if (hero) hero.style.display = 'none';
-            if (heroVideo) heroVideo.pause();
-            if (mainGallery) mainGallery.style.willChange = 'auto';
-            window.dispatchEvent(new Event('resize')); 
-        }, 1200);
-    }
+        function onMove(e) {
+            const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+            const clientY = e.clientY || (e.touches && e.touches[0].clientY);
 
-    // 3. Loader Logic
-    function setProgress(percent) {
-        if (numberDisplay) numberDisplay.innerText = percent;
-        if (progressRing) {
-            const offset = circumference - (percent / 100) * circumference;
-            progressRing.style.strokeDashoffset = offset;
+            if(customCursor) {
+                const rect = heroWrap.getBoundingClientRect();
+                const x = clientX - rect.left;
+                const y = clientY - rect.top;
+                customCursor.style.left = `${x}px`;
+                customCursor.style.top = `${y}px`;
+                customCursor.classList.remove('hidden');
+            }
+
+            if (!isDragging) return;
+            
+            const deltaX = clientX - lastX;
+            lastX = clientX;
+            
+            dragSpeed = -(deltaX * 0.08); 
+            targetRot += dragSpeed;
         }
-    }
 
-    let progress = 0;
-    loadInterval = setInterval(() => {
-        let increment = (progress > 85) ? 0.5 : 1; 
-        if (progress < 99) {
-            progress += increment;
-            setProgress(Math.floor(progress));
+        function onUp() {
+            if (!isDragging) return;
+            isDragging = false;
+            if(customCursor) customCursor.classList.remove('filled');
+            velocity = dragSpeed * 1.2;
         }
-    }, 30); 
 
-    // 4. Video Play Listener (The Sync Logic)
-    if (heroVideo) {
-        heroVideo.addEventListener('playing', () => {
-            // A. Finish Loader
-            setProgress(100);
-            clearTimeout(safetyTimer);
-            clearInterval(loadInterval);
-            setTimeout(() => { if (loaderWrap) loaderWrap.style.opacity = '0'; }, 200);
+        heroWrap.addEventListener('mousedown', onDown);
+        heroWrap.addEventListener('touchstart', onDown, {passive: true});
+        window.addEventListener('mousemove', onMove);
+        window.addEventListener('touchmove', onMove, {passive: false});
+        window.addEventListener('mouseup', onUp);
+        window.addEventListener('touchend', onUp);
 
-            // B. Calculate Remaining Animation Time
-            const now = Date.now();
-            const elapsed = now - animationStartTime;
-            const remaining = Math.max(0, animDuration - elapsed);
+        heroWrap.addEventListener('mouseleave', () => {
+            if(customCursor) customCursor.classList.add('hidden');
+            if(isDragging) onUp(); 
+        });
 
-            // C. Wait, then Swap
+        // 4. Render Loop
+        function animate() {
+            if (!isDragging) {
+                velocity *= 0.92; 
+                if (Math.abs(velocity) < Math.abs(BASE_SPEED)) {
+                    velocity = BASE_SPEED;
+                }
+                targetRot += velocity; 
+            }
+
+            currentRot += (targetRot - currentRot) * 0.03;
+            const posterizedRot = Math.round(currentRot * 4) / 4;
+
+            // MOBILE CAMERA PUSH: Adjusted to perfectly frame the new 460px cylinder
+            const pushZ = isMobile ? (radius - 250) : (radius - 220);
+            carousel.style.transform = `translateZ(${pushZ}px) rotateY(${posterizedRot}deg)`;
+
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+
+        // 5. Hero CTA & Scroll Interaction
+        function unlockAndScroll() {
+            document.documentElement.classList.add('hero-done');
+            document.body.classList.add('hero-done'); 
             setTimeout(() => {
-                if (textContainer) textContainer.classList.add('fade-out');
-                document.body.classList.add('video-playing'); // Triggers button fade-in
-            }, remaining);
-        });
+                if (window.lenis) {
+                    window.lenis.resize(); 
+                    window.lenis.scrollTo('#gallery', { offset: -100, duration: 1.5 });
+                } else {
+                    document.querySelector('#gallery').scrollIntoView({behavior: 'smooth'});
+                }
+            }, 50); 
+        }
 
-        heroVideo.play().catch(e => console.log("Autoplay waiting..."));
+        document.getElementById('hero-scroll-btn').addEventListener('click', unlockAndScroll);
+
+        heroWrap.addEventListener('wheel', (e) => {
+            if (e.deltaY > 20 && !document.body.classList.contains('hero-done')) { 
+                unlockAndScroll();
+            }
+        }, { passive: true });
+
+        let heroTouchStartY = 0;
+        heroWrap.addEventListener('touchstart', e => {
+            heroTouchStartY = e.touches[0].clientY;
+        }, {passive: true});
+        
+        heroWrap.addEventListener('touchend', e => {
+            let heroTouchEndY = e.changedTouches[0].clientY;
+            if (heroTouchStartY - heroTouchEndY > 50 && !document.body.classList.contains('hero-done')) { 
+                unlockAndScroll();
+            }
+        }, {passive: true});
+    })(); // End of init3DHero
+
+    // --- SMART SIGNATURE VISIBILITY LOGIC ---
+    window.addEventListener('scroll', () => {
+        const signature = document.querySelector('.top-signature');
+        if (signature) {
+            // Hide signature if we scroll back up to the Hero section
+            if (window.scrollY < 100) {
+                signature.style.opacity = '0';
+                signature.style.visibility = 'hidden';
+                signature.style.pointerEvents = 'none';
+            } else {
+                signature.style.opacity = '1';
+                signature.style.visibility = 'visible';
+                signature.style.pointerEvents = 'auto';
+            }
+        }
+    });
+
+    // Minimal Header Navigation Actions
+    function unlockHeaderScroll(targetID, offsetVal) {
+        // Unlock the CSS restrictions
+        document.documentElement.classList.add('hero-done');
+        document.body.classList.add('hero-done'); 
+        
+        setTimeout(() => {
+            if (window.lenis) {
+                window.lenis.resize(); // Inform Lenis of the new unlocked height
+                window.lenis.scrollTo(targetID, { offset: offsetVal, duration: 1.5 });
+            } else {
+                document.querySelector(targetID).scrollIntoView({behavior: 'smooth'});
+            }
+        }, 50);
     }
 
-    // 5. Safety Timer (Failsafe)
-    let safetyTimer = setTimeout(() => {
-        if (!heroFinished && window.scrollY < 50) {
-            // If video fails to play after 4s, show the button anyway
-            document.body.classList.add('video-playing');
-            if (loaderWrap) loaderWrap.style.opacity = '0';
-            if (textContainer) textContainer.classList.add('fade-out');
-        }
-    }, 4000);
+    document.getElementById('hero-portfolio-btn').addEventListener('click', () => {
+        unlockHeaderScroll('#gallery', -100);
+    });
 
-    // 6. Manual Interaction (Optional: Keep or Remove)
-    // Allows scrolling to dismiss if they ignore the button
-    window.addEventListener('wheel', (e) => { 
-        if (!heroFinished) { e.preventDefault(); completeHeroDismiss(); } 
-    }, { passive: false });
+    document.getElementById('hero-services-btn').addEventListener('click', () => {
+        unlockHeaderScroll('#services-section', -80);
+    });
+
+    document.getElementById('hero-about-btn').addEventListener('click', () => {
+        const aboutOverlay = document.getElementById('about-overlay');
+        if (aboutOverlay) {
+            aboutOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            // THE FIX: Trigger the physics engine!
+            if (typeof window.initPhysics === 'function') {
+                setTimeout(initPhysics, 100);
+            }
+        }
+    });
 
         // --- FILTER & SHOW MORE LOGIC (Restored Original Logic) ---
         const filterItems = document.querySelectorAll('.filter-menu li');
@@ -4169,7 +4310,7 @@ const menuItems = document.querySelectorAll('.filter-menu li, .show-more-menu li
             }
         }
 
-        function initPhysics() {
+        window.initPhysics = function() {
             if (isPhysicsRunning) return;
             isPhysicsRunning = true;
 
@@ -4797,17 +4938,56 @@ const menuItems = document.querySelectorAll('.filter-menu li, .show-more-menu li
     </script>
 
     <script>
-        // =========================================
-    // SEAMLESS FORM SUBMISSION (No Formspree Redirect)
     // =========================================
-    const gigForm = document.querySelector('.gig-form');
+    // CONTACT OVERLAY LOGIC
+    // =========================================
+    const contactOverlay = document.getElementById('contact-overlay');
+    const contactCloseBtn = document.getElementById('contact-close-btn');
+    const heroContactBtn = document.getElementById('hero-contact-btn');
+
+    // 1. Open Contact Overlay (From Hero Header)
+    if (heroContactBtn) {
+        heroContactBtn.addEventListener('click', () => {
+            contactOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+    }
+
+    // 2. Intercept any other mailto links (like the footer)
+    document.querySelectorAll('a[href^="mailto:"]').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault(); // Stop email app from opening
+            contactOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+    });
+
+    // 3. Close Logic
+    function closeContact() {
+        contactOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    if (contactCloseBtn) contactCloseBtn.addEventListener('click', closeContact);
+
+    // 4. Universal Escape Key (Added to existing logic)
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && contactOverlay.classList.contains('active')) {
+            closeContact();
+        }
+    });
+
+    // =========================================
+    // SEAMLESS FORM SUBMISSION (Works for ALL forms)
+    // =========================================
+    const allForms = document.querySelectorAll('.gig-form');
     
-    if (gigForm) {
-        gigForm.addEventListener("submit", async function(event) {
-            // This physically stops the browser from leaving your website
+    allForms.forEach(form => {
+        form.addEventListener("submit", async function(event) {
+            // Physically stops the browser from redirecting to Formspree
             event.preventDefault(); 
             
-            const submitBtn = gigForm.querySelector('.gig-submit-btn');
+            const submitBtn = form.querySelector('.gig-submit-btn');
             const originalText = submitBtn.innerText;
             
             // 1. Show a loading state
@@ -4815,12 +4995,12 @@ const menuItems = document.querySelectorAll('.filter-menu li, .show-more-menu li
             submitBtn.style.opacity = "0.7";
             submitBtn.style.pointerEvents = "none";
 
-            const data = new FormData(gigForm);
+            const data = new FormData(form);
             
             try {
                 // 2. Send the data silently in the background
-                const response = await fetch(gigForm.action, {
-                    method: gigForm.method,
+                const response = await fetch(form.action, {
+                    method: form.method,
                     body: data,
                     headers: { 'Accept': 'application/json' }
                 });
@@ -4830,10 +5010,11 @@ const menuItems = document.querySelectorAll('.filter-menu li, .show-more-menu li
                     submitBtn.innerText = "Message Sent! ✓";
                     submitBtn.style.backgroundColor = "#4caf50"; // Premium Green
                     submitBtn.style.color = "#fff";
-                    gigForm.reset();
+                    form.reset();
                     
-                    // Reset the package input field visually
-                    document.getElementById('form-package-name').value = "None selected";
+                    // Reset the package input field visually (if it exists in this form)
+                    const pkgNameField = form.querySelector('#form-package-name');
+                    if (pkgNameField) pkgNameField.value = "None selected";
                     
                     // 4. Revert the button back to normal after 4 seconds
                     setTimeout(() => {
@@ -4842,7 +5023,12 @@ const menuItems = document.querySelectorAll('.filter-menu li, .show-more-menu li
                         submitBtn.style.color = "#000";
                         submitBtn.style.opacity = "1";
                         submitBtn.style.pointerEvents = "auto";
-                    }, 4000);
+                        
+                        // Auto-close the contact overlay if it was open
+                        if (contactOverlay && contactOverlay.classList.contains('active')) {
+                            closeContact();
+                        }
+                    }, 3000);
                     
                 } else {
                     submitBtn.innerText = "Oops! Error.";
@@ -4853,8 +5039,8 @@ const menuItems = document.querySelectorAll('.filter-menu li, .show-more-menu li
                 submitBtn.style.backgroundColor = "#f44336";
             }
         });
-    }
-    </script>
+    });
+</script>
 
 </body>
 </html>
