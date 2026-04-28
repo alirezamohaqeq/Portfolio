@@ -19,6 +19,22 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;700&family=Outfit:wght@300;400;600;700&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
     <link rel="preload" href="fonts/Aminute.otf" as="font" type="font/otf" crossorigin="anonymous">
+    <style>
+        /* Hide hero headline until Aminute font is confirmed loaded — prevents any flash */
+        .hero-3d-headline { opacity: 0; transition: opacity 0.3s ease; }
+        .aminute-ready .hero-3d-headline { opacity: 1; }
+    </style>
+    <script>
+        // Trigger font load ASAP, reveal headline only when Aminute is ready
+        document.fonts.load('1em Aminute').then(function() {
+            document.documentElement.classList.add('aminute-ready');
+        }).catch(function() {
+            // Fallback: show text anyway after 1s if font API fails
+            setTimeout(function() {
+                document.documentElement.classList.add('aminute-ready');
+            }, 1000);
+        });
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
     <link rel="stylesheet" href="style.css">
@@ -3684,13 +3700,15 @@ if (projectLayout) {
     (function() {
         // 1. Initialize Lenis (The Physics Engine)
         window.lenis = new Lenis({ 
-            lerp: 0.07,              // Uses momentum friction instead of fixed duration (buttery smooth!)
+            lerp: 0.07,
             direction: 'vertical',
             gestureDirection: 'vertical',
             smooth: true,
             mouseMultiplier: 1,
-            smoothTouch: false,      // Keep native feel on mobile (better UX)
+            smoothTouch: false,
             touchMultiplier: 2,
+            syncTouch: false,        // Prevents Edge from re-syncing on every frame
+            infinite: false,         // Prevents Edge scroll recalc loop
         });
 
         // 2. The Animation Loop (60fps)
@@ -3700,18 +3718,22 @@ if (projectLayout) {
             
             const velocity = lenis.velocity;
             
-            // --- CINEMATIC ZOOM OUT LOGIC (Refined & Subtle) ---
-            // Greatly reduced the intensity so it doesn't interfere with your popping photos
-            const rawScale = 1 - (Math.abs(velocity) * 0.001); 
-            const scaleAmount = Math.max(0.98, rawScale); // Caps maximum shrink at 2% instead of 5%
-            
-            const targets = document.querySelectorAll('.gallery-grid, .photography-bg-container');
-            
-            targets.forEach(el => {
-                el.style.transform = `scale(${scaleAmount})`;
-                el.style.transformOrigin = 'center center';
-                el.style.willChange = 'transform'; 
-            });
+            // --- CINEMATIC ZOOM OUT LOGIC (Edge-safe: skip transform if velocity is near zero) ---
+            if (Math.abs(velocity) > 0.1) {
+                const rawScale = 1 - (Math.abs(velocity) * 0.001); 
+                const scaleAmount = Math.max(0.98, rawScale);
+                
+                const targets = document.querySelectorAll('.gallery-grid, .photography-bg-container');
+                targets.forEach(el => {
+                    el.style.transform = `scale(${scaleAmount})`;
+                });
+            } else {
+                // Reset to normal when not scrolling — prevents Edge holding a stale transform
+                const targets = document.querySelectorAll('.gallery-grid, .photography-bg-container');
+                targets.forEach(el => {
+                    el.style.transform = '';
+                });
+            }
         }
 
         requestAnimationFrame(raf);

@@ -9,7 +9,13 @@
     font-style: normal;
     font-display: swap;
 }
-
+@font-face {
+    font-family: 'Vanitha';
+    src: url('fonts/VanithaRegular.otf'); 
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
 @font-face {
     font-family: 'Aminute';
     src: url('fonts/Aminute.otf'); 
@@ -212,7 +218,7 @@ body {
 
 /* The "Aminute" Handwritten Headline */
 .hero-3d-headline {
-    font-family: 'Aminute', cursive; /* Applied to the main text! */
+    font-family: 'Aminute', sans-serif; /* sans-serif fallback — invisible until font loads */
     font-size: 5.5rem; /* Increased size to compensate for script font dimensions */
     font-weight: normal; 
     line-height: 1.1; 
@@ -383,15 +389,19 @@ body {
     overflow: hidden;
     background: #111; 
     border: 1px solid rgba(255, 255, 255, 0.05);
-    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+    /* Removed box-shadow from individual cards — too expensive in Edge with preserve-3d */
     backface-visibility: hidden; 
-    will-change: transform;
+    -webkit-backface-visibility: hidden; /* Safari/Edge prefix */
+    /* Removed will-change: transform from cards — only the parent needs it */
+    /* Each card having its own compositor layer tanks Edge performance */
 }
 
 .carousel-card video {
     width: 100%; 
     height: 100%; 
     object-fit: cover;
+    /* Prevent Edge from creating extra layers per video */
+    will-change: auto;
 }
 
 /* REFINED CUSTOM CURSOR */
@@ -487,8 +497,8 @@ body {
 
     /* 3. Small Carousel (Forces 4-5 Videos on Screen) */
     .scene-3d {
-        height: 190px !important; /* Matches card height closely, no dead air */
-        perspective: 800px !important;
+        height: 220px !important;
+        perspective: 800px !important; /* Flattens the extreme fisheye */
     }
     .carousel-3d { 
         width: 100% !important;
@@ -497,15 +507,16 @@ body {
     .carousel-card {
         width: 110px !important;
         height: 180px !important;
+        /* margin MUST be exactly negative half of width/height to center 3D objects */
         margin-left: -55px !important; 
         margin-top: -90px !important;  
         border-radius: 12px !important;
     }
     .hero-cta-wrapper {
-        margin-top: 20px !important; /* Was 50px — pulls button up closer to carousel */
+        margin-top: 40px !important; /* Restored to original */
     }
     .hero-3d-wrapper {
-        padding: 100px 0 30px !important; /* Less bottom padding too */
+        padding: 120px 0 40px !important; /* Restored to original */
     }
     
     .hero-cursor { display: none !important; }
@@ -3506,7 +3517,7 @@ body[data-mode="all"] .services-section {
 
 .watch-more-glass {
     display: none; 
-    font-family: 'Aminute', cursive; /* <--- CHANGED TO AMINUTE */
+    font-family: 'Aminute', sans-serif; /* sans-serif fallback prevents cursive flash */
     font-size: 3rem; /* You might need to bump this up to 4rem if the handwriting looks too small */
     margin-bottom: 50px;
     letter-spacing: 0.02em;
