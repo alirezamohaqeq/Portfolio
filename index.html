@@ -2439,7 +2439,7 @@
 
 <script>
     // =========================================
-    // LUXURY 3D CONCAVE CAROUSEL ENGINE
+    // LUXURY 3D CONCAVE CAROUSEL ENGINE (GPU OPTIMIZED)
     // =========================================
     (function init3DHero() {
         const carousel = document.getElementById('carousel-3d');
@@ -2463,13 +2463,14 @@
 
         const isMobile = window.innerWidth < 768;
         
-        // Mobile uses 16 cards to prevent overwhelming the smaller cylinder
-        const videos = isMobile ? baseVideos.slice(0, 8).concat(baseVideos.slice(0, 8)) : [...baseVideos, ...baseVideos]; 
+        // FIX: 24 cards loaded for both Desktop & Mobile to eliminate gaps
+        const videos = [...baseVideos, ...baseVideos]; 
         
         const numCards = videos.length;
-        
-        // PERFECT RADIUS: 460px precisely fits 24 tiny cards with a tight 10px gap
         const radius = isMobile ? 460 : 950; 
+
+        // Array to store video references for GPU optimization
+        const cardsData = [];
 
         // 1. Inject Cards into 3D Space
         videos.forEach((src, i) => {
@@ -2477,14 +2478,20 @@
             card.className = 'carousel-card';
             
             const vid = document.createElement('video');
-            vid.src = src; vid.muted = true; vid.loop = true; vid.playsInline = true;
-            vid.autoplay = true; 
+            vid.src = src; 
+            vid.muted = true; 
+            vid.loop = true; 
+            vid.playsInline = true;
+            // IMPORTANT: Removed autoplay! Our culling engine will handle playback.
             
             card.appendChild(vid);
             carousel.appendChild(card);
 
             const angle = (360 / numCards) * i;
             card.style.transform = `rotateY(${angle}deg) translateZ(${-radius}px)`;
+            
+            // Save data for the active culler
+            cardsData.push({ video: vid, baseAngle: angle, isPlaying: false });
         });
 
         // 2. Heavy Physics Variables
@@ -2552,7 +2559,7 @@
             if(isDragging) onUp(); 
         });
 
-        // 4. Render Loop
+        // 4. Render Loop & GPU Culling
         function animate() {
             if (!isDragging) {
                 velocity *= 0.92; 
@@ -2565,7 +2572,26 @@
             currentRot += (targetRot - currentRot) * 0.03;
             const posterizedRot = Math.round(currentRot * 4) / 4;
 
-            // MOBILE CAMERA PUSH: Adjusted to perfectly frame the new 460px cylinder
+            // --- GPU OPTIMIZATION ENGINE ---
+            // Only play videos currently facing the camera (within a ~150 degree arc)
+            cardsData.forEach(item => {
+                let worldAngle = (item.baseAngle + currentRot) % 360;
+                if (worldAngle < 0) worldAngle += 360;
+
+                // Cards facing front are close to 0/360 degrees
+                let isVisible = worldAngle < 75 || worldAngle > 285;
+
+                if (isVisible && !item.isPlaying) {
+                    let playPromise = item.video.play();
+                    if (playPromise !== undefined) playPromise.catch(()=>{});
+                    item.isPlaying = true;
+                } else if (!isVisible && item.isPlaying) {
+                    item.video.pause();
+                    item.isPlaying = false;
+                }
+            });
+            // --------------------------------
+
             const pushZ = isMobile ? (radius - 250) : (radius - 220);
             carousel.style.transform = `translateZ(${pushZ}px) rotateY(${posterizedRot}deg)`;
 

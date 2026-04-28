@@ -9,19 +9,13 @@
     font-style: normal;
     font-display: swap;
 }
-@font-face {
-    font-family: 'Vanitha';
-    src: url('fonts/VanithaRegular.otf'); 
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-}
+
 @font-face {
     font-family: 'Aminute';
-    src: url('fonts/Aminute.otf'); 
+    src: url('fonts/Aminute.otf') format('opentype'); /* Added explicit format */
     font-weight: normal;
     font-style: normal;
-    font-display: block; /* block = invisible until loaded, prevents FOUT flash */
+    font-display: swap; /* Swaps instantly to prevent invisible text bugs on mobile */
 }
 
 /* --- SMOOTH SCROLL SETUP --- */
@@ -2399,44 +2393,6 @@ body.hero-hint-on #hero .skip-hint { opacity: 1; }
     }
 }
 
-/* --- MOBILE HERO SKIP (FIXED) --- */
-@media (max-width: 768px) {
-    /* 1. Hide Hero Completely */
-    #hero {
-        display: none !important;
-        visibility: hidden !important;
-        pointer-events: none !important;
-    }
-
-    /* 2. FORCE UNLOCK SCROLL (Overrides the "Sticky Menu" Lock) */
-    html, body {
-        height: auto !important;
-        overflow-y: auto !important;
-        overflow-x: hidden !important;
-        position: relative !important;
-    }
-
-    /* 3. FORCE GALLERY VISIBILITY (Overrides the Slide-Up wait) */
-    #gallery {
-        transform: translateY(0) !important;
-        opacity: 1 !important;
-        margin-top: 0 !important;
-    }
-
-    /* 4. FORCE HEADER & MENU VISIBILITY (Overrides the Fade-In wait) */
-    header, 
-    .show-more-wrap {
-        opacity: 1 !important;
-        pointer-events: auto !important;
-        transition: none !important; /* Instant appear */
-    }
-
-    /* 5. Hide Signature (Optional preference) */
-    .top-signature {
-        display: none !important;
-    }
-}
-
 /* Container must be relative for absolute positioning of labels */
 .featured-strip-item {
     position: relative;
@@ -3452,25 +3408,24 @@ body.video-playing .enter-btn {
 }
 
 /* --- FINAL MOBILE VISIBILITY OVERRIDE --- */
-/* This must be at the very bottom to defeat the Hero hiding logic */
 @media (max-width: 768px) {
-    header, 
-    .show-more-wrap,
-    .top-signature {
+    /* Only show these elements AFTER the hero is done */
+    body.hero-done header, 
+    body.hero-done .show-more-wrap,
+    body.hero-done .top-signature {
         opacity: 1 !important;
         pointer-events: auto !important;
         visibility: visible !important;
         transition: none !important;
     }
 
-    /* FIX: Add gap ONLY for Home (all) and Motion categories */
-    body[data-mode="all"] .show-more-wrap,
-    body[data-mode="motion"] .show-more-wrap {
+    body[data-mode="all"].hero-done .show-more-wrap,
+    body[data-mode="motion"].hero-done .show-more-wrap {
         margin-bottom: 40px !important; 
     }
     
-    /* Ensure the body scroll is definitely unlocked */
-    html, body {
+    /* Ensure the body scroll is unlocked ONLY when hero is done */
+    html.hero-done, body.hero-done {
         height: auto !important;
         overflow-y: auto !important;
     }
