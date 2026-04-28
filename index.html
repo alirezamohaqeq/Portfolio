@@ -18,6 +18,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;700&family=Outfit:wght@300;400;600;700&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
+    <link rel="preload" href="fonts/Aminute.otf" as="font" type="font/otf" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
     <link rel="stylesheet" href="style.css">
@@ -2446,9 +2447,8 @@
 
         const isMobile = window.innerWidth < 768;
         
-        // THE FIX: Use 24 cards on mobile too! 
-        // This fills the empty space on the wider cylinder.
-        const videos = [...baseVideos, ...baseVideos]; 
+        // Mobile uses 16 cards to prevent overwhelming the smaller cylinder
+        const videos = isMobile ? baseVideos.slice(0, 8).concat(baseVideos.slice(0, 8)) : [...baseVideos, ...baseVideos]; 
         
         const numCards = videos.length;
         

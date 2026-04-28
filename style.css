@@ -9,19 +9,13 @@
     font-style: normal;
     font-display: swap;
 }
-@font-face {
-    font-family: 'Vanitha';
-    src: url('fonts/VanithaRegular.otf'); 
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-}
+
 @font-face {
     font-family: 'Aminute';
     src: url('fonts/Aminute.otf'); 
     font-weight: normal;
     font-style: normal;
-    font-display: swap;
+    font-display: block; /* block = invisible until loaded, prevents FOUT flash */
 }
 
 /* --- SMOOTH SCROLL SETUP --- */
@@ -361,6 +355,14 @@ body {
     cursor: pointer !important;
 }
 
+/* Fix: Ensure CTA scroll button always shows hand cursor */
+#hero-scroll-btn {
+    cursor: url('images/3d-hand.png') 12 5, pointer !important;
+    pointer-events: auto !important;
+    position: relative;
+    z-index: 30;
+}
+
 .carousel-3d {
     position: absolute; 
     width: 100%; 
@@ -426,7 +428,7 @@ body {
     font-size: 1.1rem;
     font-weight: 700;
     border: none;
-    cursor: none; 
+    cursor: url('images/3d-hand.png') 12 5, pointer !important; /* Fixed: was cursor: none */
     z-index: 20;
     margin-top: 40px;
     transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
@@ -468,8 +470,11 @@ body {
         cursor: auto; 
     }
     .hero-3d-headline { 
-        font-size: 2.4rem !important; /* Scaled down for mobile */
+        font-size: 3rem !important; /* Bumped up for better readability on mobile */
         margin-bottom: 20px !important;
+    }
+    .hero-text-content {
+        margin-bottom: 10px !important; /* Tighten gap between headline area and carousel */
     }
     .hero-underline {
         bottom: -24px !important; /* Pull the yellow swoosh up */
@@ -482,8 +487,8 @@ body {
 
     /* 3. Small Carousel (Forces 4-5 Videos on Screen) */
     .scene-3d {
-        height: 220px !important;
-        perspective: 800px !important; /* Flattens the extreme fisheye */
+        height: 190px !important; /* Matches card height closely, no dead air */
+        perspective: 800px !important;
     }
     .carousel-3d { 
         width: 100% !important;
@@ -492,10 +497,15 @@ body {
     .carousel-card {
         width: 110px !important;
         height: 180px !important;
-        /* margin MUST be exactly negative half of width/height to center 3D objects */
         margin-left: -55px !important; 
         margin-top: -90px !important;  
         border-radius: 12px !important;
+    }
+    .hero-cta-wrapper {
+        margin-top: 20px !important; /* Was 50px — pulls button up closer to carousel */
+    }
+    .hero-3d-wrapper {
+        padding: 100px 0 30px !important; /* Less bottom padding too */
     }
     
     .hero-cursor { display: none !important; }
