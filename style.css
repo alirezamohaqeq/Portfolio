@@ -226,6 +226,7 @@ body {
     position: relative;
     display: inline-block;
     color: #ffba00;
+    z-index: 1;
 }
 
 .hero-3d-subhead {
@@ -239,70 +240,125 @@ body {
 }
 
 /* =========================================
-   SCRIBBLES & ANIMATIONS
+   NEW CUSTOM PNG UNDERLINE (ANIMATED WIPE)
    ========================================= */
-
-/* Animated Underline */
-.hero-underline {
+.highlight-wrapper::after {
+    content: ''; 
     position: absolute;
-    bottom: -28px; /* Sits just below the text */
-    left: 0;
-    width: 100%;
-    height: 30px;
+    /* You might need to nudge this up or down (e.g., -25px or -45px) depending on your crop */
+    bottom: -22px; 
+    
+    left: -5%; 
+    width: 110%; 
+    /* Taller box gives the proportional image plenty of room to breathe without clipping */
+    height: 60px; 
+    
+    background-image: url('images/lines_006.png');
+    
+    /* THE MAGIC FIX: Width matches the container, Height scales perfectly to prevent distortion! */
+    background-size: 100% auto; 
+    
+    background-position: center;
+    background-repeat: no-repeat;
+    
+    z-index: -1; 
     pointer-events: none;
+    
+    /* Pure White Filter */
+    filter: invert(100%);
+    
+    /* --- THE WIPING ANIMATION MAGIC --- */
+    -webkit-clip-path: inset(0 100% 0 0);
+    clip-path: inset(0 100% 0 0);
+    
+    animation: drawPNGLine 1.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    animation-delay: 0.8s; 
 }
 
-.hero-underline path {
-    /* The SVG Animation Math */
-    stroke-dasharray: 400;
-    stroke-dashoffset: 400;
-    animation: drawLine 3s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-    animation-delay: 0.8s; /* Waits a moment after page load */
+/* The Animation Rules (Keep these as they are) */
+@keyframes drawPNGLine {
+    to {
+        -webkit-clip-path: inset(0 0 0 0);
+        clip-path: inset(0 0 0 0);
+    }
 }
 
-@keyframes drawLine {
-    to { stroke-dashoffset: 0; }
-}
-
-/* Base Scribble Styles */
+/* =========================================
+   HERO SCRIBBLES (PINNED POSITIONS)
+   ========================================= */
 .scribble {
     position: absolute;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
     pointer-events: none;
-    opacity: 0;
-    animation: fadeInScribble 0.8s ease forwards;
-    animation-delay: 0.8s;
-}
-
-.scribble-text {
-    font-family: 'Aminute', sans-serif; /* Your new custom font! */
-    font-size: 1.6rem; /* Increased slightly for handwriting legibility */
-    color: #a0a0a0;
-    white-space: nowrap;
-    /* Removed italics since handwritten fonts usually have natural slant */
+    z-index: 25;
+    opacity: 1;
+    /* Fade in along with the headline */
+    animation: fadeInScribble 1s ease-out forwards;
+    animation-delay: 1.2s; 
 }
 
 @keyframes fadeInScribble {
     to { opacity: 1; }
 }
 
-/* Specific Positions */
-.scribble-left {
-    top: 60px; /* Pushed down slightly to align with the second line of text */
-    left: -70px;
+/* 1. The Cross (Top Left of 'Engage') */
+.scribble.cross {
+    width: 60px;
+    top: -20px;
+    left: -5px;
     transform: rotate(-10deg);
 }
 
-.scribble-right {
-    top: -30px;
-    right: -160px;
+/* 2. The Crown (Above 'Audiences') */
+.scribble.crown {
+    width: 90px;
+    top: -50px;
+    right: 0%;
+    transform: rotate(5deg);
 }
 
-.scribble-right .scribble-text {
-    margin-bottom: 5px;
-    transform: rotate(8deg); /* Tweaked the angle */
+/* 3. The Star (After 'Videos') */
+.scribble.star {
+    width: 45px;
+    bottom: 60px;
+    right: -15px;
+}
+
+/* 4. Top Arrow (Elevate your brand) */
+.scribble.top-arrow {
+    width: 160px;
+    top: 20px;
+    right: -220px;
+    transform: rotate(10deg);
+}
+
+/* 5. Bottom Arrow (Welcome :) ) */
+.scribble.bottom-arrow {
+    width: 140px;
+    left: -150px;
+    top: -10px;
+    transform: rotate(-5deg);
+}
+
+/* --- MOBILE SCRIBBLE ADJUSTMENTS --- */
+@media (max-width: 768px) {
+    /* Hide the large side arrows on mobile to prevent horizontal scrolling */
+    .scribble.top-arrow, 
+    .scribble.bottom-arrow { 
+        display: none !important; 
+    }
+
+    /* Scale down the core headline icons */
+    .scribble.cross { width: 35px; top: -15px; left: 0; }
+    .scribble.crown { width: 50px; top: -35px; right: 10px; }
+    .scribble.star { width: 25px; bottom: 5px; right: -20px; }
+}
+
+/* --- MOBILE TWEAKS --- */
+@media (max-width: 768px) {
+    .highlight-wrapper::after {
+        bottom: -25px !important; 
+        height: 40px !important;  
+    }
 }
 
 /* Fixed the CTA wrapper to make positioning easier */
@@ -310,24 +366,6 @@ body {
     position: relative;
     z-index: 20;
     margin-top: 50px; /* Gives the carousel a bit more breathing room */
-}
-
-.scribble-bottom {
-    top: 10px; /* Moved down so it doesn't clip into the carousel */
-    left: -150px;
-    flex-direction: row;
-    gap: 12px;
-    align-items: flex-end;
-}
-
-.scribble-bottom .scribble-text {
-    transform: rotate(-12deg);
-    margin-bottom: -5px; /* Aligns the text nicely with the new arrow */
-}
-
-/* Hide scribbles on small screens so they don't cause horizontal scrolling */
-@media (max-width: 980px) {
-    .scribble { display: none !important; }
 }
 
 /* FLAWLESS 3D CONCAVE STAGE */
@@ -480,15 +518,11 @@ body {
     .hero-text-content {
         margin-bottom: 10px !important; /* Tighten gap between headline area and carousel */
     }
+
     .hero-underline {
-        bottom: -24px !important; /* Pull the yellow swoosh up */
-        height: 20px !important;
+        bottom: -22px !important; /* Pull it up closer on smaller text */
+        height: 25px !important;  /* Scale down the container height */
     }
-
-    .hero-underline path {
-        stroke-width: 4 !important; /* Makes the actual drawn line thinner */
-    }
-
     /* 3. Small Carousel (Forces 4-5 Videos on Screen) */
     .scene-3d {
         height: 220px !important;
