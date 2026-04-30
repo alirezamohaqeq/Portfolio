@@ -119,14 +119,14 @@ html.lenis {
 html {
     width: 100%;
     max-width: 100%;
-    overflow-x: hidden !important;
+    overflow-x: clip !important;
 }
 
 body {
     /* New Layout Fixes */
     width: 100%;
     max-width: 100%;
-    overflow-x: hidden !important;
+    overflow-x: clip !important;
     overscroll-behavior-x: none; /* Stops "bounce" scroll on iOS */
     
     /* Your Original Styles */
@@ -345,49 +345,56 @@ body {
 @media (max-width: 1440px), (max-height: 850px) {
     /* 1. Prevent Flexbox Squishing by allowing natural height */
     .hero-3d-wrapper {
-        height: auto;
-        min-height: 100vh;
-        padding: 120px 0 40px;
+        height: 100vh; 
+        padding: 5px 0 0px !important; /* Maximized vertical space */
+        overflow: hidden;
     }
-    .hero-text-content, .scene-3d, .hero-cta-wrapper {
-        flex-shrink: 0; /* CRITICAL: Stops the carousel from overlapping the text */
+    
+    /* 2. Push the TITLE down relative to the top */
+    .hero-text-content {
+        flex-shrink: 0; 
+        margin-top: 60px !important; /* Brought down exactly as requested */
+    }
+    
+    .scene-3d, .hero-cta-wrapper {
+        flex-shrink: 0; 
     }
 
-    /* 2. Scale down the massive headline safely */
+    /* 3. Scale the headline */
     .hero-3d-headline {
-        font-size: 4rem; /* Scaled down proportionally from 5.5rem */
-        margin-bottom: 20px;
+        font-size: 3.6rem; 
+        margin-bottom: 0px; 
     }
 
     /* 3. Re-anchor the Scribbles to match the new, smaller text width */
-    .scribble.cross { width: 45px; top: -15px; margin-left: -230px; }
-    .scribble.crown { width: 70px; top: -60px; margin-left: 130px; }
-    .scribble.star { width: 35px; top: 40px; margin-left: -130px; }
+    .scribble.cross { width: 45px; top: -15px; margin-left: 0px; }
+    .scribble.crown { width: 70px; top: -40px; margin-left: 130px; }
+    .scribble.star { width: 35px; top: 70px; margin-left: -130px; }
     .scribble.top-arrow { width: 120px; top: 10px; margin-left: 250px; }
-    .scribble.bottom-arrow { width: 100px; top: -20px; margin-left: -180px; }
+    .scribble.bottom-arrow { width: 100px; top: 10px; margin-left: 20px; }
 
-    /* 4. Adjust the Animated Underline to hug the smaller letters */
+    /* 4. Adjust the Animated Underline */
     .highlight-wrapper::after {
-        height: 45px;
+        height: 40px;
         bottom: -15px;
     }
     
-    /* 5. Scale the 3D scene down slightly so it fits inside shorter screens */
+    /* 5. Compact the 3D scene so the button clears the bottom */
     .scene-3d {
-        height: 360px; 
+        height: 250px; 
     }
     .carousel-3d {
-        height: 280px;
+        height: 200px;
     }
     .carousel-card {
-        width: 180px;
-        height: 280px;
-        /* margin MUST be exactly negative half of width/height to center 3D objects */
-        margin-left: -90px;
-        margin-top: -140px;
+        width: 125px;
+        height: 200px;
+        margin-left: -62px;
+        margin-top: -100px;
     }
     .hero-cta-wrapper {
-        margin-top: 20px;
+        margin-top: 0px;
+        transform: translateY(-40px);
     }
 }
 
@@ -532,6 +539,43 @@ body {
     transform: translateY(-3px) scale(1.05);
     background: #fff;
     box-shadow: 0 15px 40px rgba(255, 255, 255, 0.3);
+}
+
+/* =========================================
+   GLOBAL CURSOR & DRAG BUG FIXES
+   ========================================= */
+
+/* 1. Stop native browser dragging from breaking the 3D drag physics */
+.hero-3d-wrapper, 
+.hero-3d-wrapper *, 
+.carousel-card video,
+.carousel-card img {
+    user-select: none !important;
+    -webkit-user-select: none !important;
+    -webkit-user-drag: none !important;
+}
+
+/* 2. Hide the tiny "Flashlight" cursor when inside the 3D Hero so they don't fight */
+.hero-3d-wrapper:hover ~ #magic-cursor {
+    display: none !important;
+    opacity: 0 !important;
+}
+
+/* 3. Force the Hand Cursor on ALL buttons with absolute maximum priority */
+#hero-scroll-btn,
+.hero-nav-link,
+#hero-portfolio-btn,
+#hero-services-btn,
+#hero-about-btn,
+#hero-contact-btn {
+    cursor: url('images/3d-hand.png') 12 5, pointer !important;
+    pointer-events: auto !important;
+}
+
+/* Ensure child elements (like text inside the buttons) don't override the hand */
+#hero-scroll-btn *,
+.hero-nav-link * {
+    cursor: inherit !important;
 }
 
 /* =========================================
@@ -2561,7 +2605,7 @@ body.hero-hint-on #hero .skip-hint { opacity: 1; }
 
     /* --- 1. Fix Horizontal Scroll & Carousel Overflow --- */
     html, body {
-        overflow-x: hidden !important;
+        overflow-x: clip !important;
         width: 100%;
         position: relative;
     }
@@ -2960,8 +3004,8 @@ body.no-scroll {
         position: sticky;
         top: 65px; 
         z-index: 80;
-        margin-bottom: 5px !important;
-        padding-bottom: 5px !important;
+        margin-bottom: 30px !important;
+        padding-bottom: 10px !important;
     }
 }
 
@@ -3058,7 +3102,7 @@ body.no-scroll #floating-top {
     
     /* 1. Lock the page width to prevent black void swipe */
     html, body {
-        overflow-x: hidden !important;
+        overflow-x: clip !important;
         width: 100%;
         position: relative;
     }
@@ -4382,7 +4426,7 @@ body:not([data-mode="all"]) .top-signature {
     html, body {
         height: auto !important;
         overflow-y: visible !important;
-        overflow-x: hidden !important;
+        overflow-x: clip !important;
     }
 
     /* 3. Instantly reveal the main navigation header and pill menu */
