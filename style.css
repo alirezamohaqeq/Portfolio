@@ -339,6 +339,58 @@ body {
     transform: rotate(-5deg);
 }
 
+/* =========================================
+   LAPTOP & SMALL SCREEN FIX (13" MacBooks, etc.)
+   ========================================= */
+@media (max-width: 1440px), (max-height: 850px) {
+    /* 1. Prevent Flexbox Squishing by allowing natural height */
+    .hero-3d-wrapper {
+        height: auto;
+        min-height: 100vh;
+        padding: 120px 0 40px;
+    }
+    .hero-text-content, .scene-3d, .hero-cta-wrapper {
+        flex-shrink: 0; /* CRITICAL: Stops the carousel from overlapping the text */
+    }
+
+    /* 2. Scale down the massive headline safely */
+    .hero-3d-headline {
+        font-size: 4rem; /* Scaled down proportionally from 5.5rem */
+        margin-bottom: 20px;
+    }
+
+    /* 3. Re-anchor the Scribbles to match the new, smaller text width */
+    .scribble.cross { width: 45px; top: -15px; margin-left: -230px; }
+    .scribble.crown { width: 70px; top: -60px; margin-left: 130px; }
+    .scribble.star { width: 35px; top: 40px; margin-left: -130px; }
+    .scribble.top-arrow { width: 120px; top: 10px; margin-left: 250px; }
+    .scribble.bottom-arrow { width: 100px; top: -20px; margin-left: -180px; }
+
+    /* 4. Adjust the Animated Underline to hug the smaller letters */
+    .highlight-wrapper::after {
+        height: 45px;
+        bottom: -15px;
+    }
+    
+    /* 5. Scale the 3D scene down slightly so it fits inside shorter screens */
+    .scene-3d {
+        height: 360px; 
+    }
+    .carousel-3d {
+        height: 280px;
+    }
+    .carousel-card {
+        width: 180px;
+        height: 280px;
+        /* margin MUST be exactly negative half of width/height to center 3D objects */
+        margin-left: -90px;
+        margin-top: -140px;
+    }
+    .hero-cta-wrapper {
+        margin-top: 20px;
+    }
+}
+
 /* --- MOBILE SCRIBBLE ADJUSTMENTS --- */
 @media (max-width: 768px) {
     /* Hide the large side arrows on mobile to prevent horizontal scrolling */
@@ -4314,4 +4366,35 @@ body:not([data-mode="all"]) .top-signature {
     opacity: 1 !important;
     visibility: visible !important;
     pointer-events: auto !important;
+}
+
+/* =========================================
+   MOBILE: BYPASS 3D HERO COMPLETELY
+   ========================================= */
+@media (max-width: 768px) {
+    /* 1. Hide the entire 3D Hero Wrapper and Floating Signature */
+    #hero-3d,
+    .top-signature {
+        display: none !important;
+    }
+
+    /* 2. Instantly unlock the page scroll (bypasses the desktop scroll-lock) */
+    html, body {
+        height: auto !important;
+        overflow-y: visible !important;
+        overflow-x: hidden !important;
+    }
+
+    /* 3. Instantly reveal the main navigation header and pill menu */
+    header, 
+    .show-more-wrap {
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        visibility: visible !important;
+    }
+    
+    /* 4. Add a little breathing room at the top so the gallery isn't flushed against the menu */
+    #gallery {
+        margin-top: 20px !important;
+    }
 }
