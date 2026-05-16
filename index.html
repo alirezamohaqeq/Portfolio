@@ -764,8 +764,8 @@
                  data-category="short"
                 data-youtube="https://www.youtube.com/embed/WDZjNc6psfU"
                 data-roles="Director, Editor, Actor">
-                <img class="cover" src="images/covers/I'm Lost Cover.jpg" alt="Project cover">
-                <video class="preview" src="videos/previews/I'mLost_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <img class="cover" src="images/covers/Im Lost Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/ImLost_preview.mp4" muted loop playsinline preload="metadata"></video>
                 <div class="overlay">
                     <h3>I'm Lost: An Experimental Short Film</h3>
                     <p>Short Film, 2025</p>
@@ -793,6 +793,18 @@
                 <div class="overlay">
                     <h3>Logo Duel</h3>
                     <p>Social Media, 2025</p>
+                </div>
+            </div>
+
+            <div class="gallery-item vertical"
+                 data-category="social"
+                data-youtube="https://www.youtube.com/embed/JyYNQS-u64I"
+                data-roles="Editor">
+                <img class="cover" src="images/covers/Bonjout_beauty_Cover.jpg" alt="Project cover">
+                <video class="preview" src="videos/previews/Bonjout_Beauty_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <div class="overlay">
+                    <h3>Bonjout Beauty Ads</h3>
+                    <p>Social Media, 2026</p>
                 </div>
             </div>
 
@@ -1005,7 +1017,7 @@
                 data-youtube="https://www.youtube.com/embed/EWtZNBXrEqI"
                 data-roles="Director, DOP, Editor, Motion Designer">
                 <img class="cover" src="images/covers/DonBuyfromZoviz_cover.jpg" alt="Project cover">
-                <video class="preview" src="videos/previews/Don't buy from Zoviz_preview.mp4" muted loop playsinline preload="metadata"></video>
+                <video class="preview" src="videos/previews/Don buy from Zoviz_preview.mp4" muted loop playsinline preload="metadata"></video>
                 <div class="overlay">
                     <h3>Don't Buy from Zoviz</h3>
                     <p>Social Media, 2025</p>
@@ -2447,25 +2459,27 @@
         const heroWrap = document.querySelector('.hero-3d-wrapper');
         if (!carousel || !heroWrap) return;
 
-        // NEW: Paired array with both the video and its corresponding cover image
+        // NEW: Paired array with the video, its corresponding cover image, and the assigned title.
+        // You have full authority over this list. To change a video, simply swap out the "video" and "poster" URLs.
         const baseMedia = [
-            { video: 'videos/previews/perfectbrand_preview.mp4', poster: 'images/covers/The Perfect Brand Cover.jpg' },
-            { video: 'videos/previews/Halloween Party_preview.mp4', poster: 'images/covers/Halloween Party Cover.jpg' },
-            { video: 'videos/previews/Zoviz Short Commercial 1_preview.mp4', poster: 'images/covers/Zoviz Short Commercial 1 Cover.jpg' },
-            { video: 'videos/previews/project2_preview.mp4', poster: "images/covers/D'emel Beauty Ad 1 Cover.jpg" },
-            { video: 'videos/previews/Collabrium_preview.mp4', poster: 'images/covers/Collabrium Commercial Motion Graphics Cover.jpg' },
-            { video: 'videos/previews/LogoFashionShow_preview.mp4', poster: 'images/covers/Logo Fashion Show Cover.jpg' },
-            { video: 'videos/previews/We Are A Family_preview.mp4', poster: 'images/covers/We are a family cover.jpg' },
-            { video: 'videos/previews/This is the WOW_preview.mp4', poster: 'images/covers/This Is The Wow Cover.jpg' },
-            { video: 'videos/previews/Black Friday Offer_preview.mp4', poster: 'images/covers/BlackFridayOffer_cover.jpg' },
-            { video: 'videos/previews/Zoviz Ad August_preview.mp4', poster: 'images/covers/ZOVIZ AD Cover.jpg' },
-            { video: 'videos/previews/Tivali_Home_Guaranteed_Rent_preview.mp4', poster: 'images/covers/Tivali_Home_Guaranteed_Rent_Cover.jpg' },
-            { video: 'videos/previews/Steer Clear_preview.mp4', poster: 'images/covers/Steer Clear Cover.jpg' }
+            { title: 'Reels & TikTok', video: 'videos/previews/50K_preview.mp4', poster: "images/covers/500K_cover.jpg" },
+            { title: 'YouTube Ads', video: 'videos/previews/Zoviz Commercial 2_preview.mp4', poster: 'images/covers/Zoviz Short Commercial 2 Cover.jpg' },
+            { title: 'UGC-style content', video: 'videos/previews/Flow_UGC_Ad.mp4', poster: 'images/covers/Flow_UGC_Ad.jpg' },
+            { title: 'Brand films', video: 'videos/previews/perfectbrand_preview.mp4', poster: 'images/covers/The Perfect Brand Cover.jpg' },
+            { title: 'Commercials', video: 'videos/previews/Halloween Party_preview.mp4', poster: 'images/covers/Halloween Party Cover.jpg' },
+            { title: 'SaaS Video', video: 'videos/previews/SaaS_Motion_Ad.mp4', poster: 'images/covers/SaaS_Motion_Ad_Cover.jpg' },
+            { title: 'Product showcase', video: 'videos/previews/This is the WOW_preview.mp4', poster: 'images/covers/This Is The Wow Cover.jpg' },
+            { title: 'Landing page videos', video: 'videos/previews/Tivali Home Landing Page Video_preview.mp4', poster: 'images/covers/Tivali Home Landing Page Video Cover.jpg' },
+            { title: 'Motion Graphics', video: 'videos/previews/Collabrium_preview.mp4', poster: 'images/covers/Collabrium Commercial Motion Graphics Cover.jpg' },
+            { title: 'Testimonial & case study', video: 'videos/previews/Pastry Chef_preview.mp4', poster: 'images/covers/Pastry Chef Your Brand, Your Story Cover.jpg' },
+            { title: 'Course & training videos', video: 'videos/previews/My Design_preview.mp4', poster: 'images/covers/My Design Cloud Cover.jpg' },
+            { title: 'AI Ads', video: 'videos/previews/We Are A Family_preview.mp4', poster: 'images/covers/We are a family cover.jpg' },
+            { title: 'Documentary / mini-doc', video: 'videos/previews/Roodbar Kerman Documentary_preview.mp4', poster: 'images/covers/Roodbar Kerman Documentary Cover.jpg' }
         ];
 
         const isMobile = window.innerWidth < 768;
         
-        // Use the new paired media array
+        // Use the new paired media array (We keep the duplication so the carousel loops smoothly in 3D)
         const videos = [...baseMedia, ...baseMedia]; 
         
         const numCards = videos.length;
@@ -2480,12 +2494,18 @@
             
             const vid = document.createElement('video');
             vid.src = media.video; 
-            vid.poster = media.poster; /* THE MAGIC FIX: Loads the cover instantly */
+            vid.poster = media.poster;
             vid.muted = true; 
             vid.loop = true; 
             vid.playsInline = true;
             
+            // Create the title element
+            const titleEl = document.createElement('div');
+            titleEl.className = 'carousel-card-title';
+            titleEl.innerText = media.title;
+            
             card.appendChild(vid);
+            card.appendChild(titleEl); // Append the title over the video
             carousel.appendChild(card);
 
             const angle = (360 / numCards) * i;

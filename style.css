@@ -4442,3 +4442,49 @@ body:not([data-mode="all"]) .top-signature {
         margin-top: 20px !important;
     }
 }
+
+/* Adds a subtle bottom gradient shadow to the cards so text is always readable */
+.carousel-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 45%;
+    background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
+    z-index: 5;
+    pointer-events: none;
+}
+
+/* Styles the new titles */
+.carousel-card-title {
+    position: absolute;
+    bottom: 20px;
+    left: 18px;
+    right: 15px; /* prevents text from overflowing off the card */
+    color: #ffffff;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    z-index: 10;
+    letter-spacing: 0.02em;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+    pointer-events: none;
+    text-transform: capitalize;
+    
+    /* Safely wrap text if it's too long */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Make it slightly smaller and adjust padding for mobile screens */
+@media (max-width: 768px) {
+    .carousel-card-title {
+        font-size: 0.85rem;
+        bottom: 14px;
+        left: 12px;
+    }
+}
