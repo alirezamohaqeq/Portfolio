@@ -3,7 +3,6 @@
    ========================================= */
 @font-face {
     font-family: 'Wosker';
-    /* FIX 3: Simplified path. RENAME YOUR FILE TO 'Wosker.otf' */
     src: url('fonts/Wosker.otf'); 
     font-weight: normal;
     font-style: normal;
@@ -13,6 +12,14 @@
 @font-face {
     font-family: 'Aminute';
     src: url('fonts/Aminute.otf') format('opentype'); /* Added explicit format */
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap; /* Swaps instantly to prevent invisible text bugs on mobile */
+}
+
+@font-face {
+    font-family: 'Tiempos';
+    src: url('fonts/TestTiemposFine-MediumItalic.otf') format('opentype'); /* Added explicit format */
     font-weight: normal;
     font-style: normal;
     font-display: swap; /* Swaps instantly to prevent invisible text bugs on mobile */
@@ -2429,10 +2436,15 @@ body.hero-hint-on #hero .skip-hint { opacity: 1; }
 
 /* The fancy "story" word */
 .quote-break h1 span {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Tiempos', serif; /* Now it will actually apply! */
     font-style: italic;
-    font-weight: 600;
-    color: #bbbbbb; /* Slightly dimmer for cinematic effect */
+    
+    /* Force normal weight and smooth edges so it matches Photoshop */
+    font-weight: normal; 
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    
+    color: #bbbbbb; 
     padding-right: 5px;
 }
 
@@ -2555,14 +2567,6 @@ body.hero-hint-on #hero .skip-hint { opacity: 1; }
 .featured-strip-item:hover .strip-label {
     opacity: 1;
     transform: translateY(0);
-}
-
-/* --- UNIVERSAL QUOTE STYLING --- */
-.quote-break h1 span {
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    font-weight: 600;
-    color: #bbbbbb;
 }
 
 /* --- POSITIONING GROUPS --- */
@@ -3602,10 +3606,19 @@ body[data-mode="all"] .services-section {
 
 .watch-more-glass {
     display: none; 
-    font-family: 'Aminute', sans-serif; /* sans-serif fallback prevents cursive flash */
-    font-size: 3rem; /* You might need to bump this up to 4rem if the handwriting looks too small */
+    
+    /* 1. APPLY OUTFIT FONT */
+    font-family: 'Outfit', sans-serif; 
+    
+    /* 2. CLEAN SANS-SERIF STYLING */
+    font-style: normal; 
+    font-weight: 400; /* 300 for lighter, 400 for normal, 600 for semi-bold */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    
+    font-size: 3rem; 
     margin-bottom: 50px;
-    letter-spacing: 0.02em;
+    letter-spacing: 0em; /* Outfit looks great with its natural spacing */
     pointer-events: none;
     line-height: 1.5; 
     padding-bottom: 10px;
