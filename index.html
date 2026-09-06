@@ -155,6 +155,7 @@
                     <li data-filter="motion">Motion Graphics</li>
                     <li data-filter="short">Short Film</li>
                     <li data-filter="photography">Photography</li>
+                    <li data-filter="luxury">Luxury</li>
                     <li data-action="scroll-services">Services</li>
                 </ul>
             </nav>
@@ -184,6 +185,57 @@
 
                 <button type="button" class="featured-strip-btn featured-strip-btn-prev" id="featured-strip-prev" aria-label="Previous">&lt;</button>
                 <button type="button" class="featured-strip-btn featured-strip-btn-next" id="featured-strip-next" aria-label="Next">&gt;</button>
+            </div>
+        </section>
+
+        <section class="brands-strip" id="brands-strip" aria-label="Brands I've worked with">
+            <!-- ROW 1 — scrolls left. Put ~half your logos here.
+                 Each logo appears TWICE in a row (a first set, then the same set
+                 repeated) — that repeat is what makes the loop seamless. Keep
+                 both copies identical whenever you add/remove/reorder a logo. -->
+            <div class="brands-row">
+                <div class="brands-track">
+                    <div class="brand-logo"><img src="images/brands/brand-01.png" alt="Zoviz"></div>
+                    <div class="brand-logo"><img src="images/brands/brand-02.png" alt="Tivali Home"></div>
+                    <div class="brand-logo"><img src="images/brands/brand-03.png" alt="Menwith"></div>
+                    <div class="brand-logo"><img src="images/brands/brand-04.png" alt="Baume & Mercier"></div>
+                    <div class="brand-logo"><img src="images/brands/brand-05.png" alt="Longines" class="mono-logo"></div>
+                    <div class="brand-logo"><img src="images/brands/brand-06.png" alt="Glasshute Original" class="mono-logo"></div>
+                    <div class="brand-logo"><img src="images/brands/brand-07.png" alt="New Zealand Cricket" class="mono-logo"></div>
+                    <div class="brand-logo"><img src="images/brands/brand-08.png" alt="Aston Martin" class="mono-logo"></div>
+                    <!-- duplicate set — required, keep identical to the four above -->
+                    <div class="brand-logo"><img src="images/brands/brand-01.png" alt="Zoviz"></div>
+                    <div class="brand-logo"><img src="images/brands/brand-02.png" alt="Tivali Home"></div>
+                    <div class="brand-logo"><img src="images/brands/brand-03.png" alt="Menwith"></div>
+                    <div class="brand-logo"><img src="images/brands/brand-04.png" alt="Baume & Mercier"></div>
+                    <div class="brand-logo"><img src="images/brands/brand-05.png" alt="Longines" class="mono-logo"></div>
+                    <div class="brand-logo"><img src="images/brands/brand-06.png" alt="Glasshute Original" class="mono-logo"></div>
+                    <div class="brand-logo"><img src="images/brands/brand-07.png" alt="New Zealand Cricket" class="mono-logo"></div>
+                    <div class="brand-logo"><img src="images/brands/brand-08.png" alt="Aston Martin" class="mono-logo"></div>
+                </div>
+            </div>
+
+            <!-- ROW 2 — scrolls right (opposite direction). The rest of your logos. -->
+            <div class="brands-row brands-row-reverse">
+                <div class="brands-track">
+                    <div class="brand-logo"><img src="images/brands/brand-09.png" alt="Meera Centrum"></div>
+                    <div class="brand-logo"><img src="images/brands/brand-10.png" alt="IELTS Tehran"></div>
+                    <div class="brand-logo"><img src="images/brands/brand-11.png" alt="D'emel Beauty" class="mono-logo"></div>
+                    <div class="brand-logo"><img src="images/brands/brand-12.png" alt="Nandel Hardware"></div>
+                    <div class="brand-logo"><img src="images/brands/brand-13.png" alt="Parsis Gold" class="mono-logo"></div>
+                    <div class="brand-logo"><img src="images/brands/brand-14.png" alt="Cafe Bazaar"></div>
+                    <div class="brand-logo"><img src="images/brands/brand-15.png" alt="surpriseMemorise"></div>
+                    <div class="brand-logo"><img src="images/brands/brand-16.png" alt="Shatel"></div>
+                    <!-- duplicate set — required, keep identical to the four above -->
+                    <div class="brand-logo"><img src="images/brands/brand-09.png" alt="Meera Centrum"></div>
+                    <div class="brand-logo"><img src="images/brands/brand-10.png" alt="IELTS Tehran"></div>
+                    <div class="brand-logo"><img src="images/brands/brand-11.png" alt="D'emel Beauty" class="mono-logo"></div>
+                    <div class="brand-logo"><img src="images/brands/brand-12.png" alt="Nandel Hardware"></div>
+                    <div class="brand-logo"><img src="images/brands/brand-13.png" alt="Parsis Gold" class="mono-logo"></div>
+                    <div class="brand-logo"><img src="images/brands/brand-14.png" alt="Cafe Bazaar"></div>
+                    <div class="brand-logo"><img src="images/brands/brand-15.png" alt="surpriseMemorise"></div>
+                    <div class="brand-logo"><img src="images/brands/brand-16.png" alt="Shatel"></div>
+                </div>
             </div>
         </section>
         
@@ -257,6 +309,11 @@
     <section class="quote-break" id="ai-quote" style="display: none;">
         <h1>AI is the first technology in history <br> that can create new <span>stories.</span></h1>
         <p>— Yuval Noah Harari</p>
+    </section>
+
+    <section class="quote-break" id="luxury-quote" style="display: none;">
+        <h1>Luxury is in each detail, <br> not just the <span>story</span> you sell.</h1>
+        <p>— ALEE</p>
     </section>
 
 </div>
@@ -2774,6 +2831,7 @@
         const filterNav = document.querySelector('.filter-nav');
         const filterToggle = document.getElementById('filter-toggle');
         const featuredSection = document.getElementById('featured');
+        const brandsSection = document.getElementById('brands-strip');
         const motionFeaturedSection = document.getElementById('motion-featured');
         const galleryItems = document.querySelectorAll('.gallery-item');
         const showMoreWrap = document.getElementById('show-more-wrap');
@@ -2842,6 +2900,10 @@
             if (featuredSection) {
                 featuredSection.style.display = (category === 'all') ? 'block' : 'none';
             }
+
+            if (brandsSection) {
+    brandsSection.style.display = (category === 'all') ? 'block' : 'none';
+}
             
             // Handle Motion Featured Visibility
             if (motionFeaturedSection) {
@@ -2860,7 +2922,7 @@ if (photoWrapper) {
 
 // --- UPDATED QUOTE VISIBILITY ---
 // 1. Select all quote elements
-const mainQuote = document.querySelector('.quote-break:not(#photo-quote):not(#commercial-quote):not(#social-quote):not(#motion-quote):not(#short-quote):not(#ai-quote):not(#services-quote)');
+const mainQuote = document.querySelector('.quote-break:not(#photo-quote):not(#commercial-quote):not(#social-quote):not(#motion-quote):not(#short-quote):not(#ai-quote):not(#luxury-quote):not(#services-quote)');
 
 const photoQuote = document.getElementById('photo-quote');
 const commercialQuote = document.getElementById('commercial-quote');
@@ -2868,6 +2930,7 @@ const socialQuote = document.getElementById('social-quote');
 const motionQuote = document.getElementById('motion-quote');
 const shortQuote = document.getElementById('short-quote');
 const aiQuote = document.getElementById('ai-quote'); // NEW
+const luxuryQuote = document.getElementById('luxury-quote'); // NEW
 
 // 2. Toggle Visibility based on category
 if (mainQuote) mainQuote.style.display = (category === 'all') ? 'block' : 'none';
@@ -2878,6 +2941,7 @@ if (socialQuote) socialQuote.style.display = (category === 'social') ? 'block' :
 if (motionQuote) motionQuote.style.display = (category === 'motion') ? 'block' : 'none';
 if (shortQuote) shortQuote.style.display = (category === 'short') ? 'block' : 'none';
 if (aiQuote) aiQuote.style.display = (category === 'ai-ads') ? 'block' : 'none'; // NEW
+if (luxuryQuote) luxuryQuote.style.display = (category === 'luxury') ? 'block' : 'none'; // NEW
 
 // --- FIX FOR CAROUSEL BLACK GAPS ---
             // Trigger a resize event if we are switching to 'motion' OR back to 'all' (Featured)
@@ -4400,7 +4464,8 @@ const menuItems = document.querySelectorAll('.filter-menu li, .show-more-menu li
         const roles = [
             "Director", "Scriptwriter", "Content Creator", 
             "Video Editor", "Sound Engineer", "Creative Producer", 
-            "Project Manager", "Filmmaker", "Colorist"
+            "Project Manager", "Filmmaker", "Colorist",
+            "Storyteller", "AI Content Lead"
         ];
         
         const styles = [
