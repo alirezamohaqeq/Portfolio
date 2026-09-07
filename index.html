@@ -2902,7 +2902,8 @@
             }
 
             if (brandsSection) {
-    brandsSection.style.display = (category === 'all') ? 'block' : 'none';
+    // Clear the override so .brands-strip keeps its flex layout and row gap.
+    brandsSection.style.display = (category === 'all') ? '' : 'none';
 }
             
             // Handle Motion Featured Visibility
@@ -4045,25 +4046,16 @@ window.addEventListener('popstate', () => {
         --reveal-radius: 100px;
     }
 
-    /* 6. MAIN SENTENCE (Gradient Reveal) */
+    /* 6. MAIN SENTENCE
+       Do not clip an ancestor background to text: it also paints the hidden
+       child glyphs and leaves antialiased outlines. The difference cursor
+       supplies the color change inside the yellow circle. */
     .quote-trigger-wrap h1 {
         margin: 0;
         display: inline-block;
-        color: transparent; 
-        -webkit-text-fill-color: transparent;
-        
-        background-image: radial-gradient(
-            circle var(--reveal-radius) at var(--elem-x, 50%) var(--elem-y, 50%), 
-            #f5d47a 99%,      
-            #f1f1f1 100% 
-        );
-        
-        background-origin: padding-box; 
-        background-attachment: scroll; 
-        background-clip: text;
-        -webkit-background-clip: text;
-        background-repeat: no-repeat;
-        will-change: background;
+        color: #f1f1f1;
+        -webkit-text-fill-color: #f1f1f1;
+        background: none;
     }
 
     /* 7. HIDDEN WORDS (Clip-Path Logic) */
@@ -4072,9 +4064,10 @@ window.addEventListener('popstate', () => {
         position: relative;
         display: inline-block;
         
-        /* Base: Solid Black (Invisible) */
-        color: #050505 !important;
-        -webkit-text-fill-color: #050505 !important;
+        /* No base paint; only the clipped pseudo-element reveals the text. */
+        color: transparent !important;
+        -webkit-text-fill-color: transparent !important;
+        text-shadow: none !important;
         background: none !important;
         -webkit-text-stroke: 0 !important;
     }

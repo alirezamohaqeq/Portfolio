@@ -19,7 +19,7 @@
 
 @font-face {
     font-family: 'Tiempos';
-    src: url('fonts/TestTiemposFine-MediumItalic.otf') format('opentype'); /* Added explicit format */
+    src: url('fonts/TestTiemposText-MediumItalic.otf') format('opentype'); /* Added explicit format */
     font-weight: normal;
     font-style: normal;
     font-display: swap; /* Swaps instantly to prevent invisible text bugs on mobile */
@@ -2486,7 +2486,7 @@ body.hero-hint-on #hero .skip-hint { opacity: 1; }
 }
 
 @media (max-width: 768px) {
-    .brands-strip { padding: 50px 0 40px; gap: 24px; }
+    .brands-strip { padding: 50px 0 40px; gap: 40px; }
     .brand-logo { width: 120px; height: 56px; }
     .brands-track { gap: 45px; animation-duration: 24s; }
     .brands-row-reverse .brands-track { animation-duration: 28s; }
